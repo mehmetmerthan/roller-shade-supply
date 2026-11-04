@@ -1,0 +1,51 @@
+---
+/**
+ * Button or link styled as a button. Renders <a> when `href` is set.
+ * Variants: primary (redline, the main action), secondary (steel outline), ghost (quiet).
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Variant = 'primary' | 'secondary' | 'ghost';
+type Size = 'sm' | 'md' | 'lg';
+
+interface Props extends Omit<HTMLAttributes<'button'>, 'type'> {
+  variant?: Variant;
+  size?: Size;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  /** Styleguide only: force a visual state. */
+  demo?: 'hover' | 'focus' | 'active';
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  demo,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const classes = ['btn', `btn-${variant}`, size !== 'md' && `btn-${size}`, className];
+---
+
+{
+  href ? (
+    disabled ? (
+      <a class:list={classes} role="link" aria-disabled="true" data-demo={demo} {...(rest as HTMLAttributes<'a'>)}>
+        <slot />
+      </a>
+    ) : (
+      <a class:list={classes} href={href} data-demo={demo} {...(rest as HTMLAttributes<'a'>)}>
+        <slot />
+      </a>
+    )
+  ) : (
+    <button class:list={classes} type={type} disabled={disabled} data-demo={demo} {...rest}>
+      <slot />
+    </button>
+  )
+}

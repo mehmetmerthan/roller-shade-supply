@@ -20,6 +20,10 @@ export default defineConfig({
   // Astro 7 defaults to 'jsx' whitespace handling, which can drop spaces between
   // inline elements in copy. Keep the predictable HTML-collapsing behavior.
   compressHTML: true,
+  image: {
+    // Sharp plus exact focal-point crops for `position="50% 35%"` (src/lib/image-service.ts).
+    service: { entrypoint: './src/lib/image-service.ts' },
+  },
   integrations: [
     sitemap({
       filter: (page) => !SITEMAP_EXCLUDE.has(new URL(page).pathname),

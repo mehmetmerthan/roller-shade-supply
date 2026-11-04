@@ -1,0 +1,83 @@
+---
+/**
+ * The signature frame: a wide fixed pane between two narrow sashes, divided by 4 px
+ * steel mullions (the Chicago window, 2–8–2 on the 12-column grid from 1024 px).
+ * On small screens the pane comes first and the sashes stack below it.
+ *
+ * Slots: default = pane (usually a photo); "left" / "right" = sashes (optional).
+ * Each sash is a column: content placed in a `[data-rail="bottom"]` wrapper is pushed
+ * below a 1 px "meeting rail", like the rail of a double-hung sash.
+ */
+interface Props {
+  /** Accessible name; makes the frame a labeled group. */
+  label?: string;
+  /** Sash background. */
+  sash?: 'limestone' | 'paper';
+  class?: string;
+}
+
+const { label, sash = 'limestone', class: className } = Astro.props;
+const hasLeft = Astro.slots.has('left');
+const hasRight = Astro.slots.has('right');
+const both = hasLeft && hasRight;
+const paneSpan = both ? 'lg:col-span-8' : hasLeft || hasRight ? 'lg:col-span-10' : 'lg:col-span-12';
+// 768–1023 px: the pane spans the frame and two sashes sit side by side below it.
+const sashSpanMd = both ? '' : 'md:col-span-2';
+const sashBg = sash === 'limestone' ? 'bg-limestone' : 'bg-paper';
+---
+
+<div
+  class:list={['chicago-window grid border-y-4 border-ink md:grid-cols-2 lg:grid-cols-12 lg:border-4', className]}
+  role={label ? 'group' : undefined}
+  aria-label={label}
+>
+  {
+    hasLeft && (
+      <div
+        class:list={[
+          'chicago-sash order-2 border-t-4 border-ink lg:order-none lg:col-span-2 lg:border-t-0 lg:border-r-4',
+          sashSpanMd,
+          sashBg,
+        ]}
+      >
+        <slot name="left" />
+      </div>
+    )
+  }
+  <div class:list={['chicago-pane relative order-1 md:col-span-2 lg:order-none', paneSpan]}>
+    <slot />
+  </div>
+  {
+    hasRight && (
+      <div
+        class:list={[
+          'chicago-sash order-3 border-t-4 border-ink lg:order-none lg:col-span-2 lg:border-t-0 lg:border-l-4',
+          both ? 'md:border-l-4' : 'md:col-span-2',
+          sashBg,
+        ]}
+      >
+        <slot name="right" />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .chicago-sash {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  @media (width >= 64rem) {
+    .chicago-sash {
+      padding: 1.25rem;
+    }
+  }
+  /* The meeting rail: a 1 px rule that separates a sash's upper and lower content. */
+  .chicago-sash :global([data-rail="bottom"]) {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-ink);
+  }
+</style>

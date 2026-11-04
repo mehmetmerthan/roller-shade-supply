@@ -1,0 +1,83 @@
+---
+/**
+ * Labeled text input or textarea with hint and error.
+ * Required fields say "(required)" in the label. Errors set aria-invalid and are
+ * linked with aria-describedby; the message starts with an icon and "Error:" for screen readers.
+ */
+import AlertIcon from './AlertIcon.astro';
+
+interface Props {
+  id: string;
+  label: string;
+  name?: string;
+  type?: 'text' | 'email' | 'tel' | 'number' | 'url' | 'textarea';
+  required?: boolean;
+  hint?: string;
+  error?: string;
+  value?: string;
+  placeholder?: string;
+  autocomplete?: string;
+  inputmode?: 'text' | 'email' | 'tel' | 'numeric' | 'decimal' | 'url';
+  disabled?: boolean;
+  rows?: number;
+  /** Styleguide only: force a visual state. */
+  demo?: 'hover' | 'focus';
+  class?: string;
+}
+
+const {
+  id,
+  label,
+  name = id,
+  type = 'text',
+  required = false,
+  hint,
+  error,
+  value,
+  placeholder,
+  autocomplete,
+  inputmode,
+  disabled = false,
+  rows = 5,
+  demo,
+  class: className,
+} = Astro.props;
+
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+const common = {
+  id,
+  name,
+  required,
+  disabled,
+  placeholder,
+  autocomplete,
+  'aria-invalid': error ? ('true' as const) : undefined,
+  'aria-describedby': describedBy,
+  'data-demo': demo,
+  class: 'field-control',
+};
+---
+
+<div class={className}>
+  <label for={id} class="field-label">
+    {label}{required && <span class="field-required"> (required)</span>}
+  </label>
+  {hint && <p id={hintId} class="field-hint">{hint}</p>}
+  {
+    type === 'textarea' ? (
+      <textarea {...common} rows={rows}>{value}</textarea>
+    ) : (
+      <input {...common} type={type} value={value} inputmode={inputmode} />
+    )
+  }
+  {
+    error && (
+      <p id={errorId} class="field-error">
+        <AlertIcon />
+        <span><span class="sr-only">Error: </span>{error}</span>
+      </p>
+    )
+  }
+</div>

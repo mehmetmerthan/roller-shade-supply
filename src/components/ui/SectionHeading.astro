@@ -1,0 +1,36 @@
+---
+/**
+ * Section heading on the Chicago-window grid: a 4 px steel mullion across the top,
+ * an optional label in the narrow sash column, the title and intro in the wide pane.
+ */
+interface Props {
+  title: string;
+  /** Short section name shown in the sash column (e.g., "Products"). */
+  label?: string;
+  intro?: string;
+  level?: 2 | 3;
+  id?: string;
+  /** Light text for dark surfaces. */
+  surface?: 'light' | 'dark';
+  class?: string;
+}
+
+const { title, label, intro, level = 2, id, surface = 'light', class: className } = Astro.props;
+const Tag = `h${level}` as 'h2' | 'h3';
+const dark = surface === 'dark';
+---
+
+<header
+  class:list={[
+    'grid gap-3 border-t-4 pt-4 lg:grid-cols-12 lg:gap-8 lg:pt-6',
+    dark ? 'border-paper' : 'border-ink',
+    className,
+  ]}
+>
+  {label && <p class:list={['label-spec lg:col-span-2 lg:pt-3', dark && 'text-stone-300']}>{label}</p>}
+  <div class="lg:col-span-8 lg:col-start-3">
+    <Tag id={id} class:list={[level === 2 ? 'text-3xl' : 'text-2xl']}>{title}</Tag>
+    {intro && <p class:list={['mt-4 max-w-prose text-lg', dark ? 'text-stone-200' : 'text-stone-700']}>{intro}</p>}
+    <slot />
+  </div>
+</header>

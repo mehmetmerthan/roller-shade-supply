@@ -1,0 +1,72 @@
+---
+/** Labeled native select with hint and error (same rules as TextField). */
+import AlertIcon from './AlertIcon.astro';
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  id: string;
+  label: string;
+  options: Option[];
+  name?: string;
+  required?: boolean;
+  hint?: string;
+  error?: string;
+  value?: string;
+  /** First, empty option. */
+  placeholder?: string;
+  disabled?: boolean;
+  demo?: 'hover' | 'focus';
+  class?: string;
+}
+
+const {
+  id,
+  label,
+  options,
+  name = id,
+  required = false,
+  hint,
+  error,
+  value,
+  placeholder = 'Select one',
+  disabled = false,
+  demo,
+  class: className,
+} = Astro.props;
+
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+---
+
+<div class={className}>
+  <label for={id} class="field-label">
+    {label}{required && <span class="field-required"> (required)</span>}
+  </label>
+  {hint && <p id={hintId} class="field-hint">{hint}</p>}
+  <select
+    id={id}
+    name={name}
+    required={required}
+    disabled={disabled}
+    aria-invalid={error ? 'true' : undefined}
+    aria-describedby={describedBy}
+    data-demo={demo}
+    class="field-control"
+  >
+    <option value="" selected={!value}>{placeholder}</option>
+    {options.map((o) => <option value={o.value} selected={o.value === value}>{o.label}</option>)}
+  </select>
+  {
+    error && (
+      <p id={errorId} class="field-error">
+        <AlertIcon />
+        <span><span class="sr-only">Error: </span>{error}</span>
+      </p>
+    )
+  }
+</div>

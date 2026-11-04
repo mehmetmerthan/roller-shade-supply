@@ -1,0 +1,77 @@
+---
+/** Fieldset of checkboxes or radios with a legend, hint, and error. */
+import AlertIcon from './AlertIcon.astro';
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  id: string;
+  legend: string;
+  name: string;
+  options: Option[];
+  type?: 'checkbox' | 'radio';
+  required?: boolean;
+  hint?: string;
+  error?: string;
+  checked?: string[];
+  disabled?: boolean;
+  /** Two columns from 640 px for long lists. */
+  columns?: 1 | 2;
+  class?: string;
+}
+
+const {
+  id,
+  legend,
+  name,
+  options,
+  type = 'checkbox',
+  required = false,
+  hint,
+  error,
+  checked = [],
+  disabled = false,
+  columns = 1,
+  class: className,
+} = Astro.props;
+
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+---
+
+<fieldset id={id} class={className} aria-describedby={describedBy} aria-invalid={error ? 'true' : undefined}>
+  <legend class="field-label">
+    {legend}{required && <span class="field-required"> (required)</span>}
+  </legend>
+  {hint && <p id={hintId} class="field-hint">{hint}</p>}
+  {
+    error && (
+      <p id={errorId} class="field-error">
+        <AlertIcon />
+        <span><span class="sr-only">Error: </span>{error}</span>
+      </p>
+    )
+  }
+  <div class:list={['mt-2 grid gap-x-6', columns === 2 && 'sm:grid-cols-2']}>
+    {
+      options.map((o, i) => (
+        <label class="choice" for={`${id}-${i}`}>
+          <input
+            id={`${id}-${i}`}
+            type={type}
+            name={name}
+            value={o.value}
+            checked={checked.includes(o.value)}
+            disabled={disabled}
+            required={type === 'radio' && required}
+          />
+          <span>{o.label}</span>
+        </label>
+      ))
+    }
+  </div>
+</fieldset>

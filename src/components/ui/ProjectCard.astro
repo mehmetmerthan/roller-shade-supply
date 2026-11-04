@@ -1,0 +1,76 @@
+---
+/**
+ * Project card: 4:3 cover, project title as the card link, and a compact spec table
+ * (sector, location, year). Shows a photo count and, outside production, a
+ * "Sample write-up" badge on placeholder projects.
+ * Phase 5 adds the mini-gallery peek.
+ */
+import { Picture } from 'astro:assets';
+import Badge from './Badge.astro';
+import SpecList from './SpecList.astro';
+import { isProduction } from '../../config/site';
+import { sectorLabels } from '../../config/taxonomy';
+import { getCover, getPhotos, projectHref, type Project } from '../../lib/projects';
+
+interface Props {
+  project: Project;
+  headingLevel?: 2 | 3;
+  /** Responsive `sizes` for the cover; defaults to a 1 / 2 / 3-column grid. */
+  sizes?: string;
+  /** Above-the-fold cards only. */
+  priority?: boolean;
+  demo?: 'hover' | 'focus';
+  class?: string;
+}
+
+const {
+  project,
+  headingLevel = 3,
+  sizes = '(min-width: 1280px) 400px, (min-width: 1024px) 31vw, (min-width: 768px) 46vw, 100vw',
+  priority = false,
+  demo,
+  class: className,
+} = Astro.props;
+
+const Tag = `h${headingLevel}` as 'h2' | 'h3';
+const cover = getCover(project);
+const photoCount = getPhotos(project).length;
+// Built as one string: Astro 7 drops whitespace between adjacent expressions.
+const photoLabel = `${photoCount} ${photoCount === 1 ? 'photo' : 'photos'}`;
+const { title, sector, location, year, placeholder } = project.data;
+---
+
+<article class:list={['card flex flex-col', className]} data-demo={demo}>
+  <div class="relative aspect-4/3 overflow-hidden bg-stone-200">
+    <Picture
+      src={cover.src}
+      alt={cover.alt}
+      width={1280}
+      height={960}
+      layout="constrained"
+      fit="cover"
+      position={cover.position}
+      widths={[400, 640, 800, 1280]}
+      sizes={sizes}
+      formats={['avif', 'webp']}
+      priority={priority}
+      class="h-full w-full"
+    />
+    {placeholder && !isProduction && <Badge variant="paper" class="absolute top-3 left-3">Sample write-up</Badge>}
+    <Badge variant="ink" class="absolute bottom-3 left-3">{photoLabel}</Badge>
+  </div>
+  <div class="pt-4">
+    <Tag class="text-2xl">
+      <a href={projectHref(project)} class="card-link card-title">{title}</a>
+    </Tag>
+    <SpecList
+      size="compact"
+      class="mt-3"
+      items={[
+        { label: 'Sector', value: sectorLabels[sector] },
+        { label: 'Location', value: location },
+        { label: 'Year', value: String(year) },
+      ]}
+    />
+  </div>
+</article>

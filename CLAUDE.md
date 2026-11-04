@@ -37,6 +37,9 @@ npm run preview         # serve the production build
 npm run check           # astro check (types + diagnostics)
 npm run images          # optimize /assets → src/assets (scripts/prepare-images.mjs)
 npm run check:projects  # every project folder has a content entry, and vice versa
+npm run qa -- --base http://127.0.0.1:4321 --pages /styleguide/ --out .screenshots/<phase>/<pass> --keyboard
+                        # full-page screenshots at 375/768/1280/1440 (installed Chrome), console errors,
+                        # keyboard focus pass. In Git Bash prefix with MSYS_NO_PATHCONV=1 so "/path/" isn't rewritten.
 ```
 
 ## Repository layout (target)
@@ -75,7 +78,8 @@ docs/   CONTENT_TODO.md   /.screenshots/ (gitignored)
    - skip every file listed in **`scripts/image-exclude.json`** (`{ "file": "<Folder>/<file name>", "reason": "…" }`). **Current policy: show every photo** until the pre-launch review. The list holds only the cross-project duplicate. Log web-sourced, low-res, privacy, and rights issues in `CONTENT_TODO.md` instead of excluding;
    - prune stale outputs in `src/assets/projects/` and `public/videos/` (never touch `/assets`);
    - print a before/after size report.
-4. **Galleries are auto-discovered:** `import.meta.glob('/src/assets/projects/*/*.{jpg,jpeg,png,webp,avif}', { eager: true })`, grouped by folder, natural sort (`2` before `10`). Cover = frontmatter `cover`, else `cover.*`, else the first image. The client can control order by prefixing file names with `01-`, `02-`…
+4. **Galleries are auto-discovered:** `import.meta.glob('/src/assets/projects/*/*.{jpg,jpeg,png,webp,avif}', { eager: true })`, grouped by folder, natural sort (`2` before `10`). Cover = frontmatter `cover`, else `cover.*`, else the first image. The client can control order by prefixing file names with `01-`, `02-`… Use the helpers in `src/lib/projects.ts` (`getProjects`, `getPhotos`, `getCover`).
+   - **Crops:** pass `width` + `height` + `fit="cover"` + `position={photo.position}` to `<Picture>`. The custom image service (`src/lib/image-service.ts`) turns percentage positions into exact focal-point crops at build time, because sharp alone only accepts keywords.
    - **Covers:** use the project's strongest photo. Web-sourced (`origin: web`), video stills, and low-res images (under 1280 px long edge) are fine in galleries. They should not be the cover when a better client photo exists, and **never the home hero**. `check:projects` warns on low-res or non-client covers.
 5. Each folder maps to `src/content/projects/<slug>.md` whose frontmatter `folder` equals the exact folder name. `check:projects` fails the build on any mismatch.
 6. **Alt text:** prefer `photos[].alt` from frontmatter, written by actually viewing the photo (see `docs/site-spec.md` §8). Fallback: `"{Products} at {Project Title}, {Location}"`.

@@ -1,0 +1,50 @@
+---
+/**
+ * Base document: fonts, global styles, robots, skip link.
+ * Phase 4 adds the SEO head (canonical, Open Graph, JSON-LD), Header, and Footer.
+ */
+// Package roots resolve to the variable `wght` axis CSS (see each package's exports map).
+import '@fontsource-variable/big-shoulders-display';
+import '@fontsource-variable/public-sans';
+import '../styles/global.css';
+import textFont from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url';
+import displayFont from '@fontsource-variable/big-shoulders-display/files/big-shoulders-display-latin-wght-normal.woff2?url';
+import { isProduction, site } from '../config/site';
+
+interface Props {
+  /** Page title; the brand suffix is added unless `fullTitle` is set. */
+  title: string;
+  description?: string;
+  /** Always noindex (e.g., styleguide, thank-you pages). Staging builds are noindex regardless. */
+  noindex?: boolean;
+  fullTitle?: boolean;
+}
+
+const { title, description = site.description, noindex = false, fullTitle = false } = Astro.props;
+const documentTitle = fullTitle ? title : `${title} | ${site.name}`;
+const robots = noindex || !isProduction ? 'noindex, nofollow' : 'index, follow';
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{documentTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <!-- TODO(content): placeholder favicon from the placeholder logo mark; full set in Phase 8. -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={textFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+  </head>
+  <body class="min-h-dvh">
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <slot name="header" />
+    <main id="main" tabindex="-1" class="outline-none">
+      <slot />
+    </main>
+    <slot name="footer" />
+  </body>
+</html>

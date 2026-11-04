@@ -1,0 +1,17 @@
+---
+/**
+ * Small uppercase badge. Variants:
+ *   outline   — on paper (e.g., "Sample write-up" in lists)
+ *   paper     — on photos (legible over any image)
+ *   ink       — counts on photos ("9 photos")
+ *   limestone — facts ("Union & non-union projects")
+ */
+interface Props {
+  variant?: 'outline' | 'paper' | 'ink' | 'limestone';
+  class?: string;
+}
+
+const { variant = 'outline', class: className } = Astro.props;
+---
+
+<span class:list={['badge', `badge-${variant}`, className]}><slot /></span>

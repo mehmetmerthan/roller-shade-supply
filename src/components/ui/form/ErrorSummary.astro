@@ -1,0 +1,40 @@
+---
+/**
+ * Error summary shown at the top of a form on submit. Each item links to its field.
+ * `announce` adds role="alert" (use it when the summary appears after submit).
+ */
+import AlertIcon from './AlertIcon.astro';
+
+interface Props {
+  id?: string;
+  errors: { href: string; message: string }[];
+  /** Approved microcopy (docs/additional-content.md §10). */
+  heading?: string;
+  announce?: boolean;
+  class?: string;
+}
+
+const {
+  id = 'error-summary',
+  errors,
+  heading = 'Please fix the following before submitting:',
+  announce = false,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  id={id}
+  class:list={['error-summary', className]}
+  role={announce ? 'alert' : undefined}
+  tabindex="-1"
+  aria-labelledby={`${id}-title`}
+>
+  <h2 id={`${id}-title`} class="flex items-center gap-2 font-sans text-base font-bold tracking-normal">
+    <AlertIcon class="text-error" size={18} />
+    {heading}
+  </h2>
+  <ul class="mt-2 list-disc pl-10">
+    {errors.map((e) => <li><a class="inline-block py-1" href={e.href}>{e.message}</a></li>)}
+  </ul>
+</div>
