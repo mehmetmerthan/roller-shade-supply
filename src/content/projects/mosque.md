@@ -73,6 +73,12 @@ photos:
     alt: Small room with two charcoal room-darkening roller shades lowered partway over a ribbon of awning windows
   - file: d4404be4-b304-4572-b6ec-f0ce673e2bdb.jpg
     alt: "Installation in progress: a solar screen roller shade lowered at right, bare windows, a ladder, and a drill on the sill"
+videos:
+  - src: /videos/mosque/2612d69f.mp4
+    poster: /videos/mosque/2612d69f-poster.jpg
+    title: Walkthrough of the prayer hall, showing solar screen roller shades on each double-hung window
+    width: 478
+    height: 850
 ---
 
 ## Overview

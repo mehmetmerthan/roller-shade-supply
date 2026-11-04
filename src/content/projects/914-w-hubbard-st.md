@@ -71,6 +71,13 @@ photos:
   - file: img-7109.jpg
     alt: Balcony door with white vertical blinds and a raised roller shade on an adjacent window in a sunlit condo room
     position: 50% 42%
+  - file: img-0151.jpg
+    alt: Brick condo building with glass-walled upper floors and mature trees, photographed against a sunset sky
+    position: 50% 40%
+    origin: web
+  - file: img-0150.jpg
+    alt: Five-story brick and glass condo building on a street corner under a dramatic dusk sky
+    origin: web
 ---
 
 ## Overview

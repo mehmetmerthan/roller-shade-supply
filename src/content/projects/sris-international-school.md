@@ -56,6 +56,9 @@ photos:
   - file: b460dfcc-f85d-4c6d-a347-8600724c93ab.jpg
     alt: Light gray roller shades rolled up above interior windows in a school room, door open to a large space beyond
     position: 55% 40%
+  - file: unnamed-2.jpg
+    alt: Red brick school building exterior with a young tree and landscaping in front of the entrance
+    origin: web
 ---
 
 ## Overview

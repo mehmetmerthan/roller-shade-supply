@@ -11,24 +11,33 @@
  *   - a live entry points to a folder with no images;
  *   - an entry's file name isn't the slug of its folder (CLAUDE.md rule 1);
  *   - `cover` or `photos[].file` names a file that isn't in the folder;
+ *   - a self-hosted `videos[].src` / `poster` isn't in public/videos/;
  *   - (only when /assets exists) a source folder with images has no live or held entry.
  * Warns when:
  *   - a held entry's folder now has usable images ("ready to enable");
  *   - a title differs from its folder name;
- *   - photos lack alt text in frontmatter (the fallback alt will be used).
+ *   - photos lack alt text in frontmatter (the fallback alt will be used);
+ *   - a cover is web-sourced or a video still while a client photo exists, or is low-res.
  * Source-side checks are skipped when /assets is absent (CI: it's gitignored).
  */
 import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import sharp from 'sharp';
 import { parse as parseYaml } from 'yaml';
 import {
   CONTENT_DIR,
+  ROOT,
   SRC_PROJECTS_DIR,
   findSourceFolders,
   listOutputImages,
   slugify,
 } from './lib/shared.mjs';
+
+const PUBLIC_DIR = path.join(ROOT, 'public');
+/** Covers smaller than this on the long edge get a pre-launch warning. */
+const MIN_COVER_EDGE = 1280;
+const naturalSort = (a, b) => a.localeCompare(b, 'en', { numeric: true });
 
 const errors = [];
 const warnings = [];
@@ -113,6 +122,29 @@ async function main() {
     const missingAlt = images.filter((img) => !described.has(img));
     if (missingAlt.length > 0) {
       warnings.push(`${entry.file}: ${missingAlt.length} photo(s) without frontmatter alt text (fallback alt will be used).`);
+    }
+
+    // Cover quality (rule: web-sourced or low-res images aren't covers when a better photo exists).
+    const coverFile = entry.data.cover ?? images.find((i) => /^cover\./.test(i)) ?? [...images].sort(naturalSort)[0];
+    const coverMeta = photos.find((p) => p?.file === coverFile);
+    const hasClientPhoto = images.some((img) => !photos.find((p) => p?.file === img)?.origin);
+    if (coverMeta?.origin && hasClientPhoto) {
+      warnings.push(`${entry.file}: cover "${coverFile}" is ${coverMeta.origin === 'web' ? 'web-sourced' : 'a video still'}, but a client photo exists.`);
+    }
+    if (available.has(coverFile)) {
+      const { width = 0, height = 0 } = await sharp(path.join(SRC_PROJECTS_DIR, folder, coverFile)).metadata();
+      if (Math.max(width, height) < MIN_COVER_EDGE) {
+        warnings.push(`${entry.file}: cover "${coverFile}" is ${width}×${height} (under ${MIN_COVER_EDGE} px on the long edge). Replace before launch.`);
+      }
+    }
+
+    // Self-hosted videos and posters must exist in public/.
+    for (const video of Array.isArray(entry.data.videos) ? entry.data.videos : []) {
+      for (const ref of [video?.src, video?.poster]) {
+        if (typeof ref === 'string' && ref.startsWith('/videos/') && !existsSync(path.join(PUBLIC_DIR, ref))) {
+          errors.push(`${entry.file}: video file "${ref}" is not in public/. Run \`npm run images\`.`);
+        }
+      }
     }
   }
 

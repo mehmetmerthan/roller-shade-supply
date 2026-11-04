@@ -36,7 +36,9 @@ Sources: `docs/additional-content.md` ([CONFIRM] items and §12 open questions),
 
 ## 3. Projects
 
-All 13 project write-ups are adapted from `docs/mock-projects.yaml`. **Every fact in them is invented** (location, year, client type, union status, products, fabrics, quantities, timelines, outcomes) and each is marked `placeholder: true`. While the site is in staging, placeholder projects show a "Sample write-up" badge.
+**Current policy (11/05/2026): show every project and every photo.** Nothing is held back. `scripts/image-exclude.json` holds only the cross-project duplicate. Every web-sourced, low-res, privacy, and rights issue is logged below so the client can decide **before launch** what to remove. The section 3.6 checklist collects those decisions.
+
+All 13 project write-ups are adapted from `docs/mock-projects.yaml`. **Every fact in them is invented** (location, year, client type, union status, fabrics, quantities, timelines, outcomes), except what the photos show. Each is marked `placeholder: true`. While the site is in staging, placeholder projects show a "Sample write-up" badge.
 
 ### 3.1 For every project
 | ☐ | Item | What's needed |
@@ -44,71 +46,86 @@ All 13 project write-ups are adapted from `docs/mock-projects.yaml`. **Every fac
 | ☐ | Permission to publish | Written OK to publish each project name and its photos. **Especially:** UPS Center, Lexus Glenview, Stern Pinball, ERIK'S Bike Shop, the schools, and the mosque. Can visible brand signage stay in the photos? |
 | ☐ | Real facts | Location, year, products, fabrics, quantity, operating systems, union / non-union, client type (may we name the GC or owner?), and a one-paragraph story |
 | ☐ | Government projects | Approved copy says "successfully completed government and public-sector projects", but every public-sector folder is a school. Are there non-school government projects with photos? |
+| ☐ | Product proof | Every project shows **chain-operated roller shades**, except Stern Pinball, which appears motorized. **We have no photos of zebra shades, faux wood blinds, cordless, or solar-powered systems.** Those product pages will show no related projects until the client sends photos (CLAUDE.md → "Product proof and related projects") |
 
-### 3.2 Project-by-project
+### 3.2 Project-by-project (all 13 live)
 | ☐ | Project (folder) | Status | Open items |
 |---|---|---|---|
-| ☐ | Water Power Lofts Rockford | live, featured | Confirm building type (loft conversion?), scope, year (photo dates suggest 2024) |
-| ☐ | SRIS International School | live, featured | **Location unknown** (currently "Chicago area, IL"). One web image excluded |
+| ☐ | Water Power Lofts Rockford | live, featured | Confirm the building type (loft conversion?), scope, and year (photo dates suggest 2024) |
+| ☐ | SRIS International School | live, featured | **Location unknown** (currently "Chicago area, IL") |
 | ☐ | **Mosque** | live, featured | **Real name needed.** The folder was "Mosq" and is now "Mosque"; the title follows the folder name. Sector is provisionally `commercial`; revisit once the name and permission are confirmed. Location unknown. Explicit permission to show a religious facility |
-| ☐ | 914 W Hubbard St | live, featured | Condos or apartments? Who was the client (property manager or association)? Two marketing photos excluded. Year: photo dates suggest 2024 |
-| ☐ | UPS Center | live, featured | Which UPS facility, and where? Naming permission. No UPS branding is visible in the photos. The photos show an operating facility's interior (sort floor), so confirm the client may publish them |
-| ☐ | 118 S Clinton | live, featured (took ERIK'S slot after photo review) | Apartments over ground-floor retail (mixed-use)? The photos show a leasing/amenity space, not an apartment. Rights to the exterior photo `118 S Clinton.jpg` (source unknown, kept for now; it looks like a professional or listing photo). Both interiors show another company's leasing boards. A cleaner interior shot would help. One duplicate photo excluded |
-| ☐ | ERIK'S Bike Shop | live, **not featured** | **No photo clearly shows a window shade.** 3 of 5 are storefront exteriors dominated by the ERIK'S logo. Need interior photos of the installed shades, the store location, and permission to name the client and show its branding. Year: photo dates suggest 2023. The folder was renamed from "ERIK_S Bike Shop" |
-| ☐ | Friendship Junior High School | live (1 photo) | More photos? One web image excluded. Location assumed Des Plaines, IL |
-| ☐ | 811 West Evergreen | live | Apartments or condos? Two listing photos and one duplicate excluded |
-| ☐ | Grove Junior High School | **held back** (no usable photos) | Photos of the completed work. Both images were web-sourced. The folder was renamed from "Grove Junior HighSchool" |
-| ☐ | Salt Creek Elementary School | **held back** (no usable photos) | Photos of the completed work. The only image was web-sourced |
-| ☐ | Lexus Glenview | **held back** (no usable photos) | Photos of the completed work. All three images were web-sourced |
-| ☐ | Stern Pinball | **held back** (videos only) | Photos of the completed work |
+| ☐ | 914 W Hubbard St | live, featured | Condos or apartments? Who was the client (property manager or association)? Year: photo dates suggest 2024 |
+| ☐ | UPS Center | live, featured | Which UPS facility, and where? Naming permission. No UPS branding is visible. The photos show an operating facility's interior (sort floor); confirm they may be published |
+| ☐ | 118 S Clinton | live, featured | Apartments over ground-floor retail (mixed-use)? The photos show a leasing/amenity space, not an apartment. Both interiors show another company's leasing boards; a cleaner interior shot would help |
+| ☐ | ERIK'S Bike Shop | live, not featured | **No photo clearly shows a window shade.** 3 of 5 are storefront exteriors dominated by the ERIK'S logo. Need interior photos of the installed shades, the store location, and permission to name the client and show its branding. Year: photo dates suggest 2023. The folder was renamed from "ERIK_S Bike Shop" |
+| ☐ | Friendship Junior High School | live | One client photo plus one web image. More photos, ideally landscape. Location assumed to be Des Plaines, IL |
+| ☐ | 811 West Evergreen | live | Apartments or condos? New construction or gut rehab? |
+| ☐ | Grove Junior High School | live (**web photos only**) | Photos of the completed work. Both images are web-sourced exteriors. The folder was renamed from "Grove Junior HighSchool" |
+| ☐ | Salt Creek Elementary School | live (**web photo only**) | Photos of the completed work. **The building's sign reads "Salt Creek Primary School"**, so confirm the correct name (the folder name drives the title) |
+| ☐ | Lexus Glenview | live (**web photos only**) | Photos of the completed work. **The signage reads "Fields Lexus Glenview"**, so confirm how to name it, and get permission |
+| ☐ | Stern Pinball | live (**video stills only**) | Real photos (the 6 gallery images are stills from 478×850 videos). **Confirm the shades are motorized** (they move in unison in the videos). Naming permission |
 
 Dropped mock: P03 (Skokie Senior Living). No matching folder.
 
-### 3.3 Excluded images (`scripts/image-exclude.json`)
-These files stay in `/assets` but are not published. Re-enable one by removing its entry and running `npm run images`.
+### 3.3 Web-sourced images (included for now; rights unconfirmed)
+Marked `origin: web` in frontmatter. Shown in galleries; never the home hero, and not covers when a client photo exists.
 
-| ☐ | File | Reason | What's needed |
+| ☐ | File (in `src/assets/projects/`) | Source / issue | Size | Cover? |
+|---|---|---|---|---|
+| ☐ | `811 West Evergreen/811-w-evergreen-st-chicago-il-building-photo-1-large.jpg` | Listing-site photo (the original is an AVIF named `.jpg`) | 882×588 | no |
+| ☐ | `811 West Evergreen/811-w-evergreen-02-777x515.jpg` | Listing photo with a **third-party watermark** | 777×515 | no |
+| ☐ | `914 W Hubbard St/img-0150.jpg` | Marketing photo with a replaced sky; readable plates possible | 624×480 | no |
+| ☐ | `914 W Hubbard St/img-0151.jpg` | Marketing photo with a replaced sky | 1536×1080 | no |
+| ☐ | `Friendship Junior High School/friendship-jr-high-school-des-plaines-il-schoolphoto.jpg` | School-directory image (the original is an AVIF) | 650×433 | no |
+| ☐ | `Grove Junior High School/grove-junion-high.jpg` | Web exterior; shows no installed shades | 2048×1536 | **yes** (no client photo) |
+| ☐ | `Grove Junior High School/d59-grove-junior-high.jpg` | School district website image | 1020×357 | no |
+| ☐ | `Lexus Glenview/unnamed.jpg`, `unnamed-1.jpg` | Google Maps–style grabs; show no installed shades | 680×453 | **yes**, `unnamed.jpg` (no client photo) |
+| ☐ | `Lexus Glenview/images.jpg` | Web thumbnail | 387×516 | no |
+| ☐ | `Salt Creek Elementary School/salt-creek-elementary-school-elmhurst-il-primaryphoto.jpg` | School-directory image; shows no installed shades | 650×433 | **yes** (only photo) |
+| ☐ | `SRIS International School/unnamed-2.jpg` | Google Maps–style grab | 680×453 | no |
+| ☐ | `118 S Clinton/118-s-clinton.jpg` | **Source unknown** (no camera data; looks like a professional or listing photo). Treated as a client photo for now | 1200×900 | no |
+
+**Low-res covers** (`check:projects` warns): Lexus Glenview (680 px), Salt Creek Elementary School (650 px), and Stern Pinball (478×850 video still). Replace before launch.
+
+### 3.4 Duplicate photo (still excluded)
+| ☐ | File | Status | What's needed |
 |---|---|---|---|
-| ☐ | `118 S Clinton/9d254165-….jpg` and `811 West Evergreen/9d254165-….JPG` | **Same photo in two folders** | Which project does it belong to? (The 811 copy's timestamps match the other 811 photos.) |
-| ☐ | `811 West Evergreen/811-W-Evergreen-St-Chicago-IL-Building-Photo-1-Large.jpg` | Listing-site photo (actually an AVIF) | Rights, or drop it |
-| ☐ | `811 West Evergreen/811-w-evergreen-02-777x515.jpg` | Listing photo with a watermark | Rights, or drop it |
-| ☐ | `914 W Hubbard St/IMG_0150.JPG`, `IMG_0151.JPG` | Marketing photos with replaced skies | Rights, or drop them |
-| ☐ | `Friendship Junior High School/friendship-jr-high-school-des-plaines-il-schoolphoto.jpg` | School-directory image | Rights, or drop it |
-| ☐ | `Grove Junior High School/D59-Grove-Junior-High.jpg`, `Grove-Junion-High.jpg` | District and other web images | Rights, or drop them. Neither shows the work |
-| ☐ | `Lexus Glenview/images.jpg`, `unnamed.webp`, `unnamed (1).webp` | Web thumbnails and Google Maps–style grabs | Rights, or drop them. None show the work |
-| ☐ | `Salt Creek Elementary School/salt-creek-elementary-school-elmhurst-il-primaryphoto.jpg` | School-directory image | Rights, or drop it. It doesn't show the work |
-| ☐ | `SRIS International School/unnamed (2).webp` | Google Maps–style grab | Rights, or drop it |
+| ☐ | `9d254165-73e9-445b-b5c2-6afba008c57b` | In both `118 S Clinton` and `811 West Evergreen`. **Shown in 811 West Evergreen only** (its timestamps match the other 811 photos); the 118 copy is in `scripts/image-exclude.json` | Which project does it belong to? |
 
-### 3.4 Videos (not copied or committed)
-| ☐ | File | Notes | What's needed |
+### 3.5 Videos
+Originals stay in `/assets` and are never committed. Web versions are generated by `npm run images` (settings in `scripts/video-config.json`) and committed in `public/videos/`.
+
+| ☐ | Original | Web version | Notes / what's needed |
 |---|---|---|---|
-| ☐ | `Mosque/2612d69f-….mp4` (18.1 MB, 78 s) | 478×850, heavily compressed | Original-resolution file or a YouTube/Vimeo link |
-| ☐ | `Stern Pinball/af3755da-….MP4` (14.3 MB, 75 s) | 478×850, heavily compressed | Same |
-| ☐ | `Stern Pinball/c97f5d90-….MP4` (9.7 MB, 50 s) | 478×850, heavily compressed | Same |
+| ☐ | `Mosque/2612d69f-….mp4` (78 s, 478×850, 17.3 MB) | `public/videos/mosque/2612d69f.mp4` (4.4 MB) + poster @ 52 s | Walkthrough of the prayer hall. Original-resolution file or a YouTube/Vimeo link would look much better |
+| ☐ | `Stern Pinball/af3755da-….MP4` (75 s, 478×850, 13.7 MB) | `public/videos/stern-pinball/af3755da.mp4` (4.4 MB) + poster @ 26 s | Shades lowering and rising across a conference room glass wall. Stills at 3, 10, 26, and 43 s are used as gallery images. A person is visible far away in the open office (not identifiable) |
+| ☐ | `Stern Pinball/c97f5d90-….MP4` (50 s, 478×850, 9.3 MB) | `public/videos/stern-pinball/c97f5d90.mp4` (4.4 MB) + poster @ 22 s | Shades rising to reveal the open office. Stills at 22 and 49 s are used as gallery images |
+| ☐ | All three | **Audio removed** in the web versions (size, and possible voices) | Confirm audio isn't needed. It can be restored |
 
-### 3.5 Photo review flags (11/04/2026)
-All 62 published photos were viewed. Alt text, covers, and crop positions are in each project's frontmatter.
+### 3.6 Photo review flags
+Viewed 11/04/2026 (62 client photos) and 11/05/2026 (web images and video stills). Alt text, covers, and crop positions are in each project's frontmatter.
 
-**Across all projects**
-- Every visible shade is a **chain-operated roller shade**. No zebra shades, faux wood blinds, cordless lifts, or motors appear in any photo. The site currently has no photo proof for zebra shades, faux wood blinds, or motorized and cordless operation. Ask the client for photos of those products.
-- Openness factors (1%, 3%, 5%) can't be verified from photos. Fabric descriptions say "solar screen" or "room-darkening" by appearance only.
+- Openness factors (1%, 3%, 5%) can't be verified from photos. Fabric descriptions ("solar screen", "room-darkening") are by appearance only.
 
 **Privacy and branding: resolve before launch (blur, crop, or drop)**
 | ☐ | Photo | Issue |
 |---|---|---|
-| ☐ | `Water Power Lofts Rockford/img-7721.jpg` | Readable license plate on a white van |
-| ☐ | `Water Power Lofts Rockford/img-7723.jpg` | Readable Illinois plates on 2+ vehicles; shot through a car window |
-| ☐ | `Water Power Lofts Rockford/img-5332.jpg`, `img-5333.jpg`, `img-5331.jpg` | Occupied unit with residents' belongings; resident consent. `img-5331` shows a boom lift with readable model text |
+| ☐ | `Water Power Lofts Rockford/img-7721.jpg` | **Readable license plate** on a white van |
+| ☐ | `Water Power Lofts Rockford/img-7723.jpg` | **Readable Illinois plates** on 2+ vehicles; shot through a car window |
+| ☐ | `Water Power Lofts Rockford/img-5332.jpg`, `img-5333.jpg`, `img-5331.jpg` | Occupied unit with residents' belongings; needs resident consent. `img-5331` shows a boom lift with readable model text |
+| ☐ | `914 W Hubbard St/img-0150.jpg`, `img-0151.jpg`; `811 West Evergreen/811-w-evergreen-*.jpg` | Street exteriors with parked cars; check plates at full size |
 | ☐ | `SRIS International School/2cff0a32…`, `5da54172…`, `8fa88533…`, `b460dfcc…` | Room number "213" readable. `5da54172`, `11a95098`, and `b460dfcc` show reflections of two people (not identifiable) |
 | ☐ | `Friendship Junior High School/112edd83….jpg` | Room number "336" readable; bulletin board with personal photos and a "Thank You" note |
 | ☐ | `ERIK'S Bike Shop/img-4063.jpg`, `img-4067.jpg`, `img-4746.jpg` | ERIK'S logo dominant; unit number "1600-T24"; door posters with a URL and QR code. `img-4064` shows a neighboring store's sign. `img-4737`: check plates in the parking lot at full size |
+| ☐ | `Lexus Glenview/*.jpg` | Dealership branding ("Fields Lexus Glenview", Lexus logo); parked cars |
 | ☐ | `118 S Clinton/8436235e….jpg`, `c64c4ae9….jpg` | Third-party leasing boards ("The Junction", "The Depot", "SL / South 118" logo) |
 | ☐ | `118 S Clinton/118-s-clinton.jpg` | Third-party storefront signage (Subway, Aligned Modern Health) |
 | ☐ | `811 West Evergreen/a78261ed….jpg` | A resident's grill on the balcony (occupied unit) |
 | ☐ | `Mosque/edf3b642….jpg` | A parked car is visible (no plate) |
 | ☐ | `UPS Center/1b213b7c….jpg` | View of the sort floor; a worker may be visible far away (not identifiable) |
+| ☐ | `Stern Pinball/video-af3755da-10s.jpg` and both videos | A person is visible far away in the open office (not identifiable) |
 
-**Quality: recommended drops (not applied; awaiting approval)**
+**Quality: candidates to drop before launch (not applied)**
 To drop one, add it to `scripts/image-exclude.json` with the reason and run `npm run images`.
 | ☐ | Photo | Reason |
 |---|---|---|
@@ -120,10 +137,11 @@ To drop one, add it to `scripts/image-exclude.json` with the reason and run `npm
 | ☐ | `914 W Hubbard St/img-7109.jpg`, `img-7106.jpg` | Shade fully raised and barely visible / overexposed, weak composition |
 | ☐ | `ERIK'S Bike Shop/img-4067.jpg`, `img-4063.jpg` | Near-duplicate entrance shots; no shades |
 | ☐ | `118 S Clinton/c64c4ae9….jpg` | Shades fully raised; same angle as `8436235e` |
+| ☐ | Every `origin: web` image (section 3.3) | Rights unconfirmed; low resolution; mostly don't show the work |
 
 **Useful pairs (keep together in galleries):** Mosque before/after `97d4c537` → `ff62246c` and `d4404be4` → `edf3b642`; SRIS lowered/raised `033ef675` / `b87a8632`; 811 West Evergreen raised/lowered `a78261ed` / `c49de731`.
 
-**Resolution:** the Mosque photos are only 2000 px wide (likely sent through a messaging app). Ask for the originals. The best homepage hero candidate is `Water Power Lofts Rockford/img-5335.jpg` (2560 px), then `SRIS International School/033ef675….jpg`.
+**Resolution:** the Mosque photos are only 2000 px wide (likely sent through a messaging app). Ask for the originals. The home hero must be a client photo at 2560 px: `Water Power Lofts Rockford/img-5335.jpg` (first choice), then `SRIS International School/033ef675….jpg`. Never a web image or a video still.
 
 ## 4. Copy placeholders (`docs/additional-content.md`)
 
@@ -172,7 +190,10 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 | Date | Item | Resolution |
 |---|---|---|
 | 11/04/2026 | Folder names | The user renamed `ERIK_S Bike Shop` → `ERIK'S Bike Shop`, `Grove Junior HighSchool` → `Grove Junior High School`, and `914 W Hubbard st` → `914 W Hubbard St`. `Mosq` is now `Mosque` (the real name is still needed; see §3.2). No Title Case conversions were applied |
-| 11/04/2026 | Stern Pinball and photo-less projects | Held back until photos of the completed work arrive (`_<slug>.md`) |
-| 11/04/2026 | Web-sourced and duplicate images | Excluded via `scripts/image-exclude.json` until rights are confirmed |
+| 11/04/2026 | Stern Pinball and photo-less projects | Held back until photos of the completed work arrive (`_<slug>.md`). **Superseded 11/05/2026** (see below) |
+| 11/04/2026 | Web-sourced and duplicate images | Excluded via `scripts/image-exclude.json` until rights are confirmed. **Superseded 11/05/2026** (see below) |
 | 11/04/2026 | Featured set | Water Power Lofts Rockford, SRIS International School, Mosque, 914 W Hubbard St, UPS Center, and 118 S Clinton. ERIK'S Bike Shop was swapped out for 118 S Clinton (the agreed fallback) because none of its photos clearly shows a shade |
 | 11/04/2026 | Placeholder copy vs. photos | Write-ups were corrected to match the photos: chain operation everywhere (not cordless), no zebra or faux wood claims on live projects, interior-window privacy at SRIS and UPS, and new square openings at 811 West Evergreen |
+| 11/05/2026 | Change of plan: show everything | All 13 projects are live (Grove, Lexus, Salt Creek, and Stern Pinball un-held; ERIK'S stays live). Every image is included, web-sourced and privacy-flagged ones too, except the 118 S Clinton copy of the duplicate photo. Removals will be decided before launch (§3.3 and §3.6) |
+| 11/05/2026 | Stern Pinball media | 6 gallery stills extracted from its two videos. All three videos (Stern ×2, Mosque ×1) re-encoded to ~4.4 MB web MP4s with posters in `public/videos/` and referenced in frontmatter |
+| 11/05/2026 | Product proof | `products` / `operatingSystems` now list only what photos or videos show. Zebra and motorized claims were removed from Lexus Glenview, Grove Junior High School, and Stern Pinball (Stern keeps motorized because its videos show it; confirm) |

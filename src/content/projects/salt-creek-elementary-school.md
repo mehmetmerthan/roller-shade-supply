@@ -1,10 +1,9 @@
 ---
-# HELD BACK: no usable photos (the only image was web-sourced and is excluded in
-# scripts/image-exclude.json). This file is not loaded. To publish: add photos of the
-# completed work to /assets/projects/Salt Creek Elementary School/, run
-# `npm run images`, then rename this file to salt-creek-elementary-school.md.
 # TODO(content): PLACEHOLDER write-up adapted from mock P04. Every fact below is
-# invented until Roller Shade Supply confirms it. See CONTENT_TODO.md.
+# invented until Roller Shade Supply confirms it. The only photo is a web-sourced
+# exterior (650×433, rights unconfirmed) that doesn't show the installed shades, and
+# its sign reads "Salt Creek Primary School". Confirm the school's name and send
+# photos of the completed work. See CONTENT_TODO.md.
 title: Salt Creek Elementary School
 folder: Salt Creek Elementary School
 sector: education
@@ -31,6 +30,11 @@ highlights:
 featured: false
 order: 11
 placeholder: true
+cover: salt-creek-elementary-school-elmhurst-il-primaryphoto.jpg
+photos:
+  - file: salt-creek-elementary-school-elmhurst-il-primaryphoto.jpg
+    alt: Salt Creek school building with a blue standing-seam roof and a sign reading Salt Creek Primary School
+    origin: web
 ---
 
 ## Overview

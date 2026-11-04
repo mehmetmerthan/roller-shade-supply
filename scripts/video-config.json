@@ -1,0 +1,20 @@
+{
+  "$comment": "Per-video settings for `npm run images`. Every video in a project folder is re-encoded to a small web MP4 in public/videos/<project-slug>/. `frames` (seconds) become gallery stills in src/assets/projects/<Folder>/; the sharpest frame within ±0.5 s of each time is used. `poster` (seconds) picks the poster frame (default 1).",
+  "videos": [
+    {
+      "file": "Stern Pinball/af3755da-a144-4e75-bddd-10d18d763441.MP4",
+      "frames": [3, 10, 26, 43],
+      "poster": 26
+    },
+    {
+      "file": "Stern Pinball/c97f5d90-4568-4535-a5a1-4b09c3a38343.MP4",
+      "frames": [22, 49],
+      "poster": 22
+    },
+    {
+      "file": "Mosque/2612d69f-bce7-4dcc-ad3e-d20aa3f492b8.mp4",
+      "frames": [],
+      "poster": 52
+    }
+  ]
+}

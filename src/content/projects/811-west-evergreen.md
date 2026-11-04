@@ -42,6 +42,15 @@ photos:
   - file: a78261ed-e40c-4418-88d3-482957e1e42d.jpg
     alt: White solar screen roller shade lowered over the transom of a tall black-framed balcony door in a loft unit
     position: 50% 20%
+  - file: 9d254165-73e9-445b-b5c2-6afba008c57b.jpg
+    alt: Small loft room with a white roller shade lowered most of the way on a black casement window in a deep return
+    position: 50% 40%
+  - file: 811-w-evergreen-st-chicago-il-building-photo-1-large.jpg
+    alt: Four-story brick loft building at 811 West Evergreen seen from above the street, with cars parked along the curb
+    origin: web
+  - file: 811-w-evergreen-02-777x515.jpg
+    alt: Brick loft buildings along West Evergreen with arched upper windows and cars parked on the street
+    origin: web
 ---
 
 ## Overview

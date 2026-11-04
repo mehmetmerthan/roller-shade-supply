@@ -12,6 +12,9 @@ export const SRC_PROJECTS_DIR = path.join(ROOT, 'src', 'assets', 'projects');
 export const SRC_BRAND_DIR = path.join(ROOT, 'src', 'assets', 'brand');
 export const CONTENT_DIR = path.join(ROOT, 'src', 'content', 'projects');
 export const EXCLUDE_FILE = path.join(ROOT, 'scripts', 'image-exclude.json');
+export const VIDEO_CONFIG_FILE = path.join(ROOT, 'scripts', 'video-config.json');
+/** Web videos and posters. Fully managed by `npm run images`; don't put other files here. */
+export const PUBLIC_VIDEOS_DIR = path.join(ROOT, 'public', 'videos');
 
 /** Source image formats we accept in /assets (detected by content, not only by extension). */
 export const SOURCE_IMAGE_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.heic', '.heif', '.tif', '.tiff']);
@@ -94,6 +97,30 @@ export async function readExcludes() {
 }
 
 export const excludeKey = (folder, file) => `${folder}/${file}`;
+
+/**
+ * Reads scripts/video-config.json → Map("<Folder>/<file>" → { frames: number[], poster: number }).
+ */
+export async function readVideoConfig() {
+  if (!existsSync(VIDEO_CONFIG_FILE)) return new Map();
+  const json = JSON.parse(await readFile(VIDEO_CONFIG_FILE, 'utf8'));
+  const map = new Map();
+  for (const [i, v] of (json.videos ?? []).entries()) {
+    if (typeof v?.file !== 'string') throw new Error(`video-config.json videos[${i}] needs a "file" string.`);
+    const frames = Array.isArray(v.frames) ? v.frames : [];
+    if (!frames.every((t) => typeof t === 'number' && t >= 0)) {
+      throw new Error(`video-config.json videos[${i}].frames must be seconds (numbers).`);
+    }
+    map.set(v.file.replace(/\\/g, '/'), { frames, poster: typeof v.poster === 'number' ? v.poster : 1 });
+  }
+  return map;
+}
+
+/** Short, stable id for a video file: the first 8 characters of its slug ("af3755da"). */
+export const videoId = (file) => slugify(path.basename(file, path.extname(file))).slice(0, 8).replace(/-$/, '');
+
+/** Output name of a still extracted from a video at `seconds`. */
+export const videoFrameName = (file, seconds) => `video-${videoId(file)}-${String(Math.round(seconds)).padStart(2, '0')}s.jpg`;
 
 /** Lists image files in an output folder in src/assets/projects/. */
 export async function listOutputImages(folderDir) {

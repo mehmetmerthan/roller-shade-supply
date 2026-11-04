@@ -1,58 +1,6 @@
 [
   {
     "file": "118 S Clinton/9d254165-73e9-445b-b5c2-6afba008c57b.jpg",
-    "reason": "Duplicate: the same photo is in 811 West Evergreen. Both copies are excluded until the client confirms which project owns it."
-  },
-  {
-    "file": "811 West Evergreen/9d254165-73e9-445b-b5c2-6afba008c57b.JPG",
-    "reason": "Duplicate: the same photo is in 118 S Clinton. Both copies are excluded until the client confirms which project owns it."
-  },
-  {
-    "file": "811 West Evergreen/811-W-Evergreen-St-Chicago-IL-Building-Photo-1-Large.jpg",
-    "reason": "Web-sourced: listing-site photo (actually an AVIF file). Rights unconfirmed."
-  },
-  {
-    "file": "811 West Evergreen/811-w-evergreen-02-777x515.jpg",
-    "reason": "Web-sourced: listing photo with a third-party watermark. Rights unconfirmed."
-  },
-  {
-    "file": "914 W Hubbard St/IMG_0150.JPG",
-    "reason": "Web-sourced: marketing or listing photo with a replaced sky, 624x480. Rights unconfirmed."
-  },
-  {
-    "file": "914 W Hubbard St/IMG_0151.JPG",
-    "reason": "Web-sourced: marketing or listing photo with a replaced sky. Rights unconfirmed."
-  },
-  {
-    "file": "Friendship Junior High School/friendship-jr-high-school-des-plaines-il-schoolphoto.jpg",
-    "reason": "Web-sourced: school-directory image (actually an AVIF file). Rights unconfirmed."
-  },
-  {
-    "file": "Grove Junior High School/D59-Grove-Junior-High.jpg",
-    "reason": "Web-sourced: school district website image. Rights unconfirmed; shows no installed shades."
-  },
-  {
-    "file": "Grove Junior High School/Grove-Junion-High.jpg",
-    "reason": "Web-sourced exterior image. Rights unconfirmed; shows no installed shades."
-  },
-  {
-    "file": "Lexus Glenview/images.jpg",
-    "reason": "Web-sourced thumbnail, 387x516. Rights unconfirmed; shows no installed shades."
-  },
-  {
-    "file": "Lexus Glenview/unnamed.webp",
-    "reason": "Web-sourced (Google Maps-style grab), 680x453. Rights unconfirmed; shows no installed shades."
-  },
-  {
-    "file": "Lexus Glenview/unnamed (1).webp",
-    "reason": "Web-sourced (Google Maps-style grab), 680x453. Rights unconfirmed; shows no installed shades."
-  },
-  {
-    "file": "Salt Creek Elementary School/salt-creek-elementary-school-elmhurst-il-primaryphoto.jpg",
-    "reason": "Web-sourced: school-directory image, 650x433. Rights unconfirmed; shows no installed shades."
-  },
-  {
-    "file": "SRIS International School/unnamed (2).webp",
-    "reason": "Web-sourced (Google Maps-style grab), 680x453. Rights unconfirmed."
+    "reason": "Duplicate: the same photo is in 811 West Evergreen, where its timestamps match the other photos. It is shown there only, since the same photo in two projects would look like an error. Confirm which project owns it."
   }
 ]

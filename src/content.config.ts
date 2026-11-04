@@ -14,6 +14,9 @@ import {
 const OBJECT_POSITION =
   /^(?:\d{1,3}%|left|center|right|top|bottom)(?:\s+(?:\d{1,3}%|left|center|right|top|bottom))?$/;
 
+/** Self-hosted web MP4 in public/videos/, or a YouTube/Vimeo URL. */
+const VIDEO_SRC = /^(?:\/videos\/[a-z0-9-]+\/[a-z0-9-]+\.mp4|https:\/\/(?:www\.)?(?:youtube\.com|youtu\.be|vimeo\.com)\/\S+)$/;
+
 /**
  * Projects: one Markdown file per folder in src/assets/projects/.
  * Files prefixed with "_" are held-back projects (no page, never listed) and are
@@ -55,11 +58,32 @@ const projects = defineCollection({
           alt: z.string().min(1),
           /** CSS object-position used when the photo is cropped, e.g. "50% 35%". */
           position: z.string().regex(OBJECT_POSITION).optional(),
+          /**
+           * Omit for the client's own photos. "web" = web-sourced (rights unconfirmed);
+           * "video-still" = frame extracted from a project video. Neither may be the home
+           * hero, and neither should be a cover when a client photo exists.
+           */
+          origin: z.enum(['web', 'video-still']).optional(),
         }),
       )
       .optional(),
-    /** YouTube or Vimeo URL. */
-    video: z.url().optional(),
+    /**
+     * Project videos, shown on the project page with preload="none" and click to play.
+     * Self-hosted: src "/videos/<slug>/<id>.mp4" + poster (made by `npm run images`).
+     * External: a YouTube or Vimeo URL (rendered as a click-to-load facade).
+     */
+    videos: z
+      .array(
+        z.object({
+          src: z.string().regex(VIDEO_SRC),
+          poster: z.string().regex(/^\/videos\/.+\.jpg$/).optional(),
+          /** Accessible name and caption, e.g. "Roller shades lowering across a glass wall". */
+          title: z.string().min(1),
+          width: z.number().int().positive().optional(),
+          height: z.number().int().positive().optional(),
+        }),
+      )
+      .optional(),
   }),
 });
 

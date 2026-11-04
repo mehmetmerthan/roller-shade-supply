@@ -2,8 +2,8 @@
 # TODO(content): PLACEHOLDER write-up adapted from mock P06. Every fact below is
 # invented until Roller Shade Supply confirms it, except what the photo shows:
 # white light-filtering roller shades under a continuous black fascia across a
-# classroom's ribbon of windows. Only one usable photo; ask for more (ideally
-# landscape). See CONTENT_TODO.md.
+# classroom's ribbon of windows. Only one client photo (plus one web-sourced
+# exterior); ask for more, ideally landscape. See CONTENT_TODO.md.
 title: Friendship Junior High School
 folder: Friendship Junior High School
 sector: education
@@ -35,6 +35,9 @@ cover: 112edd83-9760-46e6-bfd8-cf7a0949f2e0.jpg
 photos:
   - file: 112edd83-9760-46e6-bfd8-cf7a0949f2e0.jpg
     alt: Classroom with a ribbon of windows fitted with white light-filtering roller shades under a continuous black fascia
+  - file: friendship-jr-high-school-des-plaines-il-schoolphoto.jpg
+    alt: Entrance of Friendship Junior High School, a tan brick building with a covered walkway and landscaped lawn
+    origin: web
 ---
 
 ## Overview
