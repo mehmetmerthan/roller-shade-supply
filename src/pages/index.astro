@@ -1,0 +1,28 @@
+---
+/*
+ * TEMPORARY foundation page (Phase 2). Replaced by the real Home page and
+ * BaseLayout in Phase 4. Exists so the build pipeline, fonts, and tokens compile.
+ */
+// Package roots resolve to the variable `wght` axis CSS (see each package's exports map).
+import '@fontsource-variable/big-shoulders-display';
+import '@fontsource-variable/public-sans';
+import '../styles/global.css';
+import { site, isProduction } from '../config/site';
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{site.name}</title>
+    {!isProduction && <meta name="robots" content="noindex, nofollow" />}
+  </head>
+  <body>
+    <main class="mx-auto max-w-content px-4 py-16">
+      <p class="text-sm text-stone-600">{site.name}</p>
+      <h1 class="mt-4 text-4xl">{site.tagline}</h1>
+      <p class="mt-8 max-w-prose">This site is in development.</p>
+    </main>
+  </body>
+</html>

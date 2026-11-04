@@ -1,0 +1,169 @@
+#!/usr/bin/env node
+/**
+ * npm run check:projects — every project folder has a content entry, and vice versa.
+ * Runs before every build.
+ *
+ * Live entries:  src/content/projects/<slug>.md   (published)
+ * Held entries:  src/content/projects/_<slug>.md  (held back: no page, never listed)
+ *
+ * Fails when:
+ *   - an output folder in src/assets/projects/ with images has no live entry, or more than one;
+ *   - a live entry points to a folder with no images;
+ *   - an entry's file name isn't the slug of its folder (CLAUDE.md rule 1);
+ *   - `cover` or `photos[].file` names a file that isn't in the folder;
+ *   - (only when /assets exists) a source folder with images has no live or held entry.
+ * Warns when:
+ *   - a held entry's folder now has usable images ("ready to enable");
+ *   - a title differs from its folder name;
+ *   - photos lack alt text in frontmatter (the fallback alt will be used).
+ * Source-side checks are skipped when /assets is absent (CI: it's gitignored).
+ */
+import { existsSync } from 'node:fs';
+import { readdir, readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { parse as parseYaml } from 'yaml';
+import {
+  CONTENT_DIR,
+  SRC_PROJECTS_DIR,
+  findSourceFolders,
+  listOutputImages,
+  slugify,
+} from './lib/shared.mjs';
+
+const errors = [];
+const warnings = [];
+const notices = [];
+
+function readFrontmatter(text, file) {
+  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) {
+    errors.push(`${file}: missing frontmatter.`);
+    return null;
+  }
+  try {
+    return parseYaml(match[1]) ?? {};
+  } catch (err) {
+    errors.push(`${file}: invalid YAML frontmatter (${err.message.split('\n')[0]}).`);
+    return null;
+  }
+}
+
+async function main() {
+  // Output folders that contain images.
+  const outputFolders = new Map();
+  if (existsSync(SRC_PROJECTS_DIR)) {
+    for (const entry of await readdir(SRC_PROJECTS_DIR, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const images = await listOutputImages(path.join(SRC_PROJECTS_DIR, entry.name));
+      if (images.length > 0) outputFolders.set(entry.name, images);
+    }
+  }
+
+  // Content entries.
+  const live = [];
+  const held = [];
+  if (existsSync(CONTENT_DIR)) {
+    for (const file of (await readdir(CONTENT_DIR)).filter((f) => f.endsWith('.md'))) {
+      const data = readFrontmatter(await readFile(path.join(CONTENT_DIR, file), 'utf8'), file);
+      if (!data) continue;
+      const isHeld = file.startsWith('_');
+      const slug = file.replace(/^_/, '').replace(/\.md$/, '');
+      const entry = { file, slug, data, isHeld };
+      (isHeld ? held : live).push(entry);
+
+      if (typeof data.folder !== 'string' || data.folder.length === 0) {
+        errors.push(`${file}: frontmatter "folder" is missing.`);
+        continue;
+      }
+      const expectedSlug = slugify(data.folder);
+      if (slug !== expectedSlug) {
+        errors.push(`${file}: file name should be "${isHeld ? '_' : ''}${expectedSlug}.md" for folder "${data.folder}".`);
+      }
+      if (data.title !== data.folder) {
+        warnings.push(`${file}: title "${data.title}" differs from folder "${data.folder}" (rule 1: display the folder name as written).`);
+      }
+    }
+  }
+
+  // Live entries ↔ output folders.
+  const liveByFolder = new Map();
+  for (const entry of live) {
+    const folder = entry.data.folder;
+    if (typeof folder !== 'string') continue;
+    if (liveByFolder.has(folder)) {
+      errors.push(`Folder "${folder}" has more than one live entry: ${liveByFolder.get(folder).file}, ${entry.file}.`);
+      continue;
+    }
+    liveByFolder.set(folder, entry);
+
+    const images = outputFolders.get(folder);
+    if (!images) {
+      errors.push(`${entry.file}: folder "${folder}" has no images in src/assets/projects/. Run \`npm run images\`, or hold it back by renaming it to _${entry.slug}.md.`);
+      continue;
+    }
+    const available = new Set(images);
+    if (entry.data.cover && !available.has(entry.data.cover)) {
+      errors.push(`${entry.file}: cover "${entry.data.cover}" is not in "${folder}".`);
+    }
+    const photos = Array.isArray(entry.data.photos) ? entry.data.photos : [];
+    for (const photo of photos) {
+      if (!available.has(photo?.file)) errors.push(`${entry.file}: photos[].file "${photo?.file}" is not in "${folder}".`);
+    }
+    const described = new Set(photos.filter((p) => p?.alt).map((p) => p.file));
+    const missingAlt = images.filter((img) => !described.has(img));
+    if (missingAlt.length > 0) {
+      warnings.push(`${entry.file}: ${missingAlt.length} photo(s) without frontmatter alt text (fallback alt will be used).`);
+    }
+  }
+
+  for (const [folder, images] of outputFolders) {
+    if (!liveByFolder.has(folder)) {
+      const heldEntry = held.find((h) => h.data.folder === folder);
+      if (heldEntry) {
+        warnings.push(`Ready to enable: "${folder}" now has ${images.length} image(s). Rename ${heldEntry.file} → ${heldEntry.slug}.md.`);
+      } else {
+        errors.push(`Folder "${folder}" has ${images.length} image(s) but no entry. Create src/content/projects/${slugify(folder)}.md.`);
+      }
+    }
+  }
+
+  // Source side (/assets present only).
+  const sources = await findSourceFolders();
+  if (sources.length > 0) {
+    const known = new Set([...live, ...held].map((e) => e.data.folder));
+    for (const src of sources) {
+      if (known.has(src.folder)) continue;
+      if (src.images.length > 0) {
+        errors.push(`Source folder "${src.folder}" has images but no live or held entry.`);
+      } else {
+        warnings.push(`Source folder "${src.folder}" has no images and no entry.`);
+      }
+    }
+    for (const h of held) {
+      if (!sources.some((s) => s.folder === h.data.folder)) {
+        warnings.push(`${h.file}: folder "${h.data.folder}" not found in /assets.`);
+      }
+    }
+  } else {
+    notices.push('/assets not found: source-folder checks skipped (expected on CI).');
+  }
+
+  for (const h of held) notices.push(`Held back: ${h.data.folder ?? h.file} (${h.file})`);
+
+  // ---- Report ----
+  const featured = live.filter((e) => e.data.featured === true).length;
+  console.log(`check:projects — ${live.length} live, ${held.length} held, ${featured} featured, ${outputFolders.size} image folders`);
+  for (const n of notices) console.log(`  · ${n}`);
+  for (const w of warnings) console.log(`  ⚠ ${w}`);
+  for (const e of errors) console.log(`  ✖ ${e}`);
+  if (errors.length > 0) {
+    console.log(`\n${errors.length} error(s). Fix them before building.`);
+    process.exit(1);
+  }
+  console.log('  ✓ Project folders and content entries match.');
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

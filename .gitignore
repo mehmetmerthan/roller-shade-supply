@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output and caches
+dist/
+.astro/
+.netlify/
+
+# CLIENT DROP ZONE: original files. Never commit.
+/assets/
+
+# Visual QA screenshots and Playwright MCP artifacts
+/.screenshots/
+/.playwright-mcp/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS / editor / logs
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*

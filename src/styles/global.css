@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — Direction B "Chicago Window" (approved).
+ * Structural steel, Indiana limestone, and the red pencil of a redline markup.
+ *
+ * Contrast (WCAG 2.x) for the pairs we use:
+ *   ink / paper 14.60 · ink / limestone 11.33 · stone-700 / paper 8.79
+ *   stone-600 / paper 6.23 (4.83 on limestone) · accent / paper 5.83
+ *   accent-ink / accent 6.54 (hover 8.91) · paper / ink 14.60
+ *   error / paper 7.03 · error / error-tint 6.69 · ink / error-tint 13.88
+ *   line-strong / paper 3.52 (form-field borders) · line / paper 1.46 (decorative only)
+ * Rules:
+ *   - Text on light surfaces uses stone-600 or darker. On ink, stone-300/400 or lighter.
+ *   - No red (accent) text on limestone (4.52:1 is too close to the limit).
+ *   - Accent means action (CTAs, links). Error means a problem. Focus is steel, never red.
+ * Spacing: Tailwind's 4 px step; use even steps only (2 = 8 px, 4 = 16 px, ...) for the 8 px scale.
+ */
+@theme {
+  /* Reset the default palette so only brand tokens exist. */
+  --color-*: initial;
+
+  --color-paper: #f2f2ef; /* vellum: page background */
+  --color-limestone: #ddd6c8; /* bands, spec panels */
+  --color-ink: #1c2025; /* structural steel: text, mullions, footer */
+
+  /* Steel greys. Text-safe on light: 600+. Text-safe on ink: 400 and lighter. */
+  --color-stone-50: #f7f7f5; /* raised surface: fields, cards */
+  --color-stone-100: #e6e7e4;
+  --color-stone-200: #c8cbc8;
+  --color-stone-300: #a9adac;
+  --color-stone-400: #8a8f90;
+  --color-stone-500: #6e7375;
+  --color-stone-600: #555a5d;
+  --color-stone-700: #3f4447;
+  --color-stone-800: #2c3034;
+  --color-stone-900: #1c2025;
+
+  --color-line: #c8cbc8; /* decorative rules */
+  --color-line-strong: #7c8183; /* form-field borders (3.52:1) */
+
+  --color-accent: #b3261e; /* redline: CTAs and links only */
+  --color-accent-hover: #8f1d17;
+  --color-accent-ink: #ffffff; /* text on accent */
+  --color-accent-on-dark: #ff8f80; /* links on ink */
+
+  --color-error: #9d174d; /* errors only; never a solid fill */
+  --color-error-tint: #f9e8ee; /* error-summary background */
+
+  --color-focus: #1c2025; /* focus ring on light */
+  --color-focus-on-dark: #f2f2ef; /* focus ring on ink */
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Typography: Big Shoulders Display (headings) + Public Sans (text). */
+  --font-*: initial;
+  --font-display: "Big Shoulders Display Variable", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-sans: "Public Sans Variable", "Helvetica Neue", Arial, sans-serif;
+
+  /*
+   * Type scale (fluid). Body is 17 px on mobile and 18 px on desktop.
+   * Display sizes are for Big Shoulders, a condensed face, so they run large.
+   */
+  --text-*: initial;
+  --text-xs: 0.8125rem; /* 13 px — metadata labels */
+  --text-xs--line-height: 1.4;
+  --text-xs--letter-spacing: 0.06em;
+  --text-sm: 0.9375rem; /* 15 px — captions, helper text */
+  --text-sm--line-height: 1.5;
+  --text-base: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem); /* 17 → 18 px */
+  --text-base--line-height: 1.6;
+  --text-lg: clamp(1.1875rem, 1.1rem + 0.4vw, 1.3125rem); /* 19 → 21 px — lead */
+  --text-lg--line-height: 1.5;
+  --text-xl: 1.5rem; /* 24 px — h4 / card titles */
+  --text-xl--line-height: 1.2;
+  --text-2xl: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem); /* 28 → 36 px — h3 */
+  --text-2xl--line-height: 1.1;
+  --text-3xl: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem); /* 36 → 56 px — h2 */
+  --text-3xl--line-height: 1;
+  --text-4xl: clamp(3rem, 1.8rem + 5vw, 7rem); /* 48 → 112 px — h1 */
+  --text-4xl--line-height: 0.95;
+
+  /* Corners: square frames; 2 px on buttons and fields only. */
+  --radius-*: initial;
+  --radius-control: 2px;
+
+  /* No drop shadows in this system. */
+  --shadow-*: initial;
+
+  /* Layout */
+  --container-content: 80rem; /* 1280 px max content width */
+  --container-prose: 68ch; /* body line length */
+  --spacing-gutter: 1rem; /* 16 px mobile gutter; 24 px from md via utilities */
+  --spacing-section: 4rem; /* 64 px section rhythm on mobile */
+  --spacing-section-lg: 6rem; /* 96 px section rhythm on desktop */
+  --spacing-mullion: 4px; /* primary frame rule ("Chicago window" mullion) */
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Focus: steel ring on light, paper ring on dark. Never red. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  [data-surface="dark"] :focus-visible {
+    outline-color: var(--color-focus-on-dark);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

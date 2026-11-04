@@ -1,0 +1,646 @@
+# =============================================================================
+# MOCK PROJECT CONTENT — Roller Shade Supply
+# =============================================================================
+# Placeholder write-ups for the project folders in /assets/projects/.
+#
+# How Claude Code uses this file (see CLAUDE.md → "Project photos — rules"):
+#   - The real FOLDER NAME replaces `suggestedTitle` and becomes the project title.
+#   - Each folder gets the best-fitting entry (by sector) from this pool.
+#   - Rewrite the text so it reads naturally with the real project name.
+#   - Keep `placeholder: true` until Roller Shade Supply confirms the details.
+#
+# EVERY FACT BELOW IS INVENTED: locations, years, quantities, fabrics, client
+# types, union status, timelines, and outcomes. Do not publish without client
+# confirmation. All items are tracked in CONTENT_TODO.md.
+#
+# Enums (must match src/content.config.ts):
+#   sector:           multifamily | commercial | education | government | mixed-use
+#   industries:       multifamily | commercial | education | government
+#   products:         roller-shades | zebra-shades | faux-wood-blinds
+#   operatingSystems: cordless | chain | motorized | solar-motorized
+#   projectType:      new-construction | renovation
+#   labor:            union | non-union | not-specified
+#
+# Body sections in each generated Markdown file:
+#   ## Overview  ·  ## The Challenge  ·  ## Our Solution  ·  ## The Result
+# =============================================================================
+
+projects:
+
+  # ---------------------------------------------------------------- MULTIFAMILY
+  - mockId: P01
+    suggestedTitle: West Loop Mid-Rise Apartments
+    sector: multifamily
+    industries: [multifamily]
+    location: West Loop, Chicago, IL
+    year: 2025
+    clientType: General contractor
+    projectType: new-construction
+    labor: union
+    products: [roller-shades]
+    fabrics:
+      - 5% openness solar screen (living areas)
+      - Blackout (bedrooms)
+    operatingSystems: [cordless]
+    scope: 412 roller shades across 128 apartments and amenity spaces
+    quantity: 412
+    timeline: Three phased deliveries over 10 weeks, matched to floor-by-floor turnover
+    featured: true
+    order: 1
+    placeholder: true
+    summary: >-
+      Cordless solar screen and blackout roller shades for 128 new apartments,
+      delivered in phases to match a floor-by-floor turnover schedule.
+    overview: >-
+      A 12-story apartment building with 128 units, a fitness center, and a
+      rooftop lounge. The general contractor needed one window covering package
+      that would look uniform from the street, give residents real light
+      control, and arrive on the same schedule as the floors were turned over.
+    challenge: >-
+      Floors were completed at different times, unit layouts varied, and the
+      building had more than a dozen window sizes. Any mix-up between units
+      would mean delays during final inspections.
+    solution: >-
+      We supplied cordless roller shades in a single neutral fabric family —
+      5% solar screen in living areas and blackout in bedrooms — so the facade
+      reads as one consistent surface. Every shade was labeled by unit and room
+      and delivered in three phases tied to the contractor's turnover schedule.
+    result: >-
+      All 412 shades arrived on schedule with no unit mix-ups, and the building
+      presents a clean, uniform exterior by day and at night.
+    highlights:
+      - 412 shades across 128 units
+      - Phased delivery matched to turnover
+      - Uniform exterior appearance
+
+  - mockId: P02
+    suggestedTitle: Logan Square Courtyard Building Renovation
+    sector: multifamily
+    industries: [multifamily]
+    location: Logan Square, Chicago, IL
+    year: 2024
+    clientType: Property management company
+    projectType: renovation
+    labor: non-union
+    products: [faux-wood-blinds]
+    fabrics:
+      - 2" faux wood slats, white
+    operatingSystems: [cordless]
+    scope: 186 faux wood blinds across 48 renovated apartments
+    quantity: 186
+    timeline: Weekly batches over 8 weeks as units came offline for renovation
+    featured: false
+    order: 14
+    placeholder: true
+    summary: >-
+      Cordless faux wood blinds for 48 renovated apartments in a 1920s courtyard
+      building, delivered unit by unit while the building stayed occupied.
+    overview: >-
+      A vintage courtyard building renovated unit by unit while residents
+      remained in the rest of the property. The property manager wanted a
+      durable, easy-to-clean blind that would look fresh for new leases and be
+      simple to replace later.
+    challenge: >-
+      Window openings in older masonry buildings are rarely square, and sizes
+      varied from unit to unit. Work had to move at the pace of renovations
+      without disturbing occupied apartments.
+    solution: >-
+      Each unit was measured and documented individually, and we built a size
+      schedule the property manager can reuse for future replacements. Cordless
+      2" faux wood blinds were delivered in weekly batches, labeled by unit, as
+      each apartment came offline.
+    result: >-
+      Renovated units were ready for leasing on schedule, and the property now
+      has a standard blind and a size record for fast turnover replacements.
+    highlights:
+      - 48 units in an occupied building
+      - Reusable unit-by-unit size schedule
+      - Moisture-resistant, easy-to-clean blinds
+
+  - mockId: P03
+    suggestedTitle: Skokie Senior Living Community
+    sector: multifamily
+    industries: [multifamily]
+    location: Skokie, IL
+    year: 2025
+    clientType: Developer
+    projectType: new-construction
+    labor: union
+    products: [roller-shades]
+    fabrics:
+      - Light-filtering (apartments)
+      - 3% openness solar screen (common areas)
+    operatingSystems: [cordless, motorized]
+    scope: 264 roller shades for 96 independent-living apartments plus dining, lounge, and activity rooms
+    quantity: 264
+    timeline: Two deliveries over 6 weeks, coordinated with the developer's move-in date
+    featured: true
+    order: 3
+    placeholder: true
+    summary: >-
+      Easy-to-use cordless roller shades in 96 senior apartments, with motorized
+      shades on the tall windows of the dining room and lounges.
+    overview: >-
+      A new independent-living community with 96 apartments and large shared
+      spaces. The developer's priorities were safety, simple operation for
+      residents, and a warm, residential feel in the common areas.
+    challenge: >-
+      Many residents have limited reach or grip strength, cords were not
+      acceptable, and the two-story windows in the dining room and lounge could
+      not be operated by hand.
+    solution: >-
+      Apartments received cordless light-filtering roller shades that lift and
+      lower with a light touch. The dining room, lounge, and activity rooms
+      received motorized solar screen shades on wall switches, so staff can
+      control glare and heat with one button.
+    result: >-
+      Residents moved in to shades that are easy to use, and staff manage
+      common-area light from a few switches instead of a ladder.
+    highlights:
+      - Cordless operation in every apartment
+      - Motorized shades on two-story windows
+      - Coordinated with the move-in date
+
+  - mockId: P04
+    suggestedTitle: Pilsen Affordable Housing Development
+    sector: multifamily
+    industries: [multifamily]
+    location: Pilsen, Chicago, IL
+    year: 2023
+    clientType: Developer
+    projectType: new-construction
+    labor: union
+    products: [roller-shades]
+    fabrics:
+      - Light-filtering, neutral gray
+    operatingSystems: [chain]
+    scope: 228 roller shades across 72 affordable apartments and the community room
+    quantity: 228
+    timeline: Single delivery, completed 3 weeks before final inspections
+    featured: false
+    order: 8
+    placeholder: true
+    summary: >-
+      Durable chain-operated roller shades with safety tension devices for 72
+      affordable apartments, specified to meet a fixed budget.
+    overview: >-
+      A 72-unit affordable housing development with a community room and a
+      management office. The developer needed dependable window coverings that
+      fit a fixed budget and would hold up to years of daily use.
+    challenge: >-
+      The budget left little room for options, but the product still had to be
+      durable, safe, and consistent across every unit.
+    solution: >-
+      We standardized on chain-operated roller shades with tension devices and a
+      single light-filtering fabric, which kept pricing predictable and
+      simplified ordering. Standard sizes were used wherever the window schedule
+      allowed.
+    result: >-
+      The development received a durable, uniform window covering package within
+      budget and ahead of final inspections.
+    highlights:
+      - 228 shades within a fixed budget
+      - Chain systems with safety tension devices
+      - Standardized sizes for easy replacement
+
+  - mockId: P05
+    suggestedTitle: Naperville Garden Apartment Community
+    sector: multifamily
+    industries: [multifamily]
+    location: Naperville, IL
+    year: 2024
+    clientType: Property management company
+    projectType: renovation
+    labor: non-union
+    products: [faux-wood-blinds, roller-shades]
+    fabrics:
+      - 2" faux wood slats (apartments)
+      - Light-filtering roller shades (clubhouse and leasing office)
+    operatingSystems: [cordless]
+    scope: 340 faux wood blinds across 14 buildings plus 22 roller shades for the clubhouse and leasing office
+    quantity: 362
+    timeline: Building-by-building replacement over 4 months, followed by an ongoing turnover program
+    featured: false
+    order: 10
+    placeholder: true
+    summary: >-
+      Building-by-building blind replacement across a 14-building apartment
+      community, followed by an ongoing turnover program for the property manager.
+    overview: >-
+      A suburban garden-style community of 14 buildings. The property manager
+      wanted to replace mismatched, aging blinds with one standard product and
+      make future replacements simple for the maintenance team.
+    challenge: >-
+      Years of piecemeal replacements had left different colors and styles in
+      every building, and the maintenance team had no reliable size records.
+    solution: >-
+      We documented window sizes building by building and replaced blinds in a
+      planned sequence with cordless 2" faux wood blinds in one color. The
+      clubhouse and leasing office received light-filtering roller shades for a
+      more finished look. A standard size list now lets the team reorder for
+      turnovers with a single email.
+    result: >-
+      The community has a consistent look across all 14 buildings, and turnover
+      replacements now take days instead of weeks.
+    highlights:
+      - 14 buildings, one standard product
+      - Size records for every building
+      - Ongoing turnover replacement program
+
+  # ------------------------------------------------------------------ EDUCATION
+  - mockId: P06
+    suggestedTitle: Bronzeville Elementary School
+    sector: education
+    industries: [education, government]
+    location: Bronzeville, Chicago, IL
+    year: 2024
+    clientType: Public school district (via general contractor)
+    projectType: renovation
+    labor: union
+    products: [roller-shades]
+    fabrics:
+      - Light-filtering (classrooms)
+      - Blackout (media center and multipurpose room)
+    operatingSystems: [chain]
+    scope: 196 roller shades in 32 classrooms, the media center, offices, and the multipurpose room
+    quantity: 196
+    timeline: Completed within an 8-week summer break
+    featured: true
+    order: 2
+    placeholder: true
+    summary: >-
+      Classroom and media-center roller shades for a K–8 public school,
+      completed during summer break on a union project with full documentation.
+    overview: >-
+      A K–8 public school renovation covering 32 classrooms, a media center,
+      administrative offices, and a multipurpose room. The work had to be
+      finished before students returned in the fall.
+    challenge: >-
+      The schedule was fixed by the school calendar, the project was union, and
+      the district required submittals and documentation before anything could
+      be ordered.
+    solution: >-
+      We prepared product submittals early, then supplied chain-operated roller
+      shades with light-filtering fabric in classrooms and blackout fabric in the
+      media center and multipurpose room for projectors and presentations.
+      Deliveries were sequenced room by room with the contractor's summer
+      schedule.
+    result: >-
+      Every room was complete before the first day of school, with
+      documentation delivered for the district's records.
+    highlights:
+      - Finished within summer break
+      - Union project with full submittals
+      - Blackout control for media spaces
+
+  - mockId: P07
+    suggestedTitle: Cicero High School Modernization
+    sector: education
+    industries: [education, government]
+    location: Cicero, IL
+    year: 2025
+    clientType: General contractor
+    projectType: renovation
+    labor: union
+    products: [roller-shades]
+    fabrics:
+      - Light-filtering (classrooms)
+      - Blackout (auditorium)
+      - 5% openness solar screen (library and gymnasium)
+    operatingSystems: [chain, motorized]
+    scope: 318 roller shades, including 24 motorized shades in the auditorium, library, and gymnasium
+    quantity: 318
+    timeline: Two summer phases, wing by wing
+    featured: false
+    order: 7
+    placeholder: true
+    summary: >-
+      A two-summer, wing-by-wing shade upgrade for a suburban high school,
+      including motorized shades for the auditorium, library, and gym.
+    overview: >-
+      A multi-phase modernization of a suburban high school. Classrooms, the
+      library, the gymnasium, and the auditorium all needed new window
+      coverings, phased over two summers wing by wing.
+    challenge: >-
+      Large, high windows in the auditorium, library, and gym couldn't be
+      operated safely by hand, and each phase had to be closed out before
+      students returned.
+    solution: >-
+      Classrooms received chain-operated light-filtering roller shades. The
+      auditorium, library, and gymnasium received motorized shades on wall
+      controls — blackout in the auditorium for performances, solar screen in
+      the library and gym to cut glare while keeping daylight.
+    result: >-
+      Both phases closed out on schedule, and staff can now darken the
+      auditorium or control gym glare in seconds.
+    highlights:
+      - 318 shades over two summer phases
+      - 24 motorized shades on tall windows
+      - Blackout auditorium for performances
+
+  - mockId: P08
+    suggestedTitle: Joliet Early Learning Center
+    sector: education
+    industries: [education]
+    location: Joliet, IL
+    year: 2023
+    clientType: Nonprofit owner (via general contractor)
+    projectType: new-construction
+    labor: non-union
+    products: [roller-shades, zebra-shades]
+    fabrics:
+      - Light-filtering roller shades (classrooms)
+      - Room-darkening roller shades (nap rooms)
+      - Zebra shades (offices and family lounge)
+    operatingSystems: [cordless]
+    scope: 104 cordless shades for 12 classrooms, nap rooms, offices, and a family lounge
+    quantity: 104
+    timeline: Delivered 2 weeks ahead of the center's licensing inspection
+    featured: false
+    order: 11
+    placeholder: true
+    summary: >-
+      Fully cordless roller and zebra shades for a new early learning center,
+      chosen to keep classrooms and nap rooms free of cords.
+    overview: >-
+      A new early childhood center serving infants through pre-K, with 12
+      classrooms, dedicated nap rooms, staff offices, and a family lounge.
+    challenge: >-
+      With young children in every room, no exposed cords were acceptable, and
+      nap rooms needed dependable light control in the middle of the day.
+    solution: >-
+      Every window received a cordless product: light-filtering roller shades in
+      classrooms, room-darkening roller shades in nap rooms, and zebra shades in
+      offices and the family lounge for adjustable privacy.
+    result: >-
+      The center opened with cord-free window coverings throughout and calm,
+      dim nap rooms at midday.
+    highlights:
+      - 100% cordless
+      - Room-darkening nap rooms
+      - Delivered ahead of licensing inspection
+
+  # ----------------------------------------------------------------- GOVERNMENT
+  - mockId: P09
+    suggestedTitle: Uptown Public Library Branch
+    sector: government
+    industries: [government]
+    location: Uptown, Chicago, IL
+    year: 2024
+    clientType: Municipal agency (via general contractor)
+    projectType: renovation
+    labor: union
+    products: [roller-shades]
+    fabrics:
+      - 3% openness solar screen
+    operatingSystems: [motorized, chain]
+    scope: 86 roller shades, including 18 motorized shades on the reading room's clerestory windows
+    quantity: 86
+    timeline: Two after-hours phases while the branch stayed open
+    featured: true
+    order: 4
+    placeholder: true
+    summary: >-
+      Glare-reducing solar screen shades for a public library branch, with
+      motorized shades on high clerestory windows and work done after hours.
+    overview: >-
+      A neighborhood library branch with a double-height reading room, a
+      computer area, a children's section, and a community meeting room. The
+      renovation aimed to make the space more comfortable without losing its
+      daylight.
+    challenge: >-
+      Afternoon glare made computer screens hard to read, the clerestory windows
+      were out of reach, and the branch needed to stay open to the public during
+      the work.
+    solution: >-
+      We supplied 3% openness solar screen shades that cut glare while keeping
+      views and daylight. Clerestory windows received motorized shades on a wall
+      switch; lower windows received chain-operated shades. Work was coordinated
+      in two after-hours phases, with submittals and documentation provided for
+      the agency.
+    result: >-
+      Patrons use the computer area comfortably all afternoon, and the branch
+      never had to close for the work.
+    highlights:
+      - Glare control that keeps the view
+      - Motorized clerestory shades
+      - After-hours work, no closures
+
+  - mockId: P10
+    suggestedTitle: Schaumburg Village Hall Renovation
+    sector: government
+    industries: [government]
+    location: Schaumburg, IL
+    year: 2025
+    clientType: Municipality (via general contractor)
+    projectType: renovation
+    labor: union
+    products: [roller-shades, zebra-shades]
+    fabrics:
+      - 5% openness solar screen roller shades (lobby and council chambers)
+      - Zebra shades (private offices)
+    operatingSystems: [solar-motorized, chain]
+    scope: 142 shades, including 20 solar-powered motorized shades on the lobby's upper windows
+    quantity: 142
+    timeline: Phased over 6 weeks around public meetings and office hours
+    featured: false
+    order: 9
+    placeholder: true
+    summary: >-
+      Solar screen, zebra, and solar-powered motorized shades for a village hall
+      renovation, phased around public meetings on a union project.
+    overview: >-
+      The renovation of a suburban village hall, including the public lobby,
+      council chambers, the clerk's office, and staff offices.
+    challenge: >-
+      The lobby's upper windows had no power nearby, and opening finished walls
+      to run wiring wasn't an option. Work also had to avoid council meetings
+      and public office hours.
+    solution: >-
+      Solar-powered motorized shades solved the lobby without any new wiring —
+      a small panel keeps each motor's battery charged. Public areas and council
+      chambers received solar screen roller shades, and private offices received
+      zebra shades for adjustable privacy. Submittals and project documentation
+      were provided for the municipality's records.
+    result: >-
+      The lobby's high windows are now controlled by remote, and the project
+      finished without disrupting a single public meeting.
+    highlights:
+      - Solar-powered motors, no new wiring
+      - Phased around public meetings
+      - Union project with full documentation
+
+  # ----------------------------------------------------------------- COMMERCIAL
+  - mockId: P11
+    suggestedTitle: River North Corporate Office Fit-Out
+    sector: commercial
+    industries: [commercial]
+    location: River North, Chicago, IL
+    year: 2025
+    clientType: General contractor
+    projectType: renovation
+    labor: union
+    products: [roller-shades, zebra-shades]
+    fabrics:
+      - 3% openness solar screen roller shades (open office)
+      - Blackout roller shades (boardroom)
+      - Zebra shades (private offices)
+    operatingSystems: [motorized, cordless]
+    scope: 176 shades across two office floors, including motorized shades in eight conference rooms and the boardroom
+    quantity: 176
+    timeline: 4 weeks, coordinated with the tenant's move-in
+    featured: true
+    order: 5
+    placeholder: true
+    summary: >-
+      Motorized meeting-room shades, solar screens for the open office, and
+      zebra shades for private offices across a two-floor corporate fit-out.
+    overview: >-
+      A two-floor corporate office fit-out with an open workspace, eight
+      conference rooms, a boardroom, and private offices along a floor-to-ceiling
+      glass curtain wall.
+    challenge: >-
+      The curtain wall brought strong glare onto screens, conference rooms
+      needed quick darkening for presentations, and the tenant's move-in date
+      was fixed.
+    solution: >-
+      The open office received 3% solar screen roller shades for glare control
+      with the skyline still visible. Conference rooms and the boardroom
+      received motorized shades on wall keypads — blackout in the boardroom —
+      and private offices received cordless zebra shades.
+    result: >-
+      The tenant moved in on schedule to a workspace that stays comfortable all
+      day, with one-touch light control in every meeting room.
+    highlights:
+      - Motorized shades in 9 meeting rooms
+      - Glare control along a full glass curtain wall
+      - Delivered for a fixed move-in date
+
+  - mockId: P12
+    suggestedTitle: Fulton Market Creative Office
+    sector: commercial
+    industries: [commercial]
+    location: Fulton Market, Chicago, IL
+    year: 2024
+    clientType: Property owner
+    projectType: renovation
+    labor: non-union
+    products: [roller-shades]
+    fabrics:
+      - 5% openness solar screen, charcoal
+    operatingSystems: [chain]
+    scope: 64 oversized roller shades for a converted warehouse office
+    quantity: 64
+    timeline: Delivered 5 weeks after sizes were approved
+    featured: false
+    order: 12
+    placeholder: true
+    summary: >-
+      Oversized charcoal solar screen shades for a converted brick-and-timber
+      warehouse, sized individually for tall factory windows.
+    overview: >-
+      A former warehouse converted into creative office space, with exposed
+      brick, timber beams, and tall original factory windows.
+    challenge: >-
+      The windows were unusually large and slightly different in size from one
+      bay to the next, and the owner wanted shades that would disappear into the
+      industrial character of the space.
+    solution: >-
+      We supplied oversized chain-operated roller shades in a charcoal 5% solar
+      screen, which reduces glare while keeping the view and reads as part of
+      the architecture rather than on top of it. Each bay was sized
+      individually.
+    result: >-
+      The space stays comfortable through bright afternoons, and the shades
+      blend into the brick and timber.
+    highlights:
+      - Oversized shades for factory windows
+      - Charcoal fabric suited to industrial interiors
+      - Each opening sized individually
+
+  - mockId: P13
+    suggestedTitle: Oak Brook Medical Office Building
+    sector: commercial
+    industries: [commercial]
+    location: Oak Brook, IL
+    year: 2023
+    clientType: Developer
+    projectType: new-construction
+    labor: non-union
+    products: [roller-shades, faux-wood-blinds]
+    fabrics:
+      - Room-darkening roller shades (exam and procedure rooms)
+      - Light-filtering roller shades (waiting areas)
+      - 2" faux wood blinds (staff areas)
+    operatingSystems: [cordless, chain]
+    scope: 210 window coverings across three floors of medical suites
+    quantity: 210
+    timeline: Delivered suite by suite over 8 weeks as tenants completed build-outs
+    featured: false
+    order: 13
+    placeholder: true
+    summary: >-
+      Privacy-focused roller shades and cleanable faux wood blinds for a
+      three-story medical office building, delivered suite by suite.
+    overview: >-
+      A new three-story medical office building leased to several practices,
+      each with exam rooms, procedure rooms, waiting areas, and staff spaces.
+    challenge: >-
+      Exam rooms needed full privacy, products had to be easy to clean, and each
+      tenant finished their build-out on a different schedule.
+    solution: >-
+      Exam and procedure rooms received cordless room-darkening roller shades
+      for privacy. Waiting areas received light-filtering roller shades, and
+      staff areas received easy-to-wipe faux wood blinds. Orders were organized
+      by suite and delivered as each tenant was ready.
+    result: >-
+      Each practice opened with privacy where it matters, and the building keeps
+      a consistent look from the outside.
+    highlights:
+      - Full privacy in exam rooms
+      - Cleanable materials throughout
+      - Suite-by-suite delivery
+
+  # ------------------------------------------------------------------ MIXED-USE
+  - mockId: P14
+    suggestedTitle: Oak Park Mixed-Use Building
+    sector: mixed-use
+    industries: [multifamily, commercial]
+    location: Oak Park, IL
+    year: 2026
+    clientType: General contractor
+    projectType: new-construction
+    labor: non-union
+    products: [zebra-shades, roller-shades]
+    fabrics:
+      - Zebra shades (apartments)
+      - 5% openness solar screen roller shades (retail and leasing office)
+    operatingSystems: [cordless, motorized]
+    scope: 236 shades for 64 apartments, ground-floor retail, and the leasing office
+    quantity: 236
+    timeline: Residential floors first, then retail, over 7 weeks
+    featured: true
+    order: 6
+    placeholder: true
+    summary: >-
+      Zebra shades for 64 apartments plus solar screen and motorized shades for
+      the ground-floor retail and leasing office of a new mixed-use building.
+    overview: >-
+      A new four-story building with 64 apartments above ground-floor retail and
+      a leasing office, facing a busy commercial street.
+    challenge: >-
+      The building needed two different looks — residential warmth upstairs and
+      a clean storefront below — while still reading as one building from the
+      street. The retail glass faced west and took heavy afternoon sun.
+    solution: >-
+      Apartments received cordless zebra shades for easy privacy and light
+      control. The leasing office and retail spaces received 5% solar screen
+      roller shades, motorized on the tall storefront glass. A coordinated color
+      palette ties both levels together.
+    result: >-
+      Residents and retail tenants each got the right product for their space,
+      and the facade looks consistent from the sidewalk.
+    highlights:
+      - 64 apartments plus retail and leasing
+      - Motorized storefront shades
+      - One coordinated facade palette
