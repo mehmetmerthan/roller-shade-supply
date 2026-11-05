@@ -1,0 +1,29 @@
+---
+/**
+ * A ruled row of facts (label above value), like the title block of a drawing sheet.
+ * Used for the home trust strip and the project facts row. The 1 px rules are the
+ * grid gaps showing the line color through.
+ */
+interface Props {
+  items: { label: string; value: string }[];
+  /** Columns from 1024 px (2 from 640 px). */
+  columns?: 3 | 4 | 5;
+  /** Short values can sit two-up on phones too. */
+  phoneColumns?: 1 | 2;
+  class?: string;
+}
+
+const { items, columns = 4, phoneColumns = 1, class: className } = Astro.props;
+const lgCols = { 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4', 5: 'lg:grid-cols-5' }[columns];
+---
+
+<dl class:list={['grid gap-px border-t-4 border-b border-ink bg-line sm:grid-cols-2', phoneColumns === 2 && 'grid-cols-2', lgCols, className]}>
+  {
+    items.map((item) => (
+      <div class:list={['bg-paper px-4 py-4 sm:last:odd:col-span-2 lg:px-5 lg:py-5 lg:last:odd:col-span-1', phoneColumns === 2 && 'last:odd:col-span-2']}>
+        <dt class="label-spec">{item.label}</dt>
+        <dd class="mt-1 font-display text-lg font-extrabold xl:text-xl">{item.value}</dd>
+      </div>
+    ))
+  }
+</dl>

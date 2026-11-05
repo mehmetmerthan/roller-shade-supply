@@ -63,3 +63,6 @@ export const laborLabels: Record<Labor, string> = {
   'non-union': 'Non-union',
   'not-specified': 'Not specified',
 };
+
+export const productHref = (product: Product) => `/products/${product}/`;
+export const industryHref = (industry: Industry) => `/industries/${industrySlugs[industry]}/`;

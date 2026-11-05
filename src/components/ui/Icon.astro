@@ -4,7 +4,7 @@
  * (aria-hidden); give the parent control its accessible name.
  */
 interface Props {
-  name: 'phone' | 'mail' | 'menu' | 'close' | 'chevron-down' | 'arrow-left' | 'arrow-right' | 'check';
+  name: 'phone' | 'mail' | 'menu' | 'close' | 'chevron-down' | 'arrow-left' | 'arrow-right' | 'check' | 'expand' | 'play';
   size?: 16 | 20 | 24;
   class?: string;
 }
@@ -21,6 +21,8 @@ const paths: Record<Props['name'], string> = {
   'arrow-left': 'M20 12H4 M10 6l-6 6 6 6',
   'arrow-right': 'M4 12h16 M14 6l6 6-6 6',
   check: 'M4 12.5l5 5L20 6.5',
+  expand: 'M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5',
+  play: 'M7 4.5v15l12-7.5z',
 };
 ---
 

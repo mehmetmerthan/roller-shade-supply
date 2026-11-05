@@ -535,6 +535,38 @@
     rotate: 180deg;
   }
 
+  /* ---------- Filter chips (toggle buttons) ---------- */
+  /* Pressed = filled steel. Never red: red means "go", not "selected". */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding-inline: 1rem;
+    border: 1px solid var(--color-ink);
+    border-radius: var(--radius-control);
+    background-color: transparent;
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .chip:hover {
+    background-color: var(--color-stone-100);
+  }
+  .chip[aria-pressed="true"] {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .chip-count {
+    font-weight: 400;
+    color: var(--color-stone-600);
+  }
+  .chip[aria-pressed="true"] .chip-count {
+    color: var(--color-stone-300);
+  }
+
   /* ---------- Cards ---------- */
   /* The top rule is a mullion; it turns redline on hover/focus because the card is a link. */
   .card {

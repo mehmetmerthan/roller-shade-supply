@@ -163,7 +163,8 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 | ☐ | §7 Project support services | Every item: takeoffs, field measuring, submittals, phased deliveries, labeling, installation, replacement orders, trade accounts |
 | ☐ | §8 FAQ | Turnaround, minimum order, measurement verification, child-safety compliance, flame-resistant fabrics, building-controls integration, warranty, submittals, installation, phased delivery, extended service area, replacement orders |
 | ☐ | §9 SEO metadata | All titles and descriptions are drafts. Plus new entries for `/industries/` and `/contact/thank-you/` |
-| ☐ | §10 Microcopy | Upload helper "Up to 10 MB"; thank-you page turnaround |
+| ☐ | §10 Microcopy | Upload helper "Up to 10 MB"; thank-you page turnaround; project-page CTA "Planning a similar project?" |
+| ☐ | Projects pages microcopy (new, written for layout) | `/projects/` H1 "Commercial Window Covering Projects" (built on the §9 keyword; the intro is approved [PROJECTS]); filter-chip labels; project-page headings "Specifications", "Highlights", "Related pages", "Related projects", "Video(s)"; gallery labels "All photos" and "Full screen"; "Previous project" / "Next project". The Labor fact is hidden when a project's labor is "not specified" |
 | ☐ | How to Measure | "Approximate sizes are fine for budgeting; final sizes are verified before production" |
 | ☐ | §11 Legal | Privacy Policy and Accessibility Statement need **legal review** before launch |
 | ☐ | Testimonials | `features.testimonials = false` until real, approved quotes with written permission exist |

@@ -1,0 +1,67 @@
+---
+/**
+ * Project videos (docs/site-spec.md §5.3; CLAUDE.md rule 3). Self-hosted web MP4s from
+ * public/videos/<slug>/: native controls, preload="none" (only the poster loads until
+ * Play), dimensions reserved, no autoplay, no sound track. A YouTube/Vimeo URL renders
+ * as a plain link until a click-to-load facade is needed.
+ * TODO(content): the web versions are 478 px wide phone videos; a sharper original or a
+ * hosted link would look better (CONTENT_TODO.md §3.5).
+ */
+interface Video {
+  src: string;
+  poster?: string;
+  title: string;
+  width?: number;
+  height?: number;
+}
+
+interface Props {
+  videos: Video[];
+  class?: string;
+}
+
+const { videos, class: className } = Astro.props;
+const isHosted = (src: string) => src.startsWith('/videos/');
+---
+
+<ul class:list={['flex flex-wrap gap-8', className]}>
+  {
+    videos.map((video) => (
+      <li class="w-72 max-w-full">
+        <figure>
+          {isHosted(video.src) ? (
+            <div class="video-frame">
+              <video
+                controls
+                preload="none"
+                playsinline
+                poster={video.poster}
+                width={video.width}
+                height={video.height}
+                class="block h-auto w-full bg-ink"
+                aria-label={video.title}
+              >
+                <source src={video.src} type="video/mp4" />
+                <a href={video.src}>Download the video</a>
+              </video>
+            </div>
+          ) : (
+            <a href={video.src} class="link" rel="noopener">
+              Watch the video
+            </a>
+          )}
+          <figcaption class="mt-2 text-sm text-stone-700">{video.title}</figcaption>
+        </figure>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  /* Keyboard focus moves into the native controls' shadow DOM, where the video itself
+     stops matching :focus; :focus-within on the frame still sees it. */
+  .video-frame:focus-within {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+</style>

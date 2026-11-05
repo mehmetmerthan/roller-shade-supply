@@ -1,0 +1,42 @@
+---
+/**
+ * Breadcrumb trail for inner pages (docs/site-spec.md §6). The last crumb is the
+ * current page (not a link). Pair with breadcrumbSchema() for the JSON-LD.
+ */
+import type { Crumb } from '../../lib/seo';
+
+interface Props {
+  crumbs: Crumb[];
+  class?: string;
+}
+
+const { crumbs, class: className } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class={className}>
+  <ol class="flex flex-wrap items-center gap-x-2 text-sm text-stone-700">
+    {
+      crumbs.map((crumb, i) => {
+        const last = i === crumbs.length - 1;
+        return (
+          <li class="flex items-center gap-x-2">
+            {i > 0 && (
+              <span aria-hidden="true" class="text-stone-500">
+                /
+              </span>
+            )}
+            {last ? (
+              <span aria-current="page" class="font-semibold text-ink">
+                {crumb.name}
+              </span>
+            ) : (
+              <a href={crumb.href} class="link-quiet inline-flex min-h-6 items-center">
+                {crumb.name}
+              </a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>

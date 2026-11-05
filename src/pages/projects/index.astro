@@ -1,0 +1,129 @@
+---
+/**
+ * Projects index (docs/site-spec.md §3): approved [PROJECTS] intro, sector filter
+ * chips, and every live project as a card with the mini-gallery peek.
+ * Filters are progressive enhancement: without JS the chips stay hidden and every
+ * project shows. Industry chips match `industries` (so mixed-use and public schools
+ * appear under each of their industries); Mixed-Use matches `sector`.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import ProjectCard from '../../components/ui/ProjectCard.astro';
+import CtaBand from '../../components/sections/CtaBand.astro';
+import { selectedProjects } from '../../copy/approved';
+import { pageMeta } from '../../copy/seo';
+import { sectorLabels, type Industry } from '../../config/taxonomy';
+import { getProjects, projectHref, type Project } from '../../lib/projects';
+import { breadcrumbSchema, itemListSchema } from '../../lib/seo';
+
+const projects = await getProjects();
+const meta = pageMeta['/projects/'];
+const crumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Projects', href: '/projects/' },
+];
+
+const byIndustry = (industry: Industry) => (p: Project) => p.data.industries.includes(industry);
+const filters = [
+  { id: 'all', label: 'All', match: () => true },
+  { id: 'multifamily', label: sectorLabels.multifamily, match: byIndustry('multifamily') },
+  { id: 'commercial', label: sectorLabels.commercial, match: byIndustry('commercial') },
+  { id: 'education', label: sectorLabels.education, match: byIndustry('education') },
+  { id: 'government', label: sectorLabels.government, match: byIndustry('government') },
+  { id: 'mixed-use', label: sectorLabels['mixed-use'], match: (p: Project) => p.data.sector === 'mixed-use' },
+]
+  .map((f) => ({ ...f, count: projects.filter(f.match).length }))
+  .filter((f) => f.count > 0);
+
+const filterIds = (p: Project) =>
+  filters
+    .filter((f) => f.id !== 'all' && f.match(p))
+    .map((f) => f.id)
+    .join(' ');
+const countLabel = (n: number) => `${n} ${n === 1 ? 'project' : 'projects'}`;
+---
+
+<BaseLayout
+  title={meta.title}
+  description={meta.description}
+  fullTitle
+  jsonLd={[breadcrumbSchema(crumbs), itemListSchema(projects.map((p) => ({ name: p.data.title, href: projectHref(p) })))]}
+>
+  <div class="page-gutter mx-auto max-w-content pt-8 md:pt-12">
+    <Breadcrumbs crumbs={crumbs} />
+    {/* TODO(content): H1 is new copy built on the §9 keyword; the intro is approved [PROJECTS]. */}
+    <h1 class="mt-6 text-4xl lg:w-5/6">Commercial Window Covering Projects</h1>
+    <div class="mt-6 grid lg:grid-cols-12 lg:gap-8">
+      <div class="space-y-3 lg:col-span-8 lg:col-start-3">
+        <p class="text-lg">{selectedProjects.paragraphs[0]}</p>
+        <p class="text-stone-700">{selectedProjects.paragraphs[1]}</p>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col gap-4 border-t-4 border-ink pt-4 md:flex-row md:items-center md:justify-between lg:mt-14">
+      <div role="group" aria-label="Filter projects by sector" class="flex flex-wrap gap-2" data-filters hidden>
+        {
+          filters.map((f, i) => (
+            <button type="button" class="chip" aria-pressed={i === 0 ? 'true' : 'false'} data-filter={f.id}>
+              {f.label}
+              <span class="chip-count">
+                <span class="sr-only"> (</span>
+                {f.count}
+                <span class="sr-only"> projects)</span>
+              </span>
+            </button>
+          ))
+        }
+      </div>
+      <p class="text-sm font-semibold text-stone-700 md:shrink-0" role="status" data-filter-status>
+        {countLabel(projects.length)}
+      </p>
+    </div>
+
+    <ul class="mt-8 grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3" data-project-grid>
+      {
+        projects.map((project, i) => (
+          <li data-filter-ids={filterIds(project)}>
+            <ProjectCard project={project} headingLevel={2} peek priority={i === 0} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <CtaBand class="my-section lg:my-section-lg" />
+</BaseLayout>
+
+<script>
+  const group = document.querySelector<HTMLElement>('[data-filters]');
+  const status = document.querySelector<HTMLElement>('[data-filter-status]');
+  const items = [...document.querySelectorAll<HTMLElement>('[data-project-grid] > li')];
+  if (group && status) {
+    const buttons = [...group.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const total = items.length;
+    const apply = (id: string, push: boolean) => {
+      const valid = buttons.some((b) => b.dataset.filter === id) ? id : 'all';
+      let shown = 0;
+      for (const li of items) {
+        const match = valid === 'all' || (li.dataset.filterIds ?? '').split(' ').includes(valid);
+        li.hidden = !match;
+        if (match) shown += 1;
+      }
+      for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.filter === valid));
+      const label = buttons.find((b) => b.dataset.filter === valid)?.firstChild?.textContent?.trim();
+      status.textContent =
+        valid === 'all' ? `${total} projects` : `${shown} of ${total} projects: ${label}`;
+      if (push) {
+        const url = new URL(location.href);
+        if (valid === 'all') url.searchParams.delete('sector');
+        else url.searchParams.set('sector', valid);
+        history.replaceState(null, '', url);
+      }
+    };
+    for (const b of buttons) b.addEventListener('click', () => apply(b.dataset.filter!, true));
+    group.hidden = false;
+    // Shareable filtered views: /projects/?sector=education
+    const initial = new URLSearchParams(location.search).get('sector');
+    if (initial) apply(initial, false);
+  }
+</script>

@@ -9,6 +9,7 @@
 import ArtDirectedPicture from '../ui/ArtDirectedPicture.astro';
 import Button from '../ui/Button.astro';
 import ChicagoWindow from '../ui/ChicagoWindow.astro';
+import FactStrip from '../ui/FactStrip.astro';
 import Hours from '../ui/Hours.astro';
 import Icon from '../ui/Icon.astro';
 import SpecList from '../ui/SpecList.astro';
@@ -97,14 +98,5 @@ const facts = [
     {hero.paragraphs.map((p, i) => <p class:list={['text-lg text-stone-700', i === 0 ? 'xl:col-span-4 xl:col-start-3' : 'xl:col-span-4']}>{p}</p>)}
   </div>
 
-  <dl class="mt-12 grid gap-px border-t-4 border-b border-ink bg-line sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
-    {
-      trustStrip.map((item) => (
-        <div class="bg-paper px-4 py-4 lg:px-5 lg:py-5">
-          <dt class="label-spec">{item.label}</dt>
-          <dd class="mt-1 font-display text-lg font-extrabold xl:text-xl">{item.value}</dd>
-        </div>
-      ))
-    }
-  </dl>
+  <FactStrip items={[...trustStrip]} class="mt-12 lg:mt-16" />
 </section>

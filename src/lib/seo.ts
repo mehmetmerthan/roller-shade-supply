@@ -101,3 +101,40 @@ export function serializeJsonLd(nodes: JsonLd[]): string {
   const doc = nodes.length === 1 ? { '@context': 'https://schema.org', ...nodes[0] } : { '@context': 'https://schema.org', '@graph': nodes };
   return JSON.stringify(doc).replace(/</g, '\\u003c');
 }
+
+/** /projects/: the project URLs in display order. */
+export function itemListSchema(items: { name: string; href: string }[]): JsonLd {
+  return {
+    '@type': 'ItemList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: abs(item.href),
+      name: item.name,
+    })),
+  };
+}
+
+/** A project page (site-spec §6): name, description, images, year, place, products. */
+export function creativeWorkSchema(work: {
+  name: string;
+  description: string;
+  href: string;
+  images: string[];
+  year: number;
+  location: string;
+  about: { name: string; href: string }[];
+}): JsonLd {
+  return {
+    '@type': 'CreativeWork',
+    name: work.name,
+    description: work.description,
+    url: abs(work.href),
+    image: work.images.map(abs),
+    dateCreated: String(work.year),
+    locationCreated: { '@type': 'Place', name: work.location },
+    about: work.about.map((a) => ({ '@type': 'Thing', name: a.name, url: abs(a.href) })),
+    creator: { '@id': orgId },
+    inLanguage: site.locale,
+  };
+}

@@ -11,7 +11,8 @@
  */
 export interface SpecItem {
   label: string;
-  value: string;
+  /** A list renders one value per line. */
+  value: string | string[];
 }
 
 interface Props {
@@ -60,7 +61,17 @@ const valueClass = { inline: '', stacked: 'mt-0.5', 'stacked-lg': 'lg:mt-0.5', '
     items.map((item) => (
       <div class:list={rowClass}>
         <dt class:list={['label-spec', labelClass]}>{item.label}</dt>
-        <dd class:list={[valueClass, compact ? 'text-sm' : 'text-base']}>{item.value}</dd>
+        <dd class:list={[valueClass, compact ? 'text-sm' : 'text-base']}>
+          {Array.isArray(item.value) ? (
+            <ul class="space-y-1">
+              {item.value.map((v) => (
+                <li>{v}</li>
+              ))}
+            </ul>
+          ) : (
+            item.value
+          )}
+        </dd>
       </div>
     ))
   }

@@ -98,8 +98,9 @@ for (const p of pages) {
           const el = document.activeElement;
           if (!el || el === document.body) return null;
           const cs = getComputedStyle(el);
-          const card = el.closest('.card');
-          const cardOutline = card ? getComputedStyle(card).outlineStyle : 'none';
+          // Cards and video frames draw the ring on a wrapper (stretched links, native controls).
+          const wrapper = el.closest('.card, .video-frame');
+          const cardOutline = wrapper ? getComputedStyle(wrapper).outlineStyle : 'none';
           const r = el.getBoundingClientRect();
           return {
             tag: el.tagName.toLowerCase(),

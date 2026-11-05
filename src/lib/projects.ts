@@ -77,3 +77,25 @@ export function getCover(project: Project): ProjectPhoto {
 }
 
 export const projectHref = (project: Project) => `/projects/${project.id}/`;
+
+/**
+ * Up to `limit` other projects that share an industry, most shared industries first,
+ * then by `order`. Empty when nothing matches: the section must then hide entirely
+ * (CLAUDE.md "Product proof and related projects").
+ */
+export function getRelatedProjects(project: Project, all: Project[], limit = 3): Project[] {
+  const mine = new Set(project.data.industries);
+  return all
+    .filter((p) => p.id !== project.id)
+    .map((p) => ({ p, shared: p.data.industries.filter((i) => mine.has(i)).length }))
+    .filter(({ shared }) => shared > 0)
+    .sort((a, b) => b.shared - a.shared || a.p.data.order - b.p.data.order)
+    .slice(0, limit)
+    .map(({ p }) => p);
+}
+
+/** Previous and next project by `order` (no wrap-around). */
+export function getAdjacentProjects(project: Project, all: Project[]) {
+  const i = all.findIndex((p) => p.id === project.id);
+  return { previous: i > 0 ? all[i - 1] : undefined, next: i < all.length - 1 ? all[i + 1] : undefined };
+}

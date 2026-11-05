@@ -1,0 +1,249 @@
+---
+/**
+ * Project detail (docs/site-spec.md §3): breadcrumbs → H1 → facts row → gallery (and
+ * videos) → write-up beside the spec panel, highlights, and related pages → related
+ * projects (hidden when none) → previous / next → CTA with a prefilled quote link.
+ */
+import { getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Badge from '../../components/ui/Badge.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import FactStrip from '../../components/ui/FactStrip.astro';
+import Icon from '../../components/ui/Icon.astro';
+import ProjectCard from '../../components/ui/ProjectCard.astro';
+import ProjectGallery from '../../components/ui/ProjectGallery.astro';
+import ProjectStory from '../../components/ui/ProjectStory.astro';
+import ProjectVideos from '../../components/ui/ProjectVideos.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import SpecList from '../../components/ui/SpecList.astro';
+import CtaBand from '../../components/sections/CtaBand.astro';
+import { contact } from '../../copy/approved';
+import { isProduction, site } from '../../config/site';
+import {
+  industryHref,
+  industryLabels,
+  laborLabels,
+  operatingSystemLabels,
+  productHref,
+  productLabels,
+  projectTypeLabels,
+  sectorLabels,
+} from '../../config/taxonomy';
+import {
+  getAdjacentProjects,
+  getCover,
+  getPhotos,
+  getProjects,
+  getRelatedProjects,
+  projectHref,
+  type Project,
+} from '../../lib/projects';
+import { quoteHref, sectorToProjectType } from '../../lib/quote';
+import { breadcrumbSchema, creativeWorkSchema } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const all = await getProjects();
+const { Content } = await render(project);
+const d = project.data;
+const cover = getCover(project);
+// The gallery opens on the cover (the strongest photo), then the rest in natural order.
+const photos = [cover, ...getPhotos(project).filter((p) => p.file !== cover.file)];
+const href = projectHref(project);
+const related = getRelatedProjects(project, all);
+const { previous, next } = getAdjacentProjects(project, all);
+
+// §9: "{Project Title} | Roller Shade Supply", dropping the brand if over 60 characters.
+const branded = `${d.title} | ${site.name}`;
+const documentTitle = branded.length <= 60 ? branded : d.title;
+const crumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Projects', href: '/projects/' },
+  { name: d.title, href },
+];
+
+const facts = [
+  { label: 'Sector', value: sectorLabels[d.sector] },
+  { label: 'Location', value: d.location },
+  { label: 'Year', value: String(d.year) },
+  { label: 'Project type', value: projectTypeLabels[d.projectType] },
+  ...(d.labor !== 'not-specified' ? [{ label: 'Labor', value: laborLabels[d.labor] }] : []),
+];
+
+const specs = [
+  { label: 'Products', value: d.products.map((p) => productLabels[p]) },
+  { label: 'Fabrics', value: d.fabrics },
+  { label: 'Operation', value: d.operatingSystems.map((o) => operatingSystemLabels[o]) },
+  { label: 'Scope', value: d.scope },
+  ...(d.quantity ? [{ label: 'Quantity', value: String(d.quantity) }] : []),
+  { label: 'Timeline', value: d.timeline },
+  { label: 'Client', value: d.clientType },
+];
+
+const relatedPages = [
+  ...d.products.map((p) => ({ group: 'Product', name: productLabels[p], href: productHref(p) })),
+  ...d.industries.map((i) => ({ group: 'Industry', name: industryLabels[i], href: industryHref(i) })),
+];
+
+const schemaImages = await Promise.all(
+  photos.slice(0, 4).map(async (p) => (await getImage({ src: p.src, width: Math.min(1200, p.src.width), format: 'jpg' })).src),
+);
+const quoteLink = quoteHref({ product: d.products[0], projectType: sectorToProjectType[d.sector] });
+---
+
+<BaseLayout
+  title={documentTitle}
+  description={d.summary}
+  fullTitle
+  ogType="article"
+  ogImage={{ src: cover.src, alt: cover.alt, position: cover.position }}
+  jsonLd={[
+    breadcrumbSchema(crumbs),
+    creativeWorkSchema({
+      name: d.title,
+      description: d.summary,
+      href,
+      images: schemaImages,
+      year: d.year,
+      location: d.location,
+      about: d.products.map((p) => ({ name: productLabels[p], href: productHref(p) })),
+    }),
+  ]}
+>
+  <article>
+    <header class="page-gutter mx-auto max-w-content pt-8 md:pt-12">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="mt-6 flex flex-col items-start gap-4 lg:w-5/6">
+        {d.placeholder && !isProduction && <Badge variant="outline">Sample write-up</Badge>}
+        <h1 class="text-4xl">{d.title}</h1>
+      </div>
+      <p class="mt-6 max-w-prose text-lg text-stone-700">{d.summary}</p>
+      <FactStrip items={facts} columns={facts.length as 4 | 5} phoneColumns={2} class="mt-8 lg:mt-10" />
+    </header>
+
+    <div class="page-gutter mx-auto mt-8 max-w-content lg:mt-10">
+      <ProjectGallery photos={photos} title={d.title} />
+    </div>
+
+
+    <div class="page-gutter mx-auto mt-section grid max-w-content gap-12 lg:mt-section-lg lg:grid-cols-12 lg:gap-8">
+      <ProjectStory class="self-start lg:col-span-8">
+        <Content />
+      </ProjectStory>
+
+      <aside aria-label="Project details" class="space-y-10 lg:col-span-4">
+        <section aria-labelledby="specs" class="border-t-4 border-ink bg-limestone p-5 lg:p-6">
+          <h2 id="specs" class="text-xl">Specifications</h2>
+          <SpecList items={specs} layout="stacked" class="mt-4 border-t border-ink pt-3" />
+        </section>
+
+        <section aria-labelledby="highlights">
+          <h2 id="highlights" class="text-xl">Highlights</h2>
+          <ul class="mt-3 border-t border-ink">
+            {
+              d.highlights.map((h) => (
+                <li class="flex items-start gap-3 border-b border-line py-3">
+                  <Icon name="check" class="mt-0.5" />
+                  {h}
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+
+        <nav aria-labelledby="related-pages">
+          <h2 id="related-pages" class="text-xl">Related pages</h2>
+          <ul class="mt-3 border-t border-ink">
+            {
+              relatedPages.map((page) => (
+                <li class="flex min-h-12 items-center justify-between gap-4 border-b border-line py-2">
+                  <a href={page.href} class="link inline-flex min-h-6 items-center font-semibold">
+                    {page.name}
+                  </a>
+                  <span class="label-spec" aria-hidden="true">{page.group}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </aside>
+    </div>
+    {
+      d.videos && d.videos.length > 0 && (
+        <section aria-labelledby="videos" class="page-gutter mx-auto mt-section grid max-w-content gap-6 lg:mt-section-lg xl:grid-cols-12 xl:gap-8">
+          <h2 id="videos" class="border-t-4 border-ink pt-4 text-2xl xl:col-span-2">
+            {d.videos.length === 1 ? 'Video' : 'Videos'}
+          </h2>
+          <ProjectVideos videos={d.videos} class="xl:col-span-10 xl:border-t-4 xl:border-ink xl:pt-5" />
+        </section>
+      )
+    }
+  </article>
+
+  {
+    related.length > 0 && (
+      <section aria-labelledby="related-projects" class="page-gutter mx-auto mt-section max-w-content lg:mt-section-lg">
+        <SectionHeading id="related-projects" title="Related projects" />
+        <ul class="mt-8 grid gap-x-8 gap-y-12 md:grid-cols-2 lg:mt-10 lg:grid-cols-3">
+          {related.map((p) => (
+            <li>
+              <ProjectCard project={p} peek />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <nav aria-label="More projects" class="page-gutter mx-auto mt-section max-w-content lg:mt-section-lg">
+    <ul class="grid gap-px border-y border-ink bg-line md:grid-cols-2">
+      {
+        previous ? (
+          <li class="bg-paper">
+            <a href={projectHref(previous)} class="group flex min-h-24 flex-col justify-center gap-1 px-4 py-5 lg:px-6">
+              <span class="label-spec flex items-center gap-2">
+                <Icon name="arrow-left" size={16} />
+                Previous project
+              </span>
+              <span class="font-display text-2xl font-extrabold group-hover:underline group-hover:decoration-2 group-hover:underline-offset-4">{previous.data.title}</span>
+            </a>
+          </li>
+        ) : (
+          <li class="hidden bg-paper md:block" aria-hidden="true" />
+        )
+      }
+      {
+        next ? (
+          <li class="bg-paper">
+            <a href={projectHref(next)} class="group flex min-h-24 flex-col items-end justify-center gap-1 px-4 py-5 text-right lg:px-6">
+              <span class="label-spec flex items-center gap-2">
+                Next project
+                <Icon name="arrow-right" size={16} />
+              </span>
+              <span class="font-display text-2xl font-extrabold group-hover:underline group-hover:decoration-2 group-hover:underline-offset-4">{next.data.title}</span>
+            </a>
+          </li>
+        ) : (
+          <li class="hidden bg-paper md:block" aria-hidden="true" />
+        )
+      }
+    </ul>
+  </nav>
+
+  <CtaBand
+    title="Planning a similar project?"
+    intro={contact.intro}
+    href={quoteLink}
+    ctaLabel="Request a Quote"
+    class="my-section lg:my-section-lg"
+  />
+</BaseLayout>

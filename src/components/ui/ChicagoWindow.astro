@@ -23,8 +23,12 @@ interface Props {
 }
 
 const { label, sash = 'limestone', from = 'lg', class: className } = Astro.props;
-const hasLeft = Astro.slots.has('left');
-const hasRight = Astro.slots.has('right');
+// Render the sashes up front: a slot filled by a conditional that evaluates to false
+// still "exists", so emptiness is judged by the rendered HTML.
+const leftHtml = Astro.slots.has('left') ? (await Astro.slots.render('left')).trim() : '';
+const rightHtml = Astro.slots.has('right') ? (await Astro.slots.render('right')).trim() : '';
+const hasLeft = leftHtml !== '';
+const hasRight = rightHtml !== '';
 const both = hasLeft && hasRight;
 
 // Static class strings per breakpoint, so Tailwind can see them.
@@ -57,7 +61,7 @@ const sashBg = sash === 'limestone' ? 'bg-limestone' : 'bg-paper';
   {
     hasLeft && (
       <div class:list={['chicago-sash order-2 border-t-4 border-ink', bp.left, !both && 'md:col-span-2', sashBg]}>
-        <slot name="left" />
+        <Fragment set:html={leftHtml} />
       </div>
     )
   }
@@ -67,13 +71,19 @@ const sashBg = sash === 'limestone' ? 'bg-limestone' : 'bg-paper';
   {
     hasRight && (
       <div class:list={['chicago-sash order-3 border-t-4 border-ink', bp.right, both ? 'md:border-l-4' : 'md:col-span-2', sashBg]}>
-        <slot name="right" />
+        <Fragment set:html={rightHtml} />
       </div>
     )
   }
 </div>
 
 <style>
+  /* min-width: 0 so wide content (thumbnail strips, scroll tracks) scrolls inside the
+     frame instead of stretching the grid column past the viewport. */
+  .chicago-sash,
+  .chicago-pane {
+    min-width: 0;
+  }
   .chicago-sash {
     display: flex;
     flex-direction: column;

@@ -1,0 +1,74 @@
+---
+/**
+ * The project write-up (Overview / The Challenge / Our Solution / The Result) set like
+ * a spec sheet: from 1024 px each section name sits in a narrow label column with its
+ * text beside it, one ruled row per section. Content is the rendered Markdown body.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['project-story', className]}>
+  <slot />
+</div>
+
+<style>
+  .project-story {
+    border-bottom: 1px solid var(--color-ink);
+  }
+  .project-story :global(h2) {
+    border-top: 1px solid var(--color-ink);
+    padding-top: 1rem;
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+  }
+  .project-story :global(h2:first-child) {
+    border-top-width: 4px;
+  }
+  .project-story :global(p) {
+    margin-top: 0.75rem;
+    max-width: var(--container-prose);
+    color: var(--color-stone-700);
+  }
+  .project-story :global(p:last-child),
+  .project-story :global(p:has(+ h2)) {
+    padding-bottom: 1.5rem;
+  }
+  .project-story :global(h2 + p) {
+    color: var(--color-ink);
+  }
+
+  /* From 1024 px: a 4-column story grid (label | text spans 3). The cursor-based auto
+     placement puts each h2 beside its first paragraph. */
+  @media (width >= 64rem) {
+    .project-story {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-content: start;
+      column-gap: 0; /* rules run unbroken across the row; the text column is padded */
+    }
+    .project-story :global(h2) {
+      grid-column: 1;
+      padding-block: 1.25rem;
+      font-size: var(--text-xl);
+      line-height: var(--text-xl--line-height);
+    }
+    .project-story :global(p) {
+      grid-column: 2 / -1;
+      padding-left: 2rem;
+    }
+    .project-story :global(h2 + p) {
+      margin-top: 0;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--color-ink);
+      font-size: var(--text-lg);
+      line-height: var(--text-lg--line-height);
+    }
+    .project-story :global(h2:first-child + p) {
+      border-top-width: 4px;
+    }
+  }
+</style>

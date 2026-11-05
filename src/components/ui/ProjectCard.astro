@@ -3,10 +3,15 @@
  * Project card: 4:3 cover, project title as the card link, and a compact spec table
  * (sector, location, year). Shows a photo count and, outside production, a
  * "Sample write-up" badge on placeholder projects.
- * Phase 5 adds the mini-gallery peek.
+ *
+ * `peek` (projects index, related projects; docs/site-spec.md §5.2): small arrows step
+ * through up to 5 photos without leaving the list. The extra photos sit in a <template>,
+ * so nothing beyond the cover loads until the arrows are first used (or hovered/focused).
+ * Without JS the arrows stay hidden and the card shows the cover.
  */
 import { Picture } from 'astro:assets';
 import Badge from './Badge.astro';
+import Icon from './Icon.astro';
 import SpecList from './SpecList.astro';
 import { isProduction } from '../../config/site';
 import { sectorLabels } from '../../config/taxonomy';
@@ -19,6 +24,8 @@ interface Props {
   sizes?: string;
   /** Above-the-fold cards only. */
   priority?: boolean;
+  /** Mini-gallery arrows (up to 5 photos). */
+  peek?: boolean;
   demo?: 'hover' | 'focus';
   class?: string;
 }
@@ -28,36 +35,75 @@ const {
   headingLevel = 3,
   sizes = '(min-width: 1280px) 400px, (min-width: 1024px) 31vw, (min-width: 768px) 46vw, 100vw',
   priority = false,
+  peek = false,
   demo,
   class: className,
 } = Astro.props;
 
 const Tag = `h${headingLevel}` as 'h2' | 'h3';
 const cover = getCover(project);
-const photoCount = getPhotos(project).length;
+const photos = getPhotos(project);
+const photoCount = photos.length;
 // Built as one string: Astro 7 drops whitespace between adjacent expressions.
 const photoLabel = `${photoCount} ${photoCount === 1 ? 'photo' : 'photos'}`;
 const { title, sector, location, year, placeholder } = project.data;
+
+const peekPhotos = peek ? [cover, ...photos.filter((p) => p.file !== cover.file)].slice(0, 5) : [cover];
+const hasPeek = peekPhotos.length > 1;
+const pictureProps = {
+  width: 1280,
+  height: 960,
+  layout: 'constrained' as const,
+  fit: 'cover' as const,
+  widths: [400, 640, 800, 1280],
+  sizes,
+  formats: ['avif', 'webp'] as ('avif' | 'webp')[],
+  class: 'h-full w-full',
+};
 ---
 
 <article class:list={['card flex flex-col', className]} data-demo={demo}>
-  <div class="relative aspect-4/3 overflow-hidden bg-stone-200">
-    <Picture
-      src={cover.src}
-      alt={cover.alt}
-      width={1280}
-      height={960}
-      layout="constrained"
-      fit="cover"
-      position={cover.position}
-      widths={[400, 640, 800, 1280]}
-      sizes={sizes}
-      formats={['avif', 'webp']}
-      priority={priority}
-      class="h-full w-full"
-    />
+  <div class="relative aspect-4/3 overflow-hidden bg-stone-200" data-peek={hasPeek ? '' : undefined}>
+    <div class="absolute inset-0" data-peek-slide>
+      <Picture src={cover.src} alt={cover.alt} position={cover.position} priority={priority} {...pictureProps} />
+    </div>
+    {
+      hasPeek && (
+        <template data-peek-rest>
+          {peekPhotos.slice(1).map((photo) => (
+            <div class="absolute inset-0" data-peek-slide hidden>
+              <Picture src={photo.src} alt={photo.alt} position={photo.position} {...pictureProps} />
+            </div>
+          ))}
+        </template>
+      )
+    }
     {placeholder && !isProduction && <Badge variant="paper" class="absolute top-3 left-3">Sample write-up</Badge>}
     <Badge variant="ink" class="absolute bottom-3 left-3">{photoLabel}</Badge>
+    {
+      hasPeek && (
+        <div class="absolute right-3 bottom-3 z-10 flex gap-1" data-peek-controls hidden>
+          <button
+            type="button"
+            class="btn btn-secondary btn-icon min-h-10 w-10 bg-paper hover:bg-ink hover:text-paper"
+            aria-label={`Previous photo of ${title}`}
+            aria-disabled="true"
+            data-peek-prev
+          >
+            <Icon name="arrow-left" />
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary btn-icon min-h-10 w-10 bg-paper hover:bg-ink hover:text-paper"
+            aria-label={`Next photo of ${title}`}
+            data-peek-next
+          >
+            <Icon name="arrow-right" />
+          </button>
+          <p class="sr-only" aria-live="polite" data-peek-live></p>
+        </div>
+      )
+    }
   </div>
   <div class="pt-4">
     <Tag class="text-2xl">
@@ -74,3 +120,40 @@ const { title, sector, location, year, placeholder } = project.data;
     />
   </div>
 </article>
+
+<script>
+  // Mini-gallery peek: clone the extra photos in on first interaction, then step
+  // through them (no loop; the arrows go inactive at the ends).
+  for (const frame of document.querySelectorAll<HTMLElement>('[data-peek]')) {
+    const controls = frame.querySelector<HTMLElement>('[data-peek-controls]')!;
+    const prev = frame.querySelector<HTMLButtonElement>('[data-peek-prev]')!;
+    const next = frame.querySelector<HTMLButtonElement>('[data-peek-next]')!;
+    const live = frame.querySelector<HTMLElement>('[data-peek-live]')!;
+    let slides: HTMLElement[] = [];
+    let index = 0;
+
+    const load = () => {
+      const template = frame.querySelector<HTMLTemplateElement>('template[data-peek-rest]');
+      if (template) {
+        template.replaceWith(template.content.cloneNode(true));
+      }
+      slides = [...frame.querySelectorAll<HTMLElement>('[data-peek-slide]')];
+    };
+
+    const show = (i: number) => {
+      if (slides.length === 0) load();
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach((s, j) => (s.hidden = j !== index));
+      prev.setAttribute('aria-disabled', String(index === 0));
+      next.setAttribute('aria-disabled', String(index === slides.length - 1));
+      live.textContent = `Photo ${index + 1} of ${slides.length}`;
+    };
+
+    // Warm up on intent so the next photo is usually ready by the time it's clicked.
+    controls.addEventListener('pointerenter', () => slides.length === 0 && load(), { once: true });
+    controls.addEventListener('focusin', () => slides.length === 0 && load(), { once: true });
+    prev.addEventListener('click', () => prev.getAttribute('aria-disabled') !== 'true' && show(index - 1));
+    next.addEventListener('click', () => next.getAttribute('aria-disabled') !== 'true' && show(index + 1));
+    controls.hidden = false;
+  }
+</script>
