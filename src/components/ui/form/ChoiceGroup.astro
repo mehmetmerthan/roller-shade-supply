@@ -5,6 +5,8 @@ import AlertIcon from './AlertIcon.astro';
 interface Option {
   value: string;
   label: string;
+  /** Machine key for query-string prefill (e.g., "roller-shades"); rendered as data-key. */
+  key?: string;
 }
 
 interface Props {
@@ -18,8 +20,8 @@ interface Props {
   error?: string;
   checked?: string[];
   disabled?: boolean;
-  /** Two columns from 640 px for long lists. */
-  columns?: 1 | 2;
+  /** Two or three columns from 640 px (long lists), or `inline` (short options in one wrapping row). */
+  columns?: 1 | 2 | 3 | 'inline';
   class?: string;
 }
 
@@ -56,7 +58,14 @@ const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
       </p>
     )
   }
-  <div class:list={['mt-2 grid gap-x-6', columns === 2 && 'sm:grid-cols-2']}>
+  <div
+    class:list={[
+      'mt-2 gap-x-6',
+      columns === 'inline' ? 'flex flex-wrap' : 'grid',
+      columns === 2 && 'sm:grid-cols-2',
+      columns === 3 && 'sm:grid-cols-3',
+    ]}
+  >
     {
       options.map((o, i) => (
         <label class="choice" for={`${id}-${i}`}>
@@ -65,6 +74,7 @@ const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
             type={type}
             name={name}
             value={o.value}
+            data-key={o.key}
             checked={checked.includes(o.value)}
             disabled={disabled}
             required={type === 'radio' && required}

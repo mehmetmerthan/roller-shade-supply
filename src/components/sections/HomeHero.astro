@@ -1,24 +1,20 @@
 ---
 /**
- * Home hero (approved [HERO] copy, Direction B sketch): the H1 across ten columns,
- * then the Chicago window. Left sash: what the photo shows, linked to the project.
- * Pane: the hero photo (16:9 from 768 px, the full 4:3 frame on phones).
- * Right sash: the two approved CTAs and click-to-call.
- * Under the window: the two approved paragraphs and the trust strip.
+ * Home introduction (approved [HERO] copy): the H1 across the top, then one framed
+ * row: a limestone sash with the two approved paragraphs, both CTAs, and click-to-call,
+ * beside the hero photo in the wide pane (text left, photo right from 1024 px).
+ * Phones and tablets: the photo comes first and the sash sits below it, as in every
+ * Chicago window frame. The photo pane stretches to the sash's height and is never
+ * shorter than 4:3; each breakpoint gets its own focal-point crop.
  */
 import ArtDirectedPicture from '../ui/ArtDirectedPicture.astro';
 import Button from '../ui/Button.astro';
-import ChicagoWindow from '../ui/ChicagoWindow.astro';
-import FactStrip from '../ui/FactStrip.astro';
 import Hours from '../ui/Hours.astro';
 import Icon from '../ui/Icon.astro';
-import SpecList from '../ui/SpecList.astro';
 import { hero } from '../../copy/approved';
-import { trustStrip } from '../../copy/placeholder';
-import { quoteCta } from '../../config/nav';
+import { quoteCta, projectsPage } from '../../config/nav';
 import { site } from '../../config/site';
-import { operatingSystemLabels, productLabels, sectorLabels } from '../../config/taxonomy';
-import { getCover, projectHref, type Project } from '../../lib/projects';
+import { getCover, type Project } from '../../lib/projects';
 
 interface Props {
   project: Project;
@@ -26,77 +22,69 @@ interface Props {
 
 const { project } = Astro.props;
 const photo = getCover(project);
-const { title, sector, products, operatingSystems } = project.data;
-// Only facts the photo itself supports (product, operation, sector), not placeholder details.
-const facts = [
-  { label: 'Product', value: products.map((p) => productLabels[p]).join(', ') },
-  { label: 'Operation', value: operatingSystems.map((o) => operatingSystemLabels[o]).join(', ') },
-  { label: 'Sector', value: sectorLabels[sector] },
-];
+const [lead, second] = hero.paragraphs;
 ---
 
 <section aria-labelledby="hero-title" class="page-gutter mx-auto max-w-content pt-8 md:pt-12 lg:pt-14">
   <p class="font-semibold text-stone-700">{hero.kicker}</p>
   <h1 id="hero-title" class="mt-3 text-4xl lg:w-5/6">{hero.title}</h1>
 
-  <ChicagoWindow from="xl" class="-mx-4 mt-8 md:-mx-6 md:mt-10 lg:mx-0 lg:mt-12">
-    <Fragment slot="left">
-      <p class="label-spec">Pictured</p>
-      <p class="font-display text-xl font-extrabold">
-        <a href={projectHref(project)} class="link-quiet">{title}</a>
-      </p>
-      <div data-rail="bottom">
-        <SpecList size="compact" layout="stacked-xl" items={facts} />
-      </div>
-    </Fragment>
+  <div class="-mx-4 mt-8 grid border-y-4 border-ink md:-mx-6 md:mt-10 lg:mx-0 lg:mt-12 lg:grid-cols-12 lg:border-4">
+    <div class="relative aspect-4/3 bg-ink md:aspect-video lg:order-2 lg:col-span-7 lg:aspect-4/3 lg:self-stretch lg:justify-self-stretch xl:col-span-8">
+      <ArtDirectedPicture
+        src={photo.src}
+        alt={photo.alt}
+        position={photo.position}
+        priority
+        class="absolute inset-0 h-full"
+        sources={[
+          {
+            media: '(min-width: 80rem)',
+            width: 1600,
+            height: 1400,
+            widths: [800, 1200, 1600],
+            sizes: '800px',
+          },
+          {
+            media: '(min-width: 64rem)',
+            width: 1200,
+            height: 1200,
+            widths: [600, 900, 1200],
+            sizes: '58vw',
+          },
+          {
+            media: '(min-width: 48rem)',
+            width: 2048,
+            height: 1152,
+            widths: [960, 1280, 1600, 2048],
+            sizes: '100vw',
+          },
+          {
+            width: 1280,
+            height: 960,
+            widths: [480, 640, 800, 1024, 1280],
+            sizes: '100vw',
+          },
+        ]}
+      />
+    </div>
 
-    <ArtDirectedPicture
-      src={photo.src}
-      alt={photo.alt}
-      position={photo.position}
-      priority
-      class="aspect-4/3 md:aspect-video"
-      sources={[
-        {
-          media: '(min-width: 48rem)',
-          width: 2560,
-          height: 1440,
-          widths: [960, 1280, 1600, 1920, 2560],
-          sizes: '(min-width: 1280px) 800px, (min-width: 1024px) calc(100vw - 4rem), 100vw',
-        },
-        {
-          width: 1280,
-          height: 960,
-          widths: [480, 640, 800, 1024, 1280],
-          sizes: '100vw',
-        },
-      ]}
-    />
-
-    <Fragment slot="right">
-      <div class="flex flex-col gap-3">
-        {/* Narrow sash from 1280 px: smaller labels that wrap rather than overflow. */}
-        <Button href={quoteCta.href} class="w-full xl:min-h-11 xl:px-3 xl:text-sm xl:whitespace-normal">{hero.primaryCta}</Button>
-        <Button href="/projects/" variant="secondary" class="w-full xl:min-h-11 xl:px-3 xl:text-sm xl:whitespace-normal">{hero.secondaryCta}</Button>
+    <div class="flex flex-col gap-6 border-t-4 border-ink bg-limestone px-4 py-6 md:px-6 md:py-8 lg:order-1 lg:col-span-5 lg:border-t-0 lg:border-r-4 lg:p-8 xl:col-span-4">
+      <div class="space-y-4 md:grid md:grid-cols-2 md:gap-6 md:space-y-0 lg:block lg:space-y-4">
+        <p class="text-lg">{lead}</p>
+        <p class="text-stone-700">{second}</p>
       </div>
-      <div data-rail="bottom">
-        <a
-          href={site.phone.href}
-          class="link-quiet inline-flex min-h-6 items-center gap-2 font-semibold"
-          data-event="click_to_call"
-        >
+      <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+        <Button href={quoteCta.href} class="w-full sm:w-auto lg:w-full">{hero.primaryCta}</Button>
+        <Button href={projectsPage.href} variant="secondary" class="w-full sm:w-auto lg:w-full">{hero.secondaryCta}</Button>
+      </div>
+      <div class="border-t border-ink pt-4 lg:mt-auto">
+        <a href={site.phone.href} class="link-quiet inline-flex min-h-6 items-center gap-2 font-semibold" data-event="click_to_call">
           <Icon name="phone" size={16} />
           <span><span class="sr-only">Call </span>{site.phone.display}</span>
         </a>
         <Hours class="mt-1 text-sm text-stone-700" />
       </div>
-    </Fragment>
-  </ChicagoWindow>
-
-  {/* From 1280 px the paragraphs sit under the pane (columns 3–10). */}
-  <div class="mt-10 grid gap-6 md:grid-cols-2 md:gap-8 lg:mt-12 xl:grid-cols-12">
-    {hero.paragraphs.map((p, i) => <p class:list={['text-lg text-stone-700', i === 0 ? 'xl:col-span-4 xl:col-start-3' : 'xl:col-span-4']}>{p}</p>)}
+    </div>
   </div>
-
-  <FactStrip items={[...trustStrip]} class="mt-12 lg:mt-16" />
 </section>

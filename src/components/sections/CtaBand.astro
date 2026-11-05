@@ -12,6 +12,10 @@ import { quoteCta } from '../../config/nav';
 import { site } from '../../config/site';
 
 interface Props {
+  /** Section id. On Home it is the "Contact" anchor (homeSections.contact.id). */
+  id?: string;
+  /** Marks the section for the header's scroll-spy (Home only). */
+  homeSection?: boolean;
   title?: string;
   intro?: string;
   /** Quote link, e.g. prefilled with ?product=zebra-shades. */
@@ -21,6 +25,8 @@ interface Props {
 }
 
 const {
+  id = 'cta-band',
+  homeSection = false,
   title = contact.title,
   intro = contact.intro,
   href = quoteCta.href,
@@ -29,10 +35,10 @@ const {
 } = Astro.props;
 ---
 
-<section aria-labelledby="cta-band" class:list={['page-gutter mx-auto max-w-content', className]}>
+<section id={id} data-home-section={homeSection ? '' : undefined} aria-labelledby={`${id}-title`} class:list={['page-gutter mx-auto max-w-content', className]}>
   <ChicagoWindow from="xl" class="-mx-4 md:-mx-6 lg:mx-0" sash="paper">
     <div class="h-full bg-limestone px-4 py-10 md:px-6 lg:px-10 lg:py-14">
-      <h2 id="cta-band" class="text-3xl">{title}</h2>
+      <h2 id={`${id}-title`} class="text-3xl">{title}</h2>
       <p class="mt-4 max-w-prose text-lg">{intro}</p>
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
         <Button href={href} size="lg">{ctaLabel}</Button>

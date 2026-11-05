@@ -4,8 +4,8 @@
  * focus returns to the Menu button). The buttons use native invoker commands
  * (`commandfor` / `command`), so the menu opens without JS in current browsers;
  * the Header script adds a fallback for browsers without them.
- * Products and Industries are <details> groups. The sheet rolls down like a shade
- * when it opens (user-triggered; off under reduced motion).
+ * The links scroll to Home sections (the sheet closes first; see Header). The sheet
+ * rolls down like a shade when it opens (user-triggered; off under reduced motion).
  */
 import Logo from '../ui/Logo.astro';
 import Icon from '../ui/Icon.astro';
@@ -45,47 +45,19 @@ const id = 'mobile-menu';
   <nav aria-label="Main" class="page-gutter">
     <ul class="border-b border-ink">
       {
-        mainNav.map((item) =>
-          item.children ? (
-            <li class="border-t border-line first:border-t-0">
-              <details open={path.startsWith(item.href)}>
-                <summary class="disclosure-summary flex min-h-14 cursor-pointer items-center justify-between font-display text-2xl font-extrabold">
-                  {item.label}
-                  <Icon name="chevron-down" size={24} class="disclosure-chevron" />
-                </summary>
-                <ul class="pb-3">
-                  {[{ label: `All ${item.label}`, href: item.href }, ...item.children].map((child) => (
-                    <li>
-                      <a
-                        href={child.href}
-                        class="flex min-h-12 items-center border-l-4 border-line pl-4 font-semibold aria-[current=page]:border-ink"
-                        aria-current={path === child.href ? 'page' : undefined}
-                      >
-                        {child.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </li>
-          ) : (
-            <li class="border-t border-line">
-              <a
-                href={item.href}
-                class="flex min-h-14 items-center font-display text-2xl font-extrabold aria-[current=page]:underline aria-[current=page]:decoration-4 aria-[current=page]:underline-offset-4"
-                aria-current={path === item.href ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ),
-        )
+        mainNav.map((item) => (
+          <li class="border-t border-line first:border-t-0">
+            <a href={item.href} class="flex min-h-14 items-center font-display text-2xl font-extrabold aria-[current=true]:underline aria-[current=true]:decoration-4 aria-[current=true]:underline-offset-4" data-section-link={item.id}>
+              {item.label}
+            </a>
+          </li>
+        ))
       }
     </ul>
   </nav>
 
   <div class="page-gutter grid gap-3 py-6 sm:grid-cols-2">
-    <a href={quoteCta.href} class="btn btn-primary w-full">{quoteCta.label}</a>
+    <a href={quoteCta.href} class="btn btn-primary w-full" aria-current={path === quoteCta.href ? 'page' : undefined}>{quoteCta.label}</a>
     <a href={site.phone.href} class="btn btn-secondary w-full" data-event="click_to_call">
       <Icon name="phone" />
       Call {site.phone.display}

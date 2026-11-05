@@ -1,20 +1,25 @@
 ---
 /**
- * Home (docs/site-spec.md §3). Flow: hero → who it's for → proof (projects,
- * public sector) → products → company → process → quote → CTA.
+ * Home: the whole site on one page (client decision, 11/05/2026). The header links
+ * scroll to these sections (ids in src/config/nav.ts → homeSections).
+ * Flow: introduction → company (who we are, who we serve, why work with us,
+ * public sector) → products → projects → quote → contact.
+ * The two bands (Why Work With Us on limestone, public sector on ink) meet with no
+ * gap between them, like the alternating bands of a zebra shade.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeHero from '../components/sections/HomeHero.astro';
+import WhoWeAre from '../components/sections/WhoWeAre.astro';
 import WhoWeServe from '../components/sections/WhoWeServe.astro';
-import SelectedProjects from '../components/sections/SelectedProjects.astro';
+import WhyWorkWithUs from '../components/sections/WhyWorkWithUs.astro';
 import GovernmentExperience from '../components/sections/GovernmentExperience.astro';
 import ProductsOverview from '../components/sections/ProductsOverview.astro';
-import WhoWeAre from '../components/sections/WhoWeAre.astro';
-import HowItWorks from '../components/sections/HowItWorks.astro';
+import SelectedProjects from '../components/sections/SelectedProjects.astro';
 import FastQuote from '../components/sections/FastQuote.astro';
 import CtaBand from '../components/sections/CtaBand.astro';
 import { pageMeta } from '../copy/seo';
 import { homePhotos } from '../config/home';
+import { homeSections } from '../config/nav';
 import { getCover, getPhotos, getProjects } from '../lib/projects';
 import { businessSchema, websiteSchema } from '../lib/seo';
 import { logo } from '../lib/brand';
@@ -31,7 +36,6 @@ const heroPhoto = getCover(heroProject);
 const aboutProject = byId(homePhotos.about.project);
 const aboutPhoto = getPhotos(aboutProject).find((p) => p.file === homePhotos.about.file) ?? getCover(aboutProject);
 const featured = projects.filter((p) => p.data.featured);
-const publicSector = projects.filter((p) => p.data.sector === 'education' || p.data.sector === 'government' || p.data.industries.includes('government'));
 
 const meta = pageMeta['/'];
 ---
@@ -44,12 +48,12 @@ const meta = pageMeta['/'];
   jsonLd={[websiteSchema(), businessSchema(logo!.src)]}
 >
   <HomeHero project={heroProject} />
-  <WhoWeServe class="mt-section lg:mt-section-lg" />
-  <SelectedProjects featured={featured} totalProjects={projects.length} class="mt-section lg:mt-section-lg" />
-  <GovernmentExperience projects={publicSector} class="mt-section lg:mt-section-lg" />
-  <ProductsOverview class="mt-section lg:mt-section-lg" />
   <WhoWeAre project={aboutProject} photo={aboutPhoto} class="mt-section lg:mt-section-lg" />
-  <HowItWorks class="mt-section lg:mt-section-lg" />
+  <WhoWeServe class="mt-section lg:mt-section-lg" />
+  <WhyWorkWithUs class="mt-section lg:mt-section-lg" />
+  <GovernmentExperience />
+  <ProductsOverview class="mt-section lg:mt-section-lg" />
+  <SelectedProjects featured={featured} totalProjects={projects.length} class="mt-section lg:mt-section-lg" />
   <FastQuote class="mt-section lg:mt-section-lg" />
-  <CtaBand class="my-section lg:my-section-lg" />
+  <CtaBand id={homeSections.contact.id} homeSection class="my-section lg:my-section-lg" />
 </BaseLayout>

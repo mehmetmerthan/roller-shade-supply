@@ -32,14 +32,6 @@ export const industryLabels: Record<Industry, string> = {
   government: 'Government & Public Sector',
 };
 
-/** URL slug of each industry page under /industries/. */
-export const industrySlugs: Record<Industry, string> = {
-  multifamily: 'multifamily',
-  commercial: 'commercial',
-  education: 'education',
-  government: 'government-public-sector',
-};
-
 export const productLabels: Record<Product, string> = {
   'roller-shades': 'Roller Shades',
   'zebra-shades': 'Zebra Shades',
@@ -63,6 +55,3 @@ export const laborLabels: Record<Labor, string> = {
   'non-union': 'Non-union',
   'not-specified': 'Not specified',
 };
-
-export const productHref = (product: Product) => `/products/${product}/`;
-export const industryHref = (industry: Industry) => `/industries/${industrySlugs[industry]}/`;

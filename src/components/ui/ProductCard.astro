@@ -1,8 +1,10 @@
 ---
 /**
  * Product card: an elevation drawing (not a project photo, so a card never implies
- * project proof we don't have), the product name as the card link, and its approved
- * one-line description.
+ * project proof we don't have), the product name, its approved one-line description,
+ * and a call to action (e.g., "Get Pricing for Roller Shades" → the quote form with
+ * the product prefilled). The call to action is the card link, so the whole card
+ * is clickable.
  */
 import ProductElevation from './ProductElevation.astro';
 import type { Product } from '../../config/taxonomy';
@@ -12,12 +14,13 @@ interface Props {
   title: string;
   description: string;
   href: string;
+  ctaLabel: string;
   headingLevel?: 2 | 3;
   demo?: 'hover' | 'focus';
   class?: string;
 }
 
-const { product, title, description, href, headingLevel = 3, demo, class: className } = Astro.props;
+const { product, title, description, href, ctaLabel, headingLevel = 3, demo, class: className } = Astro.props;
 const Tag = `h${headingLevel}` as 'h2' | 'h3';
 ---
 
@@ -26,9 +29,10 @@ const Tag = `h${headingLevel}` as 'h2' | 'h3';
     <ProductElevation product={product} />
   </div>
   <div class="flex flex-1 flex-col pt-4">
-    <Tag class="text-2xl">
-      <a href={href} class="card-link card-title">{title}</a>
-    </Tag>
+    <Tag class="text-2xl">{title}</Tag>
     <p class="mt-2 text-stone-700">{description}</p>
+    <p class="mt-auto pt-4">
+      <a href={href} class="card-link link inline-flex min-h-6 items-center font-semibold underline">{ctaLabel}</a>
+    </p>
   </div>
 </article>

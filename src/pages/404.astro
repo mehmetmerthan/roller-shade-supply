@@ -1,0 +1,33 @@
+---
+/**
+ * Not found (§10 copy; noindex, not in the sitemap). Netlify serves dist/404.html
+ * for unknown paths, including old links to pages that no longer exist.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { notFound } from '../copy/placeholder';
+import { pageMeta } from '../copy/seo';
+import { homeSections, projectsPage, quoteCta } from '../config/nav';
+
+const meta = pageMeta['/404/'];
+const links = [projectsPage, homeSections.products, quoteCta, { label: 'Home', href: '/' }];
+---
+
+<BaseLayout title={meta.title} description={meta.description} fullTitle noindex>
+  <div class="page-gutter mx-auto max-w-content py-section lg:py-section-lg">
+    <div class="border-t-4 border-ink pt-6 lg:w-5/6">
+      <h1 class="text-4xl">{notFound.title}</h1>
+      <p class="mt-6 max-w-prose text-lg">{notFound.body}</p>
+      <ul class="mt-6 max-w-md border-t border-ink">
+        {
+          links.map((link) => (
+            <li class="border-b border-line">
+              <a href={link.href} class="link-quiet flex min-h-12 items-center font-semibold">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

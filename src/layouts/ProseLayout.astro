@@ -1,0 +1,67 @@
+---
+/**
+ * Text pages (Privacy Policy, Accessibility Statement): breadcrumbs, the H1, an
+ * optional "last updated" date, and the body in a ruled column at prose width.
+ * Body markup is plain h2 / p / ul, styled here.
+ */
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+import { breadcrumbSchema, type Crumb } from '../lib/seo';
+
+interface Props {
+  title: string;
+  /** Full document title (≤ 60 characters, brand included). */
+  documentTitle: string;
+  description: string;
+  path: string;
+  /** MM/DD/YYYY */
+  updated?: string;
+  noindex?: boolean;
+}
+
+const { title, documentTitle, description, path, updated, noindex = false } = Astro.props;
+const crumbs: Crumb[] = [
+  { name: 'Home', href: '/' },
+  { name: title, href: path },
+];
+---
+
+<BaseLayout title={documentTitle} description={description} fullTitle noindex={noindex} jsonLd={[breadcrumbSchema(crumbs)]}>
+  <div class="page-gutter mx-auto max-w-content pt-8 pb-section md:pt-12 lg:pb-section-lg">
+    <Breadcrumbs crumbs={crumbs} />
+    <div class="mt-6 grid gap-8 lg:grid-cols-12">
+      <header class="lg:col-span-10">
+        <h1 class="text-4xl">{title}</h1>
+        {updated && <p class="mt-4 text-sm text-stone-700">Last updated {updated}</p>}
+      </header>
+      <div class="prose-body border-t-4 border-ink pt-6 lg:col-span-8 lg:col-start-3">
+        <slot />
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .prose-body {
+    max-width: var(--container-prose);
+  }
+  .prose-body :global(h2) {
+    margin-top: 2.5rem;
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+  }
+  .prose-body :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .prose-body :global(p),
+  .prose-body :global(ul) {
+    margin-top: 1rem;
+  }
+  .prose-body :global(ul) {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+  .prose-body :global(li + li) {
+    margin-top: 0.5rem;
+  }
+</style>

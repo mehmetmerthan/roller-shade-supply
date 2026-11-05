@@ -1,11 +1,11 @@
 ---
 /**
- * [WHO-WE-ARE] beside a portrait project photo, then "Why work with us" (§3 value
- * props, placeholders) as a ruled 3 × 2 table. Not numbered: the items aren't a sequence.
+ * [WHO-WE-ARE]: the approved paragraphs beside a portrait project photo. The photo
+ * sits on the left so the section mirrors the introduction above it (text | photo).
  */
 import { Picture } from 'astro:assets';
 import { whoWeAre } from '../../copy/approved';
-import { valueProps } from '../../copy/placeholder';
+import { homeSections } from '../../config/nav';
 import { projectHref, type Project, type ProjectPhoto } from '../../lib/projects';
 
 interface Props {
@@ -15,19 +15,23 @@ interface Props {
 }
 
 const { photo, project, class: className } = Astro.props;
+const { id } = homeSections.whoWeAre;
 const [lead, ...rest] = whoWeAre.paragraphs;
+const union = rest.at(-1);
+const body = rest.slice(0, -1);
 ---
 
-<section aria-labelledby="who-we-are" class:list={['page-gutter mx-auto max-w-content', className]}>
-  <div class="grid gap-8 border-t-4 border-ink pt-4 md:grid-cols-12 lg:pt-6">
-    <div class="md:col-span-7 lg:col-span-6 lg:col-start-3">
-      <h2 id="who-we-are" class="text-3xl">{whoWeAre.title}</h2>
+<section id={id} data-home-section aria-labelledby={`${id}-title`} class:list={['page-gutter mx-auto max-w-content', className]}>
+  <div class="grid gap-8 border-t-4 border-ink pt-4 md:grid-cols-12 lg:gap-8 lg:pt-6">
+    <div class="md:order-2 md:col-span-7 lg:col-span-6 lg:col-start-6">
+      <h2 id={`${id}-title`} class="text-3xl">{whoWeAre.title}</h2>
       <div class="mt-4 max-w-prose space-y-4">
         <p class="text-lg">{lead}</p>
-        {rest.map((p) => <p class="text-stone-700">{p}</p>)}
+        {body.map((p) => <p class="text-stone-700">{p}</p>)}
       </div>
+      {union && <p class="mt-6 max-w-prose border-l-4 border-ink pl-4 font-semibold">{union}</p>}
     </div>
-    <figure class="md:col-span-5 md:pt-2 lg:col-span-4 lg:col-start-9">
+    <figure class="md:order-1 md:col-span-5 md:pt-2 lg:col-span-4">
       <Picture
         src={photo.src}
         alt={photo.alt}
@@ -45,19 +49,5 @@ const [lead, ...rest] = whoWeAre.paragraphs;
         <a href={projectHref(project)} class="link-quiet inline-flex min-h-6 items-center">{project.data.title}</a>
       </figcaption>
     </figure>
-  </div>
-
-  <div class="mt-16 grid gap-4 lg:mt-20 xl:grid-cols-12 xl:gap-8">
-    <h3 class="text-xl xl:col-span-2 xl:pt-5">Why work with us</h3>
-    <ul class="grid gap-px border-y border-ink bg-line md:grid-cols-2 lg:grid-cols-3 xl:col-span-10">
-      {
-        valueProps.map((v) => (
-          <li class="bg-paper px-4 py-5 lg:px-6 lg:py-6">
-            <h4 class="text-xl">{v.title}</h4>
-            <p class="mt-2 text-stone-700">{v.text}</p>
-          </li>
-        ))
-      }
-    </ul>
   </div>
 </section>

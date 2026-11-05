@@ -1,24 +1,28 @@
 ---
 /**
- * Site header.
- *   < 768 px   logo + Menu (the sticky action bar carries Call / Get a Quote)
+ * Site header, sticky at every width: the main links scroll to Home sections
+ * (anchor navigation), so the header has to stay in reach.
+ *   < 768 px   logo + Menu (the bottom action bar carries Call / Get a Quote)
  *   768–1023   logo + phone + Request a Quote + Menu
- *   ≥ 1024     logo + main nav (Products and Industries dropdowns) + phone + Request a Quote
- * Not sticky: on phones the action bar is the persistent CTA.
+ *   1024–1279  logo + section links + Request a Quote (no room for the phone)
+ *   ≥ 1280     logo + section links + phone + Request a Quote
+ * On Home, the link for the section in view is marked (scroll-spy below).
+ * `html { scroll-padding-top }` in global.css keeps anchors and focused elements
+ * clear of the header.
  */
 import Logo from '../ui/Logo.astro';
 import Icon from '../ui/Icon.astro';
-import DesktopDropdown from './DesktopDropdown.astro';
 import MobileMenu from './MobileMenu.astro';
 import { mainNav, quoteCta } from '../../config/nav';
 import { site } from '../../config/site';
 
 const path = Astro.url.pathname;
+const isHome = path === '/';
 ---
 
-<header class="border-b border-ink bg-paper">
+<header class="sticky top-0 z-30 border-b border-ink bg-paper">
   <div class="page-gutter mx-auto flex h-16 max-w-content items-center gap-3 md:h-20 lg:gap-4">
-    <a href="/" class="mr-auto shrink-0 py-2 lg:mr-2" aria-current={path === '/' ? 'page' : undefined}>
+    <a href="/" class="mr-auto shrink-0 py-2 lg:mr-2" aria-current={isHome ? 'page' : undefined}>
       <Logo height={44} imgClass="h-9 w-auto md:h-11" />
     </a>
 
@@ -27,13 +31,9 @@ const path = Astro.url.pathname;
         {
           mainNav.map((item) => (
             <li>
-              {item.children ? (
-                <DesktopDropdown item={item} path={path} />
-              ) : (
-                <a href={item.href} class="nav-link" aria-current={path === item.href ? 'page' : undefined} data-current={path !== item.href && path.startsWith(item.href) ? '' : undefined}>
-                  {item.label}
-                </a>
-              )}
+              <a href={item.href} class="nav-link" data-section-link={item.id}>
+                {item.label}
+              </a>
             </li>
           ))
         }
@@ -42,43 +42,27 @@ const path = Astro.url.pathname;
 
     <a
       href={site.phone.href}
-      class="hidden min-h-11 items-center gap-2 px-1 text-sm font-semibold whitespace-nowrap md:inline-flex xl:text-base"
+      class="hidden min-h-11 items-center gap-2 px-1 text-sm font-semibold whitespace-nowrap md:inline-flex lg:hidden xl:inline-flex xl:text-base"
       data-event="click_to_call"
     >
       <Icon name="phone" size={20} />
       <span><span class="sr-only">Call </span>{site.phone.display}</span>
     </a>
-    <a href={quoteCta.href} class="btn btn-primary btn-sm hidden md:inline-flex xl:min-h-12 xl:px-5 xl:text-base">{quoteCta.label}</a>
+    <a
+      href={quoteCta.href}
+      class="btn btn-primary btn-sm hidden md:inline-flex xl:min-h-12 xl:px-5 xl:text-base"
+      aria-current={path === quoteCta.href ? 'page' : undefined}
+    >
+      {quoteCta.label}
+    </a>
     <MobileMenu path={path} class="lg:hidden" />
   </div>
 </header>
 
 <script>
-  // Desktop dropdowns: Esc closes (focus returns to the toggle), outside click and
-  // focus leaving the menu close it. Native <details> handles open/close itself.
-  const dropdowns = [...document.querySelectorAll<HTMLDetailsElement>('[data-nav-dropdown]')];
-  const closeAll = (except?: HTMLDetailsElement) => {
-    for (const d of dropdowns) if (d !== except) d.open = false;
-  };
-  for (const d of dropdowns) {
-    d.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && d.open) {
-        d.open = false;
-        d.querySelector('summary')?.focus();
-      }
-    });
-    d.addEventListener('focusout', (e) => {
-      const next = e.relatedTarget as Node | null;
-      if (next && !d.contains(next)) d.open = false;
-    });
-  }
-  document.addEventListener('click', (e) => {
-    const target = e.target as Node;
-    if (!dropdowns.some((d) => d.contains(target))) closeAll();
-  });
-
-  // Mobile menu: fallback for browsers without invoker commands, and close the
-  // dialog if the viewport grows past the breakpoint while it is open.
+  // Mobile menu: fallback for browsers without invoker commands; links close the
+  // sheet (they scroll to a Home section or leave the page); close it if the
+  // viewport grows past the breakpoint while it is open.
   const menu = document.getElementById('mobile-menu') as HTMLDialogElement | null;
   if (menu) {
     if (!('command' in HTMLButtonElement.prototype)) {
@@ -86,12 +70,38 @@ const path = Astro.url.pathname;
         b.addEventListener('click', () => (b.getAttribute('command') === 'show-modal' ? menu.showModal() : menu.close()));
       }
     }
-    // Same-page links (e.g., "#...") should close the sheet.
     menu.addEventListener('click', (e) => {
       if ((e.target as Element).closest('a')) menu.close();
     });
     window.matchMedia('(min-width: 64rem)').addEventListener('change', (mq) => {
       if (mq.matches && menu.open) menu.close();
     });
+  }
+
+  // Scroll-spy (Home only): mark the link of the section crossing the upper third
+  // of the viewport. Sections without a header link (e.g., Why Work With Us) clear it.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-section-link]')];
+  const sections = [...document.querySelectorAll<HTMLElement>('[data-home-section]')];
+  if (location.pathname === '/' && sections.length > 0) {
+    const setCurrent = (id: string | null) => {
+      for (const link of links) {
+        if (link.dataset.sectionLink === id) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      }
+    };
+    const visible = new Set<HTMLElement>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target as HTMLElement);
+          else visible.delete(entry.target as HTMLElement);
+        }
+        // The last section (in page order) that crosses the band wins.
+        const current = sections.filter((s) => visible.has(s)).at(-1);
+        setCurrent(current?.id ?? null);
+      },
+      { rootMargin: '-30% 0px -65% 0px' },
+    );
+    for (const s of sections) observer.observe(s);
   }
 </script>

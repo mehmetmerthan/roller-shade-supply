@@ -126,3 +126,55 @@ export const contact = {
   submitLabel: 'Submit Quote Request',
   responseNote: 'We respond to qualified project and wholesale inquiries by email.',
 } as const;
+
+/**
+ * [CONTACT] "Contact Form": the approved field labels and options, verbatim (trailing
+ * colons dropped for layout). The form adds fields marked ✚ in docs/site-spec.md §7;
+ * their copy lives in placeholder.ts (`quoteFormCopy`).
+ */
+export const quoteFields = {
+  name: 'Name',
+  company: 'Company',
+  email: 'Email Address',
+  location: 'Project Location',
+  role: {
+    label: 'I am a',
+    options: [
+      'Builder or general contractor',
+      'Developer',
+      'Property manager',
+      'Commercial business',
+      'Government or public-sector representative',
+      'Architect or designer',
+      'Wholesale customer',
+      'Other',
+    ],
+  },
+  product: {
+    label: 'Product Type',
+    options: ['Roller shades', 'Zebra shades', 'Faux wood blinds', 'Not sure yet', 'Other'],
+  },
+  projectType: {
+    label: 'Project Type',
+    options: [
+      'Multifamily housing',
+      'Commercial office',
+      'Government or public facility',
+      'School or educational facility',
+      'New construction',
+      'Renovation',
+      'Other',
+    ],
+  },
+  quantity: 'Estimated Quantity',
+  measurements: 'Measurements — Width × Height',
+  operatingSystem: {
+    label: 'Preferred Operating System',
+    options: ['Cordless', 'Chain-operated', 'Motorized', 'Solar-powered motorized', 'Not sure yet'],
+  },
+  details: {
+    label: 'Tell Us About Your Project',
+    hint: 'Please include the measurements, quantity, project location, expected timeline, and any other relevant details.',
+  },
+  upload: 'Upload Plans or Measurement List — Optional',
+} as const;

@@ -123,7 +123,7 @@ export function creativeWorkSchema(work: {
   images: string[];
   year: number;
   location: string;
-  about: { name: string; href: string }[];
+  about: { name: string; href?: string }[];
 }): JsonLd {
   return {
     '@type': 'CreativeWork',
@@ -133,7 +133,7 @@ export function creativeWorkSchema(work: {
     image: work.images.map(abs),
     dateCreated: String(work.year),
     locationCreated: { '@type': 'Place', name: work.location },
-    about: work.about.map((a) => ({ '@type': 'Thing', name: a.name, url: abs(a.href) })),
+    about: work.about.map((a) => ({ '@type': 'Thing', name: a.name, ...(a.href ? { url: abs(a.href) } : {}) })),
     creator: { '@id': orgId },
     inLanguage: site.locale,
   };

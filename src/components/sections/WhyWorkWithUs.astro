@@ -1,0 +1,33 @@
+---
+/**
+ * Why Work With Us (docs/additional-content.md §3 value props, placeholders) on a
+ * limestone band, as a ruled 3 × 2 table. Not numbered: the items aren't a sequence.
+ * TODO(content): heading and items need client confirmation (CONTENT_TODO.md §4).
+ */
+import SectionHeading from '../ui/SectionHeading.astro';
+import { valueProps } from '../../copy/placeholder';
+import { homeSections } from '../../config/nav';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const { id, label } = homeSections.whyUs;
+---
+
+<section id={id} data-home-section aria-labelledby={`${id}-title`} class:list={['bg-limestone py-section lg:py-section-lg', className]}>
+  <div class="page-gutter mx-auto max-w-content">
+    <SectionHeading id={`${id}-title`} title={label} />
+    <ul class="mt-8 grid gap-px border-y border-ink bg-stone-400 md:grid-cols-2 lg:mt-10 lg:grid-cols-3">
+      {
+        valueProps.map((v) => (
+          <li class="bg-limestone px-4 py-5 lg:px-6 lg:py-6">
+            <h3 class="text-xl">{v.title}</h3>
+            <p class="mt-2">{v.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

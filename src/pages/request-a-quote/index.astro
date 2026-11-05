@@ -1,0 +1,110 @@
+---
+/**
+ * Request a Quote (docs/site-spec.md §3 and §7): the quote form beside an aside with
+ * the approved [FAST-QUOTE] checklist and example, what happens next (§4, the steps
+ * moved here from Home), and direct contact. Phones: the aside follows the form;
+ * "Prefer to talk?" sits under the intro, because this page hides the bottom action bar
+ * (it would cover the form, and its "Get a Quote" button would point here).
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import Hours from '../../components/ui/Hours.astro';
+import Icon from '../../components/ui/Icon.astro';
+import QuoteForm from '../../components/sections/QuoteForm.astro';
+import { contact, fastQuote, whoWeServe } from '../../copy/approved';
+import { processSteps, quoteAside, quoteFormCopy } from '../../copy/placeholder';
+import { pageMeta } from '../../copy/seo';
+import { quoteCta } from '../../config/nav';
+import { site } from '../../config/site';
+import { breadcrumbSchema, type Crumb } from '../../lib/seo';
+
+const meta = pageMeta['/request-a-quote/'];
+const crumbs: Crumb[] = [
+  { name: 'Home', href: '/' },
+  { name: quoteCta.label, href: quoteCta.href },
+];
+const panel = 'border-t-4 border-ink pt-4';
+---
+
+<BaseLayout title={meta.title} description={meta.description} fullTitle actionBar={false} jsonLd={[breadcrumbSchema(crumbs)]}>
+  <div class="page-gutter mx-auto max-w-content pt-8 pb-section md:pt-12 lg:pb-section-lg">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="mt-6 lg:w-5/6">
+      <h1 class="text-4xl">{quoteCta.label}</h1>
+      <p class="mt-4 max-w-prose text-lg">{contact.intro}</p>
+      <p class="mt-3 max-w-prose text-sm text-stone-700">{whoWeServe.note}</p>
+      <p class="mt-4">
+        <span class="font-semibold">{quoteFormCopy.callPrompt}</span>{' '}
+        <a href={site.phone.href} class="link inline-flex min-h-6 items-center gap-1.5 font-semibold" data-event="click_to_call">
+          <Icon name="phone" size={16} />
+          <span><span class="sr-only">Call </span>{site.phone.display}</span>
+        </a>
+      </p>
+    </header>
+
+    <div class="mt-10 grid gap-section lg:mt-14 lg:grid-cols-12 lg:gap-8">
+      <QuoteForm class="lg:col-span-8" />
+
+      <aside aria-label="Quote help" class="space-y-10 lg:col-span-4 lg:col-start-9">
+        <section aria-labelledby="aside-include" class:list={[panel, 'bg-limestone px-4 pb-5 lg:px-5']}>
+          <h2 id="aside-include" class="text-xl">{quoteAside.include}</h2>
+          <ul class="mt-3 border-t border-ink">
+            {
+              fastQuote.checklist.map((item) => (
+                <li class="flex items-center gap-3 border-b border-stone-400 py-2">
+                  <Icon name="check" size={16} />
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+          <figure class="mt-5">
+            <figcaption class="label-spec text-stone-700">{fastQuote.exampleTitle}</figcaption>
+            <blockquote class="mt-2 text-sm">
+              <p>“{fastQuote.example}”</p>
+            </blockquote>
+          </figure>
+        </section>
+
+        <section aria-labelledby="aside-next" class={panel}>
+          <h2 id="aside-next" class="text-xl">{quoteAside.next}</h2>
+          <ol class="mt-3">
+            {
+              processSteps.map((step, i) => (
+                <li class="grid grid-cols-[2rem_1fr] gap-x-2 border-t border-line py-3 first:border-t-0 first:pt-0">
+                  <span class="font-display text-2xl leading-none font-extrabold" aria-hidden="true">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <h3 class="font-sans text-base font-semibold tracking-normal">
+                      <span class="sr-only">Step {i + 1}: </span>
+                      {step.title}
+                    </h3>
+                    <p class="mt-0.5 text-sm text-stone-700">{step.text}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </section>
+
+        <section aria-labelledby="aside-contact" class={panel}>
+          <h2 id="aside-contact" class="text-xl">{quoteAside.contact}</h2>
+          <p class="mt-3">
+            <a href={site.phone.href} class="link-quiet inline-flex min-h-6 items-center gap-2 font-semibold" data-event="click_to_call">
+              <Icon name="phone" size={16} />
+              <span><span class="sr-only">Call </span>{site.phone.display}</span>
+            </a>
+          </p>
+          <p class="mt-1">
+            <a href={`mailto:${site.email.quotes}`} class="link-quiet inline-flex min-h-6 items-center gap-2 break-all" data-event="email_click">
+              <Icon name="mail" size={16} />
+              {site.email.quotes}
+            </a>
+          </p>
+          <Hours class="mt-2 text-sm text-stone-700" />
+        </section>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

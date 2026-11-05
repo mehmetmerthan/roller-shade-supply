@@ -1,0 +1,25 @@
+---
+/**
+ * Accessibility Statement, from the draft in docs/additional-content.md §11.
+ * TODO(content): needs review before launch (CONTENT_TODO.md §4).
+ */
+import ProseLayout from '../layouts/ProseLayout.astro';
+import { pageMeta } from '../copy/seo';
+import { site } from '../config/site';
+
+const path = '/accessibility/';
+const meta = pageMeta[path];
+---
+
+<ProseLayout title="Accessibility Statement" documentTitle={meta.title} description={meta.description} path={path} updated="11/05/2026">
+  <p>
+    {site.name} is committed to making our website usable by everyone, including people with disabilities. We aim to meet the Web
+    Content Accessibility Guidelines (WCAG) 2.2 at Level AA.
+  </p>
+  <p>
+    If you have trouble using any part of this site, please contact us at
+    <a class="link" href={`mailto:${site.email.general}`}>{site.email.general}</a> or
+    <a class="link whitespace-nowrap" href={site.phone.href}>{site.phone.display}</a>, and we’ll help you get the information you
+    need and work to fix the problem.
+  </p>
+</ProseLayout>

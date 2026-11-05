@@ -352,8 +352,27 @@ const widthsFor = (w: number) => [...[480, 800, 1200, 1600].filter((x) => x < w)
     // PhotoSwipe 5.4 waits for the large photo before it finishes opening, and only binds
     // its keyboard handler (and accepts close()) once open. An Esc or Close during that
     // wait was lost. Catch it and close as soon as the opening animation ends.
+    // An Esc even earlier, while the PhotoSwipe module is still loading (no instance
+    // yet), is remembered from the moment opening is requested.
+    let requested = false;
+    let escBeforeInit = false;
+    const loadAndOpen = lightbox.loadAndOpen.bind(lightbox);
+    lightbox.loadAndOpen = (...args: Parameters<typeof loadAndOpen>) => {
+      requested = true;
+      escBeforeInit = false;
+      const opening = loadAndOpen(...args);
+      if (!opening) requested = false;
+      return opening;
+    };
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && requested && !lightbox.pswp) {
+        e.preventDefault();
+        escBeforeInit = true;
+      }
+    });
     lightbox.on('beforeOpen', () => {
       const pswp = lightbox.pswp;
+      requested = false;
       if (!pswp) return;
       let pending = false;
       const closeWhenOpen = () => {
@@ -372,6 +391,10 @@ const widthsFor = (w: number) => [...[480, 800, 1200, 1600].filter((x) => x < w)
       document.addEventListener('keydown', earlyEsc);
       pswp.on('bindEvents', () => document.removeEventListener('keydown', earlyEsc));
       pswp.on('destroy', () => document.removeEventListener('keydown', earlyEsc));
+      if (escBeforeInit) {
+        escBeforeInit = false;
+        closeWhenOpen();
+      }
     });
 
     let openedFromButton = false;

@@ -1,8 +1,9 @@
 ---
 /**
- * Project detail (docs/site-spec.md §3): breadcrumbs → H1 → facts row → gallery (and
- * videos) → write-up beside the spec panel, highlights, and related pages → related
- * projects (hidden when none) → previous / next → CTA with a prefilled quote link.
+ * Project detail (docs/site-spec.md §3): breadcrumbs → H1 → facts row → gallery →
+ * write-up beside the spec panel and highlights → videos → related projects (hidden
+ * when none) → previous / next → CTA with a prefilled quote link.
+ * (No product or industry pages since the one-page redesign, so no "related pages".)
  */
 import { getImage } from 'astro:assets';
 import { render } from 'astro:content';
@@ -21,11 +22,8 @@ import CtaBand from '../../components/sections/CtaBand.astro';
 import { contact } from '../../copy/approved';
 import { isProduction, site } from '../../config/site';
 import {
-  industryHref,
-  industryLabels,
   laborLabels,
   operatingSystemLabels,
-  productHref,
   productLabels,
   projectTypeLabels,
   sectorLabels,
@@ -89,11 +87,6 @@ const specs = [
   { label: 'Client', value: d.clientType },
 ];
 
-const relatedPages = [
-  ...d.products.map((p) => ({ group: 'Product', name: productLabels[p], href: productHref(p) })),
-  ...d.industries.map((i) => ({ group: 'Industry', name: industryLabels[i], href: industryHref(i) })),
-];
-
 const schemaImages = await Promise.all(
   photos.slice(0, 4).map(async (p) => (await getImage({ src: p.src, width: Math.min(1200, p.src.width), format: 'jpg' })).src),
 );
@@ -115,7 +108,7 @@ const quoteLink = quoteHref({ product: d.products[0], projectType: sectorToProje
       images: schemaImages,
       year: d.year,
       location: d.location,
-      about: d.products.map((p) => ({ name: productLabels[p], href: productHref(p) })),
+      about: d.products.map((p) => ({ name: productLabels[p] })),
     }),
   ]}
 >
@@ -160,21 +153,6 @@ const quoteLink = quoteHref({ product: d.products[0], projectType: sectorToProje
           </ul>
         </section>
 
-        <nav aria-labelledby="related-pages">
-          <h2 id="related-pages" class="text-xl">Related pages</h2>
-          <ul class="mt-3 border-t border-ink">
-            {
-              relatedPages.map((page) => (
-                <li class="flex min-h-12 items-center justify-between gap-4 border-b border-line py-2">
-                  <a href={page.href} class="link inline-flex min-h-6 items-center font-semibold">
-                    {page.name}
-                  </a>
-                  <span class="label-spec" aria-hidden="true">{page.group}</span>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
       </aside>
     </div>
     {

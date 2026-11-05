@@ -5,16 +5,18 @@
  */
 import SectionHeading from '../ui/SectionHeading.astro';
 import { whoWeServe } from '../../copy/approved';
+import { homeSections } from '../../config/nav';
 
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+const { id } = homeSections.whoWeServe;
 ---
 
-<section aria-labelledby="who-we-serve" class:list={['page-gutter mx-auto max-w-content', className]}>
-  <SectionHeading id="who-we-serve" title={whoWeServe.title} intro={whoWeServe.intro} />
+<section id={id} data-home-section aria-labelledby={`${id}-title`} class:list={['page-gutter mx-auto max-w-content', className]}>
+  <SectionHeading id={`${id}-title`} title={whoWeServe.title} intro={whoWeServe.intro} />
   <ul class="mt-8 grid gap-px border-y border-ink bg-line sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
     {
       whoWeServe.audiences.map((audience) => (

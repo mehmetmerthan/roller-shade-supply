@@ -1,0 +1,46 @@
+---
+/**
+ * Labeled file input with hint and error (same rules as TextField). The size and
+ * type checks run in the browser (src/lib/form-validation.ts); `accept` also
+ * filters the file picker.
+ */
+import AlertIcon from './AlertIcon.astro';
+
+interface Props {
+  id: string;
+  label: string;
+  name?: string;
+  accept: string;
+  /** Largest allowed file, in bytes. */
+  maxBytes: number;
+  hint?: string;
+  /** Client-side messages: `size` (too large) and `type` (not in `accept`). */
+  messages: { size: string; type: string };
+  class?: string;
+}
+
+const { id, label, name = id, accept, maxBytes, hint, messages, class: className } = Astro.props;
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = `${id}-error`;
+---
+
+<div class={className}>
+  <label for={id} class="field-label">{label}</label>
+  {hint && <p id={hintId} class="field-hint">{hint}</p>}
+  <input
+    id={id}
+    name={name}
+    type="file"
+    accept={accept}
+    aria-describedby={hintId}
+    data-validate
+    data-max-bytes={maxBytes}
+    data-msg-size={messages.size}
+    data-msg-type={messages.type}
+    class="field-control field-file"
+  />
+  <p id={errorId} class="field-error" hidden>
+    <AlertIcon />
+    <span><span class="sr-only">Error: </span><span data-error-text></span></span>
+  </p>
+</div>

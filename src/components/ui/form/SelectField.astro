@@ -1,5 +1,5 @@
 ---
-/** Labeled native select with hint and error (same rules as TextField). */
+/** Labeled native select with hint and error (same rules as TextField, including `messages`). */
 import AlertIcon from './AlertIcon.astro';
 
 interface Option {
@@ -15,6 +15,8 @@ interface Props {
   required?: boolean;
   hint?: string;
   error?: string;
+  /** Client-side message shown when nothing is selected. */
+  messages?: { required?: string };
   value?: string;
   /** First, empty option. */
   placeholder?: string;
@@ -31,6 +33,7 @@ const {
   required = false,
   hint,
   error,
+  messages,
   value,
   placeholder = 'Select one',
   disabled = false,
@@ -39,8 +42,8 @@ const {
 } = Astro.props;
 
 const hintId = hint ? `${id}-hint` : undefined;
-const errorId = error ? `${id}-error` : undefined;
-const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+const errorId = error || messages ? `${id}-error` : undefined;
+const describedBy = [hintId, error && errorId].filter(Boolean).join(' ') || undefined;
 ---
 
 <div class={className}>
@@ -55,6 +58,8 @@ const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
     disabled={disabled}
     aria-invalid={error ? 'true' : undefined}
     aria-describedby={describedBy}
+    data-validate={messages ? '' : undefined}
+    data-msg-required={messages?.required}
     data-demo={demo}
     class="field-control"
   >
@@ -62,10 +67,10 @@ const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
     {options.map((o) => <option value={o.value} selected={o.value === value}>{o.label}</option>)}
   </select>
   {
-    error && (
-      <p id={errorId} class="field-error">
+    errorId && (
+      <p id={errorId} class="field-error" hidden={!error}>
         <AlertIcon />
-        <span><span class="sr-only">Error: </span>{error}</span>
+        <span><span class="sr-only">Error: </span><span data-error-text>{error}</span></span>
       </p>
     )
   }

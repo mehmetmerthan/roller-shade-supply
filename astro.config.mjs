@@ -8,7 +8,6 @@ import { site } from './src/config/site.ts';
 const SITEMAP_EXCLUDE = new Set([
   '/styleguide/',
   '/request-a-quote/thank-you/',
-  '/contact/thank-you/',
   '/404/',
 ]);
 

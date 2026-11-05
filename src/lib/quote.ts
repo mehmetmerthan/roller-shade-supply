@@ -1,7 +1,8 @@
 /**
  * Prefilled links to the quote form (docs/site-spec.md §7: "Prefill from the query
  * string", e.g. /request-a-quote/?product=zebra-shades&projectType=school).
- * The quote form (Phase 7) reads the same vocabulary, so keep these in sync.
+ * The quote form (src/components/sections/QuoteForm.astro) reads the same vocabulary
+ * and checks at build time that the labels match the approved options.
  */
 import { quoteCta } from '../config/nav';
 import type { Product, Sector } from '../config/taxonomy';

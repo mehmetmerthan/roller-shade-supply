@@ -1,0 +1,33 @@
+---
+/**
+ * Thank-you page after a quote request (§10 copy; noindex, not in the sitemap).
+ * The form backend (src/lib/forms.ts) shows this page after a successful POST.
+ * `data-page-event` marks the `quote_submitted` analytics event for the Phase 8
+ * analytics script (no analytics provider is configured yet).
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/ui/Button.astro';
+import { thankYou } from '../../copy/placeholder';
+import { pageMeta } from '../../copy/seo';
+import { projectsPage } from '../../config/nav';
+import { site } from '../../config/site';
+
+const meta = pageMeta['/request-a-quote/thank-you/'];
+---
+
+<BaseLayout title={meta.title} description={meta.description} fullTitle noindex>
+  <div class="page-gutter mx-auto max-w-content py-section lg:py-section-lg" data-page-event="quote_submitted">
+    <div class="border-t-4 border-ink pt-6 lg:w-5/6">
+      <h1 class="text-4xl">{thankYou.title}</h1>
+      <p class="mt-6 max-w-prose text-lg">{thankYou.body}</p>
+      <p class="mt-3 max-w-prose">
+        {thankYou.urgent}{' '}
+        <a href={site.phone.href} class="link font-semibold whitespace-nowrap" data-event="click_to_call">{site.phone.display}</a>.
+      </p>
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+        <Button href={projectsPage.href}>{thankYou.projectsCta}</Button>
+        <Button href="/" variant="secondary">{thankYou.homeCta}</Button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

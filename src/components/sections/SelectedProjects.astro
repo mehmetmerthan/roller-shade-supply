@@ -7,6 +7,7 @@ import Button from '../ui/Button.astro';
 import ProjectCarousel from '../ui/ProjectCarousel.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 import { selectedProjects } from '../../copy/approved';
+import { homeSections, projectsPage } from '../../config/nav';
 import type { Project } from '../../lib/projects';
 
 interface Props {
@@ -17,15 +18,16 @@ interface Props {
 }
 
 const { featured, totalProjects, class: className } = Astro.props;
+const { id } = homeSections.projects;
 ---
 
-<section aria-labelledby="selected-projects" class:list={['page-gutter mx-auto max-w-content', className]}>
-  <SectionHeading id="selected-projects" title={selectedProjects.title} intro={selectedProjects.paragraphs[0]}>
+<section id={id} data-home-section aria-labelledby={`${id}-title`} class:list={['page-gutter mx-auto max-w-content', className]}>
+  <SectionHeading id={`${id}-title`} title={selectedProjects.title} intro={selectedProjects.paragraphs[0]}>
     <p class="mt-3 max-w-prose text-stone-700">{selectedProjects.paragraphs[1]}</p>
   </SectionHeading>
   <ProjectCarousel id="featured-projects" label="Featured projects" projects={featured} class="mt-8 lg:mt-10">
     <Fragment slot="actions">
-      <Button href="/projects/" variant="secondary">{selectedProjects.cta}</Button>
+      <Button href={projectsPage.href} variant="secondary">{selectedProjects.cta}</Button>
       <p class="text-sm text-stone-700">{totalProjects} projects in the gallery</p>
     </Fragment>
   </ProjectCarousel>

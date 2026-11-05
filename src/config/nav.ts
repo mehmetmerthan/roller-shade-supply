@@ -1,6 +1,10 @@
 /**
  * Single source of truth for navigation (header, mobile menu, footer).
- * Labels follow docs/approved-copy.md and docs/additional-content.md §10.
+ *
+ * The site is one long Home page plus the project gallery and the quote form
+ * (client decision, 11/05/2026). The header links scroll to Home sections, so
+ * every section's `id` comes from `homeSections` below. The links are written as
+ * "/#id" so they also work from every other page.
  */
 
 export interface NavLink {
@@ -8,9 +12,9 @@ export interface NavLink {
   href: string;
 }
 
-export interface NavItem extends NavLink {
-  /** Present for items that open a dropdown (Products, Industries). */
-  children?: NavLink[];
+/** A Home section with an anchor. `id` is the section element's id on Home. */
+export interface SectionLink extends NavLink {
+  id: string;
 }
 
 export interface FooterColumn {
@@ -18,30 +22,35 @@ export interface FooterColumn {
   links: NavLink[];
 }
 
-export const productLinks: NavLink[] = [
-  { label: 'Roller Shades', href: '/products/roller-shades/' },
-  { label: 'Zebra Shades', href: '/products/zebra-shades/' },
-  { label: 'Faux Wood Blinds', href: '/products/faux-wood-blinds/' },
-  { label: 'Operating Systems', href: '/products/operating-systems/' },
-];
+const section = (id: string, label: string): SectionLink => ({ id, label, href: `/#${id}` });
 
-export const industryLinks: NavLink[] = [
-  { label: 'Multifamily', href: '/industries/multifamily/' },
-  { label: 'Commercial', href: '/industries/commercial/' },
-  { label: 'Education', href: '/industries/education/' },
-  { label: 'Government & Public Sector', href: '/industries/government-public-sector/' },
-];
+/** Home sections, in page order. Labels are the sections' approved headings (shortened where noted). */
+export const homeSections = {
+  whoWeAre: section('who-we-are', 'Who We Are'),
+  whoWeServe: section('who-we-serve', 'Who We Serve'),
+  whyUs: section('why-work-with-us', 'Why Work With Us'),
+  // TODO(content): short label for "Government and Public-Sector Experience".
+  publicSector: section('public-sector', 'Public-Sector Experience'),
+  products: section('products', 'Our Products'),
+  projects: section('projects', 'Selected Projects'),
+  fastQuote: section('fast-quote', 'Get a Fast Quote'),
+  contact: section('contact', 'Contact'),
+} as const;
 
-export const mainNav: NavItem[] = [
-  { label: 'Products', href: '/products/', children: productLinks },
-  { label: 'Industries', href: '/industries/', children: industryLinks },
-  { label: 'Projects', href: '/projects/' },
-  { label: 'About', href: '/about/' },
-  { label: 'Contact', href: '/contact/' },
+/** Header and mobile menu, in page order. "Projects" is the short label for Selected Projects. */
+export const mainNav: SectionLink[] = [
+  homeSections.whoWeAre,
+  homeSections.whoWeServe,
+  homeSections.products,
+  { ...homeSections.projects, label: 'Projects' },
+  homeSections.contact,
 ];
 
 /** Primary conversion. Approved label. */
 export const quoteCta: NavLink = { label: 'Request a Quote', href: '/request-a-quote/' };
+
+/** The full project gallery (approved CTA label "View Project Gallery"). */
+export const projectsPage: NavLink = { label: 'Project Gallery', href: '/projects/' };
 
 /** Sticky bottom bar on mobile. The call link's href comes from site.phone. */
 export const mobileActions = {
@@ -50,25 +59,19 @@ export const mobileActions = {
   quoteHref: quoteCta.href,
 } as const;
 
+// TODO(content): footer column headings are new microcopy.
 export const footerColumns: FooterColumn[] = [
   {
-    heading: 'Products',
-    links: [{ label: 'All Products', href: '/products/' }, ...productLinks],
-  },
-  {
-    heading: 'Industries',
-    links: [{ label: 'All Industries', href: '/industries/' }, ...industryLinks],
-  },
-  {
     heading: 'Company',
-    links: [
-      { label: 'About', href: '/about/' },
-      { label: 'Projects', href: '/projects/' },
-      { label: 'How to Measure', href: '/how-to-measure/' },
-      { label: 'FAQ', href: '/faq/' },
-      { label: 'Contact', href: '/contact/' },
-      quoteCta,
-    ],
+    links: [homeSections.whoWeAre, homeSections.whoWeServe, homeSections.whyUs, homeSections.publicSector],
+  },
+  {
+    heading: 'Our Work',
+    links: [homeSections.products, homeSections.projects, projectsPage],
+  },
+  {
+    heading: 'Get a Quote',
+    links: [homeSections.fastQuote, quoteCta, { label: 'Contact Us', href: homeSections.contact.href }],
   },
 ];
 

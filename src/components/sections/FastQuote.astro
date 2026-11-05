@@ -1,24 +1,25 @@
 ---
 /**
  * [FAST-QUOTE]: the checklist beside the approved example request, read back as a
- * filled-in form against the checklist, then the measurement note and the CTA.
+ * filled-in form against the checklist, then the measurement note. No button of its
+ * own: the contact band directly below carries Request a Quote.
  */
-import Button from '../ui/Button.astro';
 import Icon from '../ui/Icon.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 import { fastQuote } from '../../copy/approved';
 import { exampleBreakdown } from '../../copy/placeholder';
-import { quoteCta } from '../../config/nav';
+import { homeSections } from '../../config/nav';
 
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+const { id } = homeSections.fastQuote;
 ---
 
-<section aria-labelledby="fast-quote" class:list={['page-gutter mx-auto max-w-content', className]}>
-  <SectionHeading id="fast-quote" title={fastQuote.title} intro={fastQuote.intro} />
+<section id={id} data-home-section aria-labelledby={`${id}-title`} class:list={['page-gutter mx-auto max-w-content', className]}>
+  <SectionHeading id={`${id}-title`} title={fastQuote.title} intro={fastQuote.intro} />
 
   <div class="mt-8 grid gap-10 lg:mt-10 lg:grid-cols-12 lg:gap-8">
     <div class="lg:col-span-4 lg:col-start-3">
@@ -53,9 +54,6 @@ const { class: className } = Astro.props;
       </dl>
     </figure>
 
-    <div class="flex flex-col gap-6 lg:col-span-10 lg:col-start-3 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
-      <p class="max-w-prose text-stone-700">{fastQuote.measurementNote}</p>
-      <Button href={quoteCta.href} size="lg" class="shrink-0">{quoteCta.label}</Button>
-    </div>
+    <p class="max-w-prose text-stone-700 lg:col-span-8 lg:col-start-3">{fastQuote.measurementNote}</p>
   </div>
 </section>

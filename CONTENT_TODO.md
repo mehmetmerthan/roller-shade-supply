@@ -22,7 +22,7 @@ Sources: `docs/additional-content.md` ([CONFIRM] items and §12 open questions),
 | ☐ | Extended area | Larger projects elsewhere in Illinois and Northwest Indiana | Confirm. Water Power Lofts is in **Rockford** (~90 mi from Chicago) |
 | ☐ | Quote response time | "within one business day" | Confirm the turnaround |
 | ☐ | LinkedIn and other social profiles | none | URLs, or keep them hidden |
-| ☐ | Founding year and team details | none | Optional, for the About page |
+| ☐ | Founding year and team details | none | Optional, for Who We Are |
 | ☐ | Existing website | unknown | If one exists, list its URLs so redirects can be set up |
 | ☐ | `features.launched` | `false` (every build is staging: noindex, robots Disallow, "Sample write-up" badges) | Flip to `true` only at launch, after this list is cleared |
 
@@ -46,7 +46,7 @@ All 13 project write-ups are adapted from `docs/mock-projects.yaml`. **Every fac
 | ☐ | Permission to publish | Written OK to publish each project name and its photos. **Especially:** UPS Center, Lexus Glenview, Stern Pinball, ERIK'S Bike Shop, the schools, and the mosque. Can visible brand signage stay in the photos? |
 | ☐ | Real facts | Location, year, products, fabrics, quantity, operating systems, union / non-union, client type (may we name the GC or owner?), and a one-paragraph story |
 | ☐ | Government projects | Approved copy says "successfully completed government and public-sector projects", but every public-sector folder is a school. Are there non-school government projects with photos? |
-| ☐ | Product proof | Every project shows **chain-operated roller shades**, except Stern Pinball, which appears motorized. **We have no photos of zebra shades, faux wood blinds, cordless, or solar-powered systems.** Those product pages will show no related projects until the client sends photos (CLAUDE.md → "Product proof and related projects") |
+| ☐ | Product proof | Every project shows **chain-operated roller shades**, except Stern Pinball, which appears motorized. **We have no photos of zebra shades, faux wood blinds, cordless, or solar-powered systems.** No project counts as proof for them until the client sends photos (CLAUDE.md → "Product proof and related projects") |
 
 ### 3.2 Project-by-project (all 13 live)
 | ☐ | Project (folder) | Status | Open items |
@@ -149,24 +149,25 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 
 | ☐ | Section | Item |
 |---|---|---|
-| ☐ | §2 Trust strip | Optional stats ("[X]+ shades supplied", "[X] schools completed", "Serving Chicago since [year]"). Show only with real numbers |
+| ☐ | §2 Trust strip | **Removed from Home on 11/05/2026** (it repeated the sections below it). Optional stats ("[X]+ shades supplied", "[X] schools completed", "Serving Chicago since [year]") could return, but only with real numbers |
 | ☐ | §3 Why work with us | #2 consistent product claim; #3 labeling by unit or room; #6 quote turnaround |
-| ☐ | §4 How it works | Step 2 turnaround; step 3 submittals and samples; step 4 made to size, phased delivery, labeling; **step 5: do they install, coordinate installers, or supply only?** Home shows steps 1–4 only; step 5 is left out until this is answered |
-| ☐ | Home microcopy (new, written for layout) | Hero caption label "Pictured"; trust-strip labels "Projects / Sectors / Range / Company"; "{n} projects in the gallery"; "School and public-sector projects"; "Industry pages"; staging-only note "These projects are sample write-ups until their details are confirmed."; section headings "How It Works" and "Why work with us"; footer labels "Contact / Office / Hours / Service area" (`src/copy/`, `src/components/`) |
+| ☐ | §4 How it works | Step 2 turnaround; step 3 submittals and samples; step 4 made to size, phased delivery, labeling; **step 5: do they install, coordinate installers, or supply only?** Shown as "What happens next" beside the quote form (moved off Home on 11/05/2026), steps 1–4 only; step 5 is left out until this is answered |
+| ☐ | Home microcopy (new, written for layout) | Section heading "Why Work With Us"; "{n} projects in the gallery"; product-card links "Get Pricing for {Product}" (§10 draft); footer labels "Contact / Office / Hours / Service area" (`src/copy/`, `src/components/`) |
+| ☐ | Navigation labels (new, 11/05/2026) | Header and menu: "Who We Are · Who We Serve · Our Products · Projects · Contact" (section headings; "Projects" is short for Selected Projects, "Contact" for Let’s Discuss Your Project). Footer columns "Company / Our Work / Get a Quote", short label "Public-Sector Experience", "Project Gallery", "Contact Us" (`src/config/nav.ts`) |
 | ☐ | Home "Example Request" read-back | The approved example is repeated as a filled-in table (Product type, Width and height, Quantity, Operating system, Project location, Expected timeline). Labels come from the approved checklist and values restate the example; confirm the client is happy with the treatment (`src/copy/placeholder.ts`) |
-| ☐ | Home section order | Spec order was hero, who we serve, products, projects. Built as hero, who we serve, **projects, public sector, products**, who we are, how it works, fast quote, CTA, so proof comes before products (site-spec §3 allows refining the order) |
+| ☐ | Pages not built (11/05/2026) | The site is one page now, so §5 product pages, §6 industry pages and the `/industries/` overview, About, §8 FAQ, How to Measure, and Contact are **not built**. Their copy stays in `docs/additional-content.md`. The questions below still matter for quotes and for any page that returns |
 | ☐ | §5.1 Roller Shades | Fabric types offered (light-filtering, room-darkening/blackout, side channels, solar screen openness 1/3/5/10%, dual roller); options (mounts, fascia/cassette, bottom bars) |
 | ☐ | §5.3 Faux Wood Blinds | Typical spec (2" slats, cordless lift, tilt wand, finishes) |
 | ☐ | §5.4 Operating Systems | Each system's description; any standards claims (ANSI/WCMA A100.1); building-controls integration; **every cell of the comparison table**; fabric performance claims (NFPA 701, GREENGUARD Gold, antimicrobial, PVC-free) |
 | ☐ | §6 Industry pages | Multifamily "how we help"; Education recommendations (flame-resistant fabrics); Government certifications (MBE/WBE/DBE/VBE), prevailing wage, tax-exempt purchasing, POs, vendor registrations |
-| ☐ | §6 `/industries/` overview | **New page; no copy exists.** Title, meta description, and intro to write and approve |
 | ☐ | §7 Project support services | Every item: takeoffs, field measuring, submittals, phased deliveries, labeling, installation, replacement orders, trade accounts |
 | ☐ | §8 FAQ | Turnaround, minimum order, measurement verification, child-safety compliance, flame-resistant fabrics, building-controls integration, warranty, submittals, installation, phased delivery, extended service area, replacement orders |
-| ☐ | §9 SEO metadata | All titles and descriptions are drafts. Plus new entries for `/industries/` and `/contact/thank-you/` |
-| ☐ | §10 Microcopy | Upload helper "Up to 10 MB"; thank-you page turnaround; project-page CTA "Planning a similar project?" |
+| ☐ | §9 SEO metadata | All titles and descriptions are drafts. Only the pages that exist use them: Home, Projects, Request a Quote, Privacy Policy, Accessibility, plus new entries for the thank-you page and the 404 page (`src/copy/seo.ts`) |
+| ☐ | §10 Microcopy | Upload helper now says **7 MB** (see §6); thank-you page H1 lightly edited to "Thanks, we’ve received your request." and its turnaround; the 404 links point to Projects, Our Products (Home), Request a Quote, and Home; project-page CTA "Planning a similar project?" |
+| ☐ | Quote form copy (new, 11/05/2026) | Group headings "About you / Your project / Sizes and plans / Project details"; hints (role, City or ZIP code, timeline, quantity, "Select all that apply", size rows, paste box); options for ✚ Union project? (Union / Non-union / Not sure), ✚ Expected Timeline (spec list), ✚ How did you hear about us? (Search engine / Referral from a colleague / Saw one of our projects / Returning customer / Other); errors beyond §10 ("Please enter your email address.", "Please choose the option that best describes you.", the file-type message); "We use your details only to respond to your request."; "Prefer to talk?"; aside headings "Please include / What happens next / Talk to our team". Approved fields keep their labels and options; Estimated Quantity sits with the measurements (approved order otherwise) (`src/copy/placeholder.ts` → `quoteFormCopy`) |
 | ☐ | Projects pages microcopy (new, written for layout) | `/projects/` H1 "Commercial Window Covering Projects" (built on the §9 keyword; the intro is approved [PROJECTS]); filter-chip labels; project-page headings "Specifications", "Highlights", "Related pages", "Related projects", "Video(s)"; gallery labels "All photos" and "Full screen"; "Previous project" / "Next project". The Labor fact is hidden when a project's labor is "not specified" |
 | ☐ | How to Measure | "Approximate sizes are fine for budgeting; final sizes are verified before production" |
-| ☐ | §11 Legal | Privacy Policy and Accessibility Statement need **legal review** before launch |
+| ☐ | §11 Legal | `/privacy-policy/` (written from the §11 outline) and `/accessibility/` (the §11 draft) are **built and need legal review** before launch. The policy mentions cookieless analytics, which isn't set up yet (§6) |
 | ☐ | Testimonials | `features.testimonials = false` until real, approved quotes with written permission exist |
 | ☐ | Manufacturer brands | Which brands are carried, and may we name them or show their logos? |
 | ☐ | Lead times and minimums | Typical lead times by product; minimum order quantities |
@@ -181,9 +182,8 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 ## 6. Website operations
 | ☐ | Item | Notes |
 |---|---|---|
-| ☐ | Quote-form recipients | Who receives quote requests by email? |
-| ☐ | Upload size limit | Placeholder says 10 MB. **Verify Netlify Forms' upload limit** in its current docs (it may be lower) before promising a number |
-| ☐ | Contact-form recipients | Who receives general inquiries? |
+| ☐ | Quote-form recipients | Who receives quote requests by email? Set them in Netlify → Forms → `quote` → notifications after the first deploy. The form can't be tested end to end until it's deployed on Netlify (locally it goes straight to the thank-you page) |
+| ☐ | Upload size limit | Netlify Forms caps the whole request at **8 MB** (docs checked 11/05/2026), so the form allows one file under **7 MB** and points larger files to the quote email. Confirm that's acceptable, or plan a different upload service (`src/lib/forms.ts`) |
 | ☐ | Analytics | Cloudflare Web Analytics or Plausible? Provide the site ID (`features.analytics`) |
 | ☐ | Google Business Profile | Does one exist? NAP must match the site exactly |
 | ☐ | Who adds projects after launch | Decides whether a CMS is needed |
@@ -203,3 +203,4 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 | 11/05/2026 | Product proof | `products` / `operatingSystems` now list only what photos or videos show. Zebra and motorized claims were removed from Lexus Glenview, Grove Junior High School, and Stern Pinball (Stern keeps motorized because its videos show it; confirm) |
 | 11/05/2026 | Home hero photo | SRIS International School cover (`033ef675…`, 2560 × 1920 client photo): it shows the product most clearly. 16:9 crop from 768 px, the full 4:3 frame on phones (`src/config/home.ts`). The user delegated this decision |
 | 11/05/2026 | Video audio | Stays removed from the web videos (smaller files, no voices published). The user delegated this decision |
+| 11/05/2026 | One-page structure | At the user's request: Home carries the whole story (introduction → Who We Are → Who We Serve → Why Work With Us → public sector → Our Products → Selected Projects → Get a Fast Quote → Let’s Discuss Your Project), and the header links scroll to its sections. Removed: the "Pictured" hero sash (the photo now sits beside the introduction), the school and public-sector project list, the industry-page links, the trust strip, and How It Works on Home (moved to the quote page). Product, industry, About, FAQ, How to Measure, and Contact pages won't be built. `/request-a-quote/` (form + thank-you), `/privacy-policy/`, `/accessibility/`, and a 404 page were built |

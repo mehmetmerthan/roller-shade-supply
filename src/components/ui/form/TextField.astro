@@ -3,6 +3,10 @@
  * Labeled text input or textarea with hint and error.
  * Required fields say "(required)" in the label. Errors set aria-invalid and are
  * linked with aria-describedby; the message starts with an icon and "Error:" for screen readers.
+ *
+ * `messages` turns on client-side validation (src/lib/form-validation.ts): the error
+ * slot is rendered hidden and the messages ride on the control as data attributes.
+ * `error` renders a static error (styleguide).
  */
 import AlertIcon from './AlertIcon.astro';
 
@@ -14,10 +18,14 @@ interface Props {
   required?: boolean;
   hint?: string;
   error?: string;
+  /** Client-side messages: `required` (empty) and `format` (e.g., invalid email). */
+  messages?: { required?: string; format?: string };
   value?: string;
   placeholder?: string;
   autocomplete?: string;
   inputmode?: 'text' | 'email' | 'tel' | 'numeric' | 'decimal' | 'url';
+  min?: number;
+  maxlength?: number;
   disabled?: boolean;
   rows?: number;
   /** Styleguide only: force a visual state. */
@@ -33,10 +41,13 @@ const {
   required = false,
   hint,
   error,
+  messages,
   value,
   placeholder,
   autocomplete,
   inputmode,
+  min,
+  maxlength,
   disabled = false,
   rows = 5,
   demo,
@@ -44,8 +55,8 @@ const {
 } = Astro.props;
 
 const hintId = hint ? `${id}-hint` : undefined;
-const errorId = error ? `${id}-error` : undefined;
-const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+const errorId = error || messages ? `${id}-error` : undefined;
+const describedBy = [hintId, error && errorId].filter(Boolean).join(' ') || undefined;
 const common = {
   id,
   name,
@@ -53,8 +64,12 @@ const common = {
   disabled,
   placeholder,
   autocomplete,
+  maxlength,
   'aria-invalid': error ? ('true' as const) : undefined,
   'aria-describedby': describedBy,
+  'data-validate': messages ? '' : undefined,
+  'data-msg-required': messages?.required,
+  'data-msg-format': messages?.format,
   'data-demo': demo,
   class: 'field-control',
 };
@@ -69,14 +84,14 @@ const common = {
     type === 'textarea' ? (
       <textarea {...common} rows={rows}>{value}</textarea>
     ) : (
-      <input {...common} type={type} value={value} inputmode={inputmode} />
+      <input {...common} type={type} value={value} inputmode={inputmode} min={min} />
     )
   }
   {
-    error && (
-      <p id={errorId} class="field-error">
+    errorId && (
+      <p id={errorId} class="field-error" hidden={!error}>
         <AlertIcon />
-        <span><span class="sr-only">Error: </span>{error}</span>
+        <span><span class="sr-only">Error: </span><span data-error-text>{error}</span></span>
       </p>
     )
   }

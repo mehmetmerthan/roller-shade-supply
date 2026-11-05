@@ -36,6 +36,8 @@ Sections: 1 Design brief · 2 Sitemap & navigation · 3 Page specs · 4 Componen
 
 ## 2. Sitemap & navigation
 
+> **Superseded on 11/05/2026 (client decision).** The site is now **one long Home page** with anchor navigation (header links scroll to its sections), plus the project gallery (`/projects/`, `/projects/[slug]/`), `/request-a-quote/` (+ thank-you), `/privacy-policy/`, `/accessibility/`, and the 404 page. The About, Products, product, Operating Systems, Industries, How to Measure, FAQ, and Contact pages below are **not built**; their copy stays in `docs/additional-content.md` in case they return. Header and footer: see `src/config/nav.ts`. Home order: introduction → Who We Are → Who We Serve → Why Work With Us → Government and Public-Sector Experience → Our Products → Selected Projects → Get a Fast Quote → Let’s Discuss Your Project.
+
 | URL | Page | Indexed |
 |---|---|---|
 | `/` | Home | yes |
@@ -74,6 +76,8 @@ Sections: 1 Design brief · 2 Sitemap & navigation · 3 Page specs · 4 Componen
 Approved copy section IDs refer to `docs/approved-copy.md`; numbered sections refer to `docs/additional-content.md`.
 
 ### Home `/`
+> Superseded 11/05/2026: see the note at the top of §2 for the current section order.
+
 1. **Hero** — [HERO] H1 + both paragraphs, CTAs "Request a Quote" / "View Our Projects", large photo from a featured project. Trust strip below (§2).
 2. **Who We Serve** — [WHO-WE-SERVE] the 7 audiences as a compact, scannable grid, plus the residential note.
 3. **Products** — [PRODUCTS] 3 product cards + a row of the 4 operating options → product pages.

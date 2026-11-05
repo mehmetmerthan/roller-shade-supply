@@ -5,6 +5,7 @@
 - **Audience:** trade, wholesale, and project-based buyers. **Not homeowners.**
 - **Site goals:** (1) turn visits into qualified quote requests, (2) prove capability with the completed projects in `/assets`, (3) rank for commercial window-covering searches in Chicagoland.
 - **Primary conversion:** the quote form at `/request-a-quote/`. Secondary: phone call, email.
+- **Site structure (client decision, 11/05/2026):** one long Home page whose header links scroll to its sections (`homeSections` in `src/config/nav.ts`), plus `/projects/`, `/projects/[slug]/`, `/request-a-quote/` (+ `/thank-you/`), `/privacy-policy/`, `/accessibility/`, and 404. **Don't build** About, product, industry, FAQ, How to Measure, or Contact pages (the `docs/site-spec.md` sitemap is superseded). Home order: introduction → Who We Are → Who We Serve → Why Work With Us → public sector → Our Products → Selected Projects → Get a Fast Quote → Let’s Discuss Your Project (`#contact`).
 
 ## Language & locale
 - Everything is in **American English**: site copy, code, comments, commit messages, file names, and your replies in this repo.
@@ -81,7 +82,8 @@ docs/   CONTENT_TODO.md   /.screenshots/ (gitignored)
    - print a before/after size report.
 4. **Galleries are auto-discovered:** `import.meta.glob('/src/assets/projects/*/*.{jpg,jpeg,png,webp,avif}', { eager: true })`, grouped by folder, natural sort (`2` before `10`). Cover = frontmatter `cover`, else `cover.*`, else the first image. The client can control order by prefixing file names with `01-`, `02-`… The project-page gallery opens on the cover, then the rest in that order. Use the helpers in `src/lib/projects.ts` (`getProjects`, `getPhotos`, `getCover`, `getRelatedProjects`, `getAdjacentProjects`).
    - **Galleries and cards:** `ProjectGallery` (scroll-snap stage in a Chicago window, contact-sheet thumbnails, PhotoSwipe lightbox with 2048 px files) and `ProjectCard peek` (up to 5 photos, kept in a `<template>` until first use). Both work without JS.
-   - **Quote links:** build prefilled links with `quoteHref()` in `src/lib/quote.ts` (`?product=<product>&projectType=<multifamily|commercial|government|school|new-construction|renovation|other>`); the quote form reads the same vocabulary.
+   - **Quote links:** build prefilled links with `quoteHref()` in `src/lib/quote.ts` (`?product=<product>&projectType=<multifamily|commercial|government|school|new-construction|renovation|other>`); the quote form (`src/components/sections/QuoteForm.astro`) reads the same vocabulary.
+   - **Forms:** the backend sits behind `src/lib/forms.ts` (Netlify Forms: `data-netlify`, honeypot, multipart POST, success page = `action`). Netlify stores only fields present in the built HTML, so browser-built inputs (the size rows) write into an existing hidden field. Request limit 8 MB → one upload under 7 MB. Client-side validation: `src/lib/form-validation.ts` with `messages` on `TextField` / `SelectField` / `FileField`.
    - **Crops:** pass `width` + `height` + `fit="cover"` + `position={photo.position}` to `<Picture>`. The custom image service (`src/lib/image-service.ts`) turns percentage positions into exact focal-point crops at build time, because sharp alone only accepts keywords.
    - **Covers:** use the project's strongest photo. Web-sourced (`origin: web`), video stills, and low-res images (under 1280 px long edge) are fine in galleries. They should not be the cover when a better client photo exists, and **never the home hero**. `check:projects` warns on low-res or non-client covers.
 5. Each folder maps to `src/content/projects/<slug>.md` whose frontmatter `folder` equals the exact folder name. `check:projects` fails the build on any mismatch.
@@ -127,7 +129,7 @@ Body (Markdown): `## Overview` · `## The Challenge` · `## Our Solution` · `##
 
 ### Product proof and related projects
 - `products` and `operatingSystems` list **only what the project's photos or videos show**, so a project never counts as proof for something we have no photos of. Today every project shows roller shades. Only Stern Pinball shows (apparently) motorized operation. **No project shows zebra shades, faux wood blinds, cordless, or solar-powered systems.**
-- Related-projects sections (product, industry, and project pages) are built from those fields and **hide entirely when empty**. Never fill them with a project that doesn't show the product.
+- Related-projects sections (project pages) are built from those fields and **hide entirely when empty**. Never fill them with a project that doesn't show the product.
 
 ### Held-back projects
 Currently none: every project is live. The mechanism stays for later. A project folder with no usable photos is **held back** by saving its entry as `src/content/projects/_<slug>.md`. The collection's glob pattern (`[^_]*.md`) skips it, so it gets no page and never appears in listings, carousels, related projects, the sitemap, or JSON-LD. `check:projects` lists held entries and warns "ready to enable" once the folder has usable images.
