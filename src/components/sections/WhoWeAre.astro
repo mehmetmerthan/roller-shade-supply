@@ -1,0 +1,63 @@
+---
+/**
+ * [WHO-WE-ARE] beside a portrait project photo, then "Why work with us" (§3 value
+ * props, placeholders) as a ruled 3 × 2 table. Not numbered: the items aren't a sequence.
+ */
+import { Picture } from 'astro:assets';
+import { whoWeAre } from '../../copy/approved';
+import { valueProps } from '../../copy/placeholder';
+import { projectHref, type Project, type ProjectPhoto } from '../../lib/projects';
+
+interface Props {
+  photo: ProjectPhoto;
+  project: Project;
+  class?: string;
+}
+
+const { photo, project, class: className } = Astro.props;
+const [lead, ...rest] = whoWeAre.paragraphs;
+---
+
+<section aria-labelledby="who-we-are" class:list={['page-gutter mx-auto max-w-content', className]}>
+  <div class="grid gap-8 border-t-4 border-ink pt-4 md:grid-cols-12 lg:pt-6">
+    <div class="md:col-span-7 lg:col-span-6 lg:col-start-3">
+      <h2 id="who-we-are" class="text-3xl">{whoWeAre.title}</h2>
+      <div class="mt-4 max-w-prose space-y-4">
+        <p class="text-lg">{lead}</p>
+        {rest.map((p) => <p class="text-stone-700">{p}</p>)}
+      </div>
+    </div>
+    <figure class="md:col-span-5 md:pt-2 lg:col-span-4 lg:col-start-9">
+      <Picture
+        src={photo.src}
+        alt={photo.alt}
+        width={960}
+        height={1200}
+        layout="constrained"
+        fit="cover"
+        position={photo.position}
+        widths={[400, 640, 800, 960]}
+        sizes="(min-width: 1280px) 384px, (min-width: 1024px) 31vw, (min-width: 768px) 40vw, 100vw"
+        formats={['avif', 'webp']}
+        class="block aspect-4/5 h-auto w-full"
+      />
+      <figcaption class="mt-2 text-sm text-stone-700">
+        <a href={projectHref(project)} class="link-quiet inline-flex min-h-6 items-center">{project.data.title}</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="mt-16 grid gap-4 lg:mt-20 xl:grid-cols-12 xl:gap-8">
+    <h3 class="text-xl xl:col-span-2 xl:pt-5">Why work with us</h3>
+    <ul class="grid gap-px border-y border-ink bg-line md:grid-cols-2 lg:grid-cols-3 xl:col-span-10">
+      {
+        valueProps.map((v) => (
+          <li class="bg-paper px-4 py-5 lg:px-6 lg:py-6">
+            <h4 class="text-xl">{v.title}</h4>
+            <p class="mt-2 text-stone-700">{v.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

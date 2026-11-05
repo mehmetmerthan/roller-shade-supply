@@ -2,7 +2,12 @@
 /**
  * Ruled spec table (label | value), the submittal-sheet way to show project facts.
  * Replaces dot-joined metadata strings.
- * layout "stacked" puts the label above the value, for narrow columns (sashes).
+ * Layouts:
+ *   inline     label beside value
+ *   stacked    label above value, for narrow columns (sashes)
+ *   stacked-lg inline below 1024 px (full-width sashes), stacked from 1024 px (narrow sashes).
+ *              No top rule: these sit under a sash's meeting rail.
+ *   stacked-xl the same switch at 1280 px, for frames whose module starts at xl
  */
 export interface SpecItem {
   label: string;
@@ -13,28 +18,50 @@ interface Props {
   items: SpecItem[];
   /** "compact" for cards and sashes, "default" for spec panels. */
   size?: 'compact' | 'default';
-  layout?: 'inline' | 'stacked';
+  layout?: 'inline' | 'stacked' | 'stacked-lg' | 'stacked-xl';
   class?: string;
 }
 
 const { items, size = 'default', layout = 'inline', class: className } = Astro.props;
 const compact = size === 'compact';
+
+const listClass = {
+  inline: 'border-b border-line',
+  stacked: 'divide-y divide-line',
+  'stacked-lg': 'lg:divide-y lg:divide-line',
+  'stacked-xl': 'xl:divide-y xl:divide-line',
+}[layout];
+
+const rowClass = {
+  inline: ['flex gap-4 border-t border-line', compact ? 'py-1.5' : 'py-3'],
+  stacked: ['py-2 first:pt-0 last:pb-0'],
+  'stacked-lg': [
+    'flex gap-4 border-t border-line first:border-t-0 lg:block lg:border-t-0 lg:py-2 lg:first:pt-0 lg:last:pb-0',
+    compact ? 'py-1.5' : 'py-3',
+  ],
+  'stacked-xl': [
+    'flex gap-4 border-t border-line first:border-t-0 xl:block xl:border-t-0 xl:py-2 xl:first:pt-0 xl:last:pb-0',
+    compact ? 'py-1.5' : 'py-3',
+  ],
+}[layout];
+
+const labelClass = {
+  inline: ['shrink-0', compact ? 'w-20 pt-0.5' : 'w-32 pt-1'],
+  stacked: [],
+  'stacked-lg': ['shrink-0 lg:w-auto lg:pt-0', compact ? 'w-24 pt-0.5' : 'w-32 pt-1'],
+  'stacked-xl': ['shrink-0 xl:w-auto xl:pt-0', compact ? 'w-24 pt-0.5' : 'w-32 pt-1'],
+}[layout];
+
+const valueClass = { inline: '', stacked: 'mt-0.5', 'stacked-lg': 'lg:mt-0.5', 'stacked-xl': 'xl:mt-0.5' }[layout];
 ---
 
-<dl class:list={[layout === 'stacked' ? 'divide-y divide-line' : 'border-b border-line', className]}>
+<dl class:list={[listClass, className]}>
   {
-    items.map((item) =>
-      layout === 'stacked' ? (
-        <div class="py-2 first:pt-0 last:pb-0">
-          <dt class="label-spec">{item.label}</dt>
-          <dd class:list={['mt-0.5', compact ? 'text-sm' : 'text-base']}>{item.value}</dd>
-        </div>
-      ) : (
-        <div class:list={['flex gap-4 border-t border-line', compact ? 'py-1.5' : 'py-3']}>
-          <dt class:list={['label-spec shrink-0', compact ? 'w-20 pt-0.5' : 'w-32 pt-1']}>{item.label}</dt>
-          <dd class:list={[compact ? 'text-sm' : 'text-base']}>{item.value}</dd>
-        </div>
-      ),
-    )
+    items.map((item) => (
+      <div class:list={rowClass}>
+        <dt class:list={['label-spec', labelClass]}>{item.label}</dt>
+        <dd class:list={[valueClass, compact ? 'text-sm' : 'text-base']}>{item.value}</dd>
+      </div>
+    ))
   }
 </dl>

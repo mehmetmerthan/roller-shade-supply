@@ -1,0 +1,97 @@
+---
+/**
+ * Site header.
+ *   < 768 px   logo + Menu (the sticky action bar carries Call / Get a Quote)
+ *   768–1023   logo + phone + Request a Quote + Menu
+ *   ≥ 1024     logo + main nav (Products and Industries dropdowns) + phone + Request a Quote
+ * Not sticky: on phones the action bar is the persistent CTA.
+ */
+import Logo from '../ui/Logo.astro';
+import Icon from '../ui/Icon.astro';
+import DesktopDropdown from './DesktopDropdown.astro';
+import MobileMenu from './MobileMenu.astro';
+import { mainNav, quoteCta } from '../../config/nav';
+import { site } from '../../config/site';
+
+const path = Astro.url.pathname;
+---
+
+<header class="border-b border-ink bg-paper">
+  <div class="page-gutter mx-auto flex h-16 max-w-content items-center gap-3 md:h-20 lg:gap-4">
+    <a href="/" class="mr-auto shrink-0 py-2 lg:mr-2" aria-current={path === '/' ? 'page' : undefined}>
+      <Logo height={44} imgClass="h-9 w-auto md:h-11" />
+    </a>
+
+    <nav aria-label="Main" class="mr-auto hidden lg:block">
+      <ul class="flex items-center">
+        {
+          mainNav.map((item) => (
+            <li>
+              {item.children ? (
+                <DesktopDropdown item={item} path={path} />
+              ) : (
+                <a href={item.href} class="nav-link" aria-current={path === item.href ? 'page' : undefined} data-current={path !== item.href && path.startsWith(item.href) ? '' : undefined}>
+                  {item.label}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a
+      href={site.phone.href}
+      class="hidden min-h-11 items-center gap-2 px-1 text-sm font-semibold whitespace-nowrap md:inline-flex xl:text-base"
+      data-event="click_to_call"
+    >
+      <Icon name="phone" size={20} />
+      <span><span class="sr-only">Call </span>{site.phone.display}</span>
+    </a>
+    <a href={quoteCta.href} class="btn btn-primary btn-sm hidden md:inline-flex xl:min-h-12 xl:px-5 xl:text-base">{quoteCta.label}</a>
+    <MobileMenu path={path} class="lg:hidden" />
+  </div>
+</header>
+
+<script>
+  // Desktop dropdowns: Esc closes (focus returns to the toggle), outside click and
+  // focus leaving the menu close it. Native <details> handles open/close itself.
+  const dropdowns = [...document.querySelectorAll<HTMLDetailsElement>('[data-nav-dropdown]')];
+  const closeAll = (except?: HTMLDetailsElement) => {
+    for (const d of dropdowns) if (d !== except) d.open = false;
+  };
+  for (const d of dropdowns) {
+    d.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && d.open) {
+        d.open = false;
+        d.querySelector('summary')?.focus();
+      }
+    });
+    d.addEventListener('focusout', (e) => {
+      const next = e.relatedTarget as Node | null;
+      if (next && !d.contains(next)) d.open = false;
+    });
+  }
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node;
+    if (!dropdowns.some((d) => d.contains(target))) closeAll();
+  });
+
+  // Mobile menu: fallback for browsers without invoker commands, and close the
+  // dialog if the viewport grows past the breakpoint while it is open.
+  const menu = document.getElementById('mobile-menu') as HTMLDialogElement | null;
+  if (menu) {
+    if (!('command' in HTMLButtonElement.prototype)) {
+      for (const b of document.querySelectorAll<HTMLButtonElement>('button[commandfor="mobile-menu"]')) {
+        b.addEventListener('click', () => (b.getAttribute('command') === 'show-modal' ? menu.showModal() : menu.close()));
+      }
+    }
+    // Same-page links (e.g., "#...") should close the sheet.
+    menu.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('a')) menu.close();
+    });
+    window.matchMedia('(min-width: 64rem)').addEventListener('change', (mq) => {
+      if (mq.matches && menu.open) menu.close();
+    });
+  }
+</script>

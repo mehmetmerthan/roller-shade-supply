@@ -1,0 +1,26 @@
+---
+/**
+ * Sticky bottom bar on phones (below 768 px): Call and Get a Quote, always one tap
+ * away on a job site. BaseLayout pads the page so the bar never covers content.
+ */
+import Icon from '../ui/Icon.astro';
+import { mobileActions } from '../../config/nav';
+import { site } from '../../config/site';
+---
+
+<nav aria-label="Quick actions" class="action-bar fixed inset-x-0 bottom-0 z-40 md:hidden" data-surface="dark">
+  <div class="grid grid-cols-2 gap-2 px-2 pt-2">
+    <a href={site.phone.href} class="btn btn-secondary" data-event="click_to_call">
+      <Icon name="phone" />
+      {mobileActions.callLabel}
+      <span class="sr-only">{site.phone.display}</span>
+    </a>
+    <a href={mobileActions.quoteHref} class="btn btn-primary">{mobileActions.quoteLabel}</a>
+  </div>
+</nav>
+
+<style>
+  .action-bar {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+</style>

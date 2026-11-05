@@ -1,0 +1,98 @@
+---
+/**
+ * Site footer on structural-steel ink (docs/site-spec.md §2): logo and the approved
+ * short description, contact details from site.ts, hours, service area, link columns,
+ * the "Union & non-union projects" badge, copyright, and legal links.
+ */
+import Logo from '../ui/Logo.astro';
+import Hours from '../ui/Hours.astro';
+import Icon from '../ui/Icon.astro';
+import { footerColumns, legalLinks, quoteCta } from '../../config/nav';
+import { site } from '../../config/site';
+
+const year = new Date().getFullYear();
+const { city, region, street } = site.address;
+const counties = new Intl.ListFormat('en-US', { style: 'long', type: 'conjunction' }).format(
+  site.serviceArea.counties.map(String),
+);
+---
+
+<footer data-surface="dark" class="bg-ink text-paper">
+  <div class="page-gutter mx-auto max-w-content">
+    <!-- Brand and direct contact -->
+    <div class="grid gap-10 py-12 lg:grid-cols-12 lg:gap-8 lg:py-16">
+      <div class="lg:col-span-5">
+        <a href="/" class="inline-block"><Logo variant="light" height={48} /></a>
+        <p class="mt-6 max-w-prose text-stone-300">{site.description}</p>
+        <p class="badge mt-6 border-paper text-paper">Union &amp; non-union projects</p>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7 lg:border-l lg:border-stone-700 lg:pl-8">
+        <p class="label-spec text-stone-300">Contact</p>
+        <a
+          href={site.phone.href}
+          class="mt-2 inline-flex min-h-12 items-center font-display text-3xl font-extrabold hover:underline hover:decoration-2 hover:underline-offset-4"
+          data-event="click_to_call"
+        >
+          <span class="sr-only">Call </span>{site.phone.display}
+        </a>
+        <p class="mt-1">
+          <a class="link inline-flex min-h-6 items-center gap-2" href={`mailto:${site.email.quotes}`} data-event="email_click">
+            <Icon name="mail" size={16} />{site.email.quotes}
+          </a>
+        </p>
+        <a href={quoteCta.href} class="btn btn-primary mt-6">{quoteCta.label}</a>
+      </div>
+    </div>
+
+    <!-- Link columns, hours, and service area -->
+    <div class="grid grid-cols-2 gap-x-6 gap-y-10 border-t border-stone-700 py-10 md:grid-cols-4 lg:gap-8 lg:py-12">
+      {
+        footerColumns.map((col) => (
+          <nav aria-labelledby={`footer-${col.heading.toLowerCase()}`}>
+            <h2 id={`footer-${col.heading.toLowerCase()}`} class="label-spec text-stone-300">
+              {col.heading}
+            </h2>
+            <ul class="mt-3 space-y-1">
+              {col.links.map((link) => (
+                <li>
+                  <a href={link.href} class="link-quiet inline-flex min-h-8 items-center text-sm">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+      <div class="col-span-2 md:col-span-1">
+        <h2 class="label-spec text-stone-300">Office</h2>
+        <address class="mt-3 text-sm not-italic">
+          {street && <>{street}<br /></>}
+          {city}, {region}
+        </address>
+        <h2 class="label-spec mt-6 text-stone-300">Hours</h2>
+        <Hours class="mt-3 text-sm" />
+        <h2 class="label-spec mt-6 text-stone-300">Service area</h2>
+        <p class="mt-3 text-sm">
+          {site.serviceArea.summary}: {counties} counties. {site.serviceArea.extended}.
+        </p>
+      </div>
+    </div>
+
+    <!-- Legal -->
+    <div class="flex flex-col gap-3 border-t border-stone-700 py-6 text-sm text-stone-300 md:flex-row md:items-center md:justify-between">
+      <p>&copy; {year} {site.name}</p>
+      <ul class="flex flex-wrap gap-x-6">
+        {
+          legalLinks.map((link) => (
+            <li>
+              <a href={link.href} class="link-quiet inline-flex min-h-8 items-center">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</footer>

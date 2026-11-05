@@ -32,7 +32,7 @@ Sources: `docs/additional-content.md` ([CONFIRM] items and §12 open questions),
 |---|---|---|
 | ☐ | Logo | `/assets/brand/logo.svg`, `logo-light.svg`, and `logo-mark.svg` are **temporary placeholders**. Need the final logo (SVG preferred) in light and dark versions plus an icon mark |
 | ☐ | Brand colors and fonts | Are there official ones? The palette (Direction B "Chicago Window") was built from the brief, not the placeholder logo. Reconcile when the real logo arrives |
-| ☐ | Favicons and OG image | Will be generated from the placeholder logo. Regenerate when the final logo arrives |
+| ☐ | Favicons and OG image | Will be generated from the placeholder logo. Regenerate when the final logo arrives. **Until Phase 8, every page's Open Graph image is a 1200 × 630 crop of the home hero photo** (SRIS International School), so the photo-permission item in §3.1 covers social previews too |
 
 ## 3. Projects
 
@@ -100,7 +100,7 @@ Originals stay in `/assets` and are never committed. Web versions are generated 
 | ☐ | `Mosque/2612d69f-….mp4` (78 s, 478×850, 17.3 MB) | `public/videos/mosque/2612d69f.mp4` (4.4 MB) + poster @ 52 s | Walkthrough of the prayer hall. Original-resolution file or a YouTube/Vimeo link would look much better |
 | ☐ | `Stern Pinball/af3755da-….MP4` (75 s, 478×850, 13.7 MB) | `public/videos/stern-pinball/af3755da.mp4` (4.4 MB) + poster @ 26 s | Shades lowering and rising across a conference room glass wall. Stills at 3, 10, 26, and 43 s are used as gallery images. A person is visible far away in the open office (not identifiable) |
 | ☐ | `Stern Pinball/c97f5d90-….MP4` (50 s, 478×850, 9.3 MB) | `public/videos/stern-pinball/c97f5d90.mp4` (4.4 MB) + poster @ 22 s | Shades rising to reveal the open office. Stills at 22 and 49 s are used as gallery images |
-| ☐ | All three | **Audio removed** in the web versions (size, and possible voices) | Confirm audio isn't needed. It can be restored |
+| ☑ | All three | **Audio removed** in the web versions (size, and possible voices) | Decided 11/05/2026: audio stays off (see Resolved). It can be restored by re-encoding |
 
 ### 3.6 Photo review flags
 Viewed 11/04/2026 (62 client photos) and 11/05/2026 (web images and video stills). Alt text, covers, and crop positions are in each project's frontmatter.
@@ -151,7 +151,10 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 |---|---|---|
 | ☐ | §2 Trust strip | Optional stats ("[X]+ shades supplied", "[X] schools completed", "Serving Chicago since [year]"). Show only with real numbers |
 | ☐ | §3 Why work with us | #2 consistent product claim; #3 labeling by unit or room; #6 quote turnaround |
-| ☐ | §4 How it works | Step 2 turnaround; step 3 submittals and samples; step 4 made to size, phased delivery, labeling; **step 5: do they install, coordinate installers, or supply only?** |
+| ☐ | §4 How it works | Step 2 turnaround; step 3 submittals and samples; step 4 made to size, phased delivery, labeling; **step 5: do they install, coordinate installers, or supply only?** Home shows steps 1–4 only; step 5 is left out until this is answered |
+| ☐ | Home microcopy (new, written for layout) | Hero caption label "Pictured"; trust-strip labels "Projects / Sectors / Range / Company"; "{n} projects in the gallery"; "School and public-sector projects"; "Industry pages"; staging-only note "These projects are sample write-ups until their details are confirmed."; section headings "How It Works" and "Why work with us"; footer labels "Contact / Office / Hours / Service area" (`src/copy/`, `src/components/`) |
+| ☐ | Home "Example Request" read-back | The approved example is repeated as a filled-in table (Product type, Width and height, Quantity, Operating system, Project location, Expected timeline). Labels come from the approved checklist and values restate the example; confirm the client is happy with the treatment (`src/copy/placeholder.ts`) |
+| ☐ | Home section order | Spec order was hero, who we serve, products, projects. Built as hero, who we serve, **projects, public sector, products**, who we are, how it works, fast quote, CTA, so proof comes before products (site-spec §3 allows refining the order) |
 | ☐ | §5.1 Roller Shades | Fabric types offered (light-filtering, room-darkening/blackout, side channels, solar screen openness 1/3/5/10%, dual roller); options (mounts, fascia/cassette, bottom bars) |
 | ☐ | §5.3 Faux Wood Blinds | Typical spec (2" slats, cordless lift, tilt wand, finishes) |
 | ☐ | §5.4 Operating Systems | Each system's description; any standards claims (ANSI/WCMA A100.1); building-controls integration; **every cell of the comparison table**; fabric performance claims (NFPA 701, GREENGUARD Gold, antimicrobial, PVC-free) |
@@ -197,3 +200,5 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 | 11/05/2026 | Change of plan: show everything | All 13 projects are live (Grove, Lexus, Salt Creek, and Stern Pinball un-held; ERIK'S stays live). Every image is included, web-sourced and privacy-flagged ones too, except the 118 S Clinton copy of the duplicate photo. Removals will be decided before launch (§3.3 and §3.6) |
 | 11/05/2026 | Stern Pinball media | 6 gallery stills extracted from its two videos. All three videos (Stern ×2, Mosque ×1) re-encoded to ~4.4 MB web MP4s with posters in `public/videos/` and referenced in frontmatter |
 | 11/05/2026 | Product proof | `products` / `operatingSystems` now list only what photos or videos show. Zebra and motorized claims were removed from Lexus Glenview, Grove Junior High School, and Stern Pinball (Stern keeps motorized because its videos show it; confirm) |
+| 11/05/2026 | Home hero photo | SRIS International School cover (`033ef675…`, 2560 × 1920 client photo): it shows the product most clearly. 16:9 crop from 768 px, the full 4:3 frame on phones (`src/config/home.ts`). The user delegated this decision |
+| 11/05/2026 | Video audio | Stays removed from the web videos (smaller files, no voices published). The user delegated this decision |

@@ -247,6 +247,11 @@
     padding: 0 2rem;
     font-size: var(--text-lg);
   }
+  /* Square icon button (carousel arrows, menu close). 48 px target. */
+  .btn-icon {
+    width: 3rem;
+    padding: 0;
+  }
   .btn:active,
   .btn[data-demo="active"] {
     transform: translateY(1px);
@@ -484,6 +489,50 @@
     color: var(--color-ink);
     text-decoration-line: underline;
     text-underline-offset: 0.2em;
+  }
+
+  /* ---------- Navigation ---------- */
+  /* Header links and dropdown toggles. Current page = a 4 px steel bar (a mullion), never red. */
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.75rem;
+    padding-inline: 0.625rem;
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration-line: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (width >= 80rem) {
+    .nav-link {
+      padding-inline: 0.875rem;
+      font-size: var(--text-base);
+    }
+  }
+  .nav-link:hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35em;
+  }
+  .nav-link[aria-current="page"],
+  .nav-link[data-current] {
+    text-decoration-line: underline;
+    text-decoration-thickness: 4px;
+    text-underline-offset: 0.35em;
+  }
+
+  /* <summary> used as a disclosure button: no native marker. */
+  .disclosure-summary {
+    list-style: none;
+  }
+  .disclosure-summary::-webkit-details-marker {
+    display: none;
+  }
+  details[open] > .disclosure-summary .disclosure-chevron {
+    rotate: 180deg;
   }
 
   /* ---------- Cards ---------- */

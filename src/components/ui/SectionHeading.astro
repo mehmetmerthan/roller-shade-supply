@@ -18,6 +18,8 @@ interface Props {
 const { title, label, intro, level = 2, id, surface = 'light', class: className } = Astro.props;
 const Tag = `h${level}` as 'h2' | 'h3';
 const dark = surface === 'dark';
+// Keep hyphenated compounds ("Public-Sector") on one line: a break after the hyphen reads as a typo.
+const titleParts = title.split(/(\S+-\S+)/).filter(Boolean);
 ---
 
 <header
@@ -29,7 +31,9 @@ const dark = surface === 'dark';
 >
   {label && <p class:list={['label-spec lg:col-span-2 lg:pt-3', dark && 'text-stone-300']}>{label}</p>}
   <div class="lg:col-span-8 lg:col-start-3">
-    <Tag id={id} class:list={[level === 2 ? 'text-3xl' : 'text-2xl']}>{title}</Tag>
+    <Tag id={id} class:list={[level === 2 ? 'text-3xl' : 'text-2xl']}>
+      {titleParts.map((part) => (/-/.test(part) && !/\s/.test(part) ? <span class="whitespace-nowrap">{part}</span> : part))}
+    </Tag>
     {intro && <p class:list={['mt-4 max-w-prose text-lg', dark ? 'text-stone-200' : 'text-stone-700']}>{intro}</p>}
     <slot />
   </div>

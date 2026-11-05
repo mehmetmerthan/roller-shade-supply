@@ -1,0 +1,30 @@
+---
+/**
+ * [WHO-WE-SERVE]: the seven audiences as a ruled, scannable schedule, with the
+ * approved residential note in the eighth cell. Rules are the 1 px grid gaps.
+ */
+import SectionHeading from '../ui/SectionHeading.astro';
+import { whoWeServe } from '../../copy/approved';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<section aria-labelledby="who-we-serve" class:list={['page-gutter mx-auto max-w-content', className]}>
+  <SectionHeading id="who-we-serve" title={whoWeServe.title} intro={whoWeServe.intro} />
+  <ul class="mt-8 grid gap-px border-y border-ink bg-line sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
+    {
+      whoWeServe.audiences.map((audience) => (
+        <li class="bg-paper px-4 py-4 lg:min-h-28 lg:px-5 lg:py-5">
+          <span class="font-display text-xl font-extrabold">{audience}</span>
+        </li>
+      ))
+    }
+    <li class="bg-limestone px-4 py-4 lg:px-5 lg:py-5">
+      <p class="text-sm">{whoWeServe.note}</p>
+    </li>
+  </ul>
+</section>

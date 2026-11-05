@@ -43,6 +43,9 @@ export const site = {
   hours: {
     // TODO(content): business hours are unconfirmed.
     display: 'Monday–Friday, 8:00 AM – 5:00 PM CT',
+    /** The same hours split for narrow columns (keep in sync with `display`). */
+    days: 'Monday–Friday',
+    time: '8:00 AM – 5:00 PM CT',
     schema: [
       {
         days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],

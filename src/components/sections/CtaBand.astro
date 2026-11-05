@@ -1,0 +1,60 @@
+---
+/**
+ * Closing CTA ([CONTACT] title and intro): a Chicago window that bookends the hero.
+ * Pane: the heading, intro, buttons, and email. Right sash: hours and service area.
+ */
+import Button from '../ui/Button.astro';
+import ChicagoWindow from '../ui/ChicagoWindow.astro';
+import Hours from '../ui/Hours.astro';
+import Icon from '../ui/Icon.astro';
+import { contact } from '../../copy/approved';
+import { quoteCta } from '../../config/nav';
+import { site } from '../../config/site';
+
+interface Props {
+  title?: string;
+  intro?: string;
+  /** Quote link, e.g. prefilled with ?product=zebra-shades. */
+  href?: string;
+  ctaLabel?: string;
+  class?: string;
+}
+
+const {
+  title = contact.title,
+  intro = contact.intro,
+  href = quoteCta.href,
+  ctaLabel = quoteCta.label,
+  class: className,
+} = Astro.props;
+---
+
+<section aria-labelledby="cta-band" class:list={['page-gutter mx-auto max-w-content', className]}>
+  <ChicagoWindow from="xl" class="-mx-4 md:-mx-6 lg:mx-0" sash="paper">
+    <div class="h-full bg-limestone px-4 py-10 md:px-6 lg:px-10 lg:py-14">
+      <h2 id="cta-band" class="text-3xl">{title}</h2>
+      <p class="mt-4 max-w-prose text-lg">{intro}</p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <Button href={href} size="lg">{ctaLabel}</Button>
+        <Button href={site.phone.href} variant="secondary" size="lg" data-event="click_to_call">
+          <Icon name="phone" />
+          Call {site.phone.display}
+        </Button>
+      </div>
+      <p class="mt-6 text-sm">
+        {contact.responseNote}
+        <a class="link-quiet ml-1 inline-block py-0.5 font-semibold" href={`mailto:${site.email.quotes}`} data-event="email_click">{site.email.quotes}</a>
+      </p>
+    </div>
+    <Fragment slot="right">
+      <div>
+        <p class="label-spec">Hours</p>
+        <Hours class="mt-1 text-sm" />
+      </div>
+      <div data-rail="bottom">
+        <p class="label-spec">Service area</p>
+        <p class="mt-1 text-sm">{site.serviceArea.summary}</p>
+      </div>
+    </Fragment>
+  </ChicagoWindow>
+</section>

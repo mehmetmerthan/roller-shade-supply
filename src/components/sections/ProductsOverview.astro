@@ -1,0 +1,58 @@
+---
+/**
+ * [PRODUCTS]: three product cards (elevation drawings, not project photos, so no
+ * card implies proof we don't have), the four operating options as a ruled row,
+ * and the approved availability qualifier.
+ */
+import ProductCard from '../ui/ProductCard.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { products } from '../../copy/approved';
+import { OPERATING_SYSTEMS } from '../../config/taxonomy';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+// Approved option labels, in approved order, mapped to anchors on the Operating Systems page.
+const optionAnchors: Record<(typeof products.operatingOptions)[number], (typeof OPERATING_SYSTEMS)[number]> = {
+  'Motorized shades': 'motorized',
+  'Solar-powered motorized shades': 'solar-motorized',
+  'Cordless systems': 'cordless',
+  'Chain-operated systems': 'chain',
+};
+---
+
+<section aria-labelledby="products" class:list={['page-gutter mx-auto max-w-content', className]}>
+  <SectionHeading id="products" title={products.title} intro={products.intro} />
+
+  <ul class="mt-8 grid gap-10 md:grid-cols-3 md:gap-6 lg:mt-10 lg:gap-8">
+    {
+      products.items.map((item) => (
+        <li>
+          <ProductCard product={item.product} title={item.title} description={item.description} href={`/products/${item.product}/`} />
+        </li>
+      ))
+    }
+  </ul>
+
+  {/* The sub-heading sits in the sash column from 1280 px (too narrow below that). */}
+  <div class="mt-12 grid gap-4 lg:mt-16 xl:grid-cols-12 xl:gap-8">
+    <h3 class="text-xl xl:col-span-2 xl:pt-4">{products.operatingIntro}</h3>
+    <ul class="grid gap-px border-y border-ink bg-line sm:grid-cols-2 lg:grid-cols-4 xl:col-span-10">
+      {
+        products.operatingOptions.map((option) => (
+          <li class="bg-paper">
+            <a
+              href={`/products/operating-systems/#${optionAnchors[option]}`}
+              class="link-quiet flex min-h-16 items-center px-4 py-3 font-semibold lg:px-5"
+            >
+              {option}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="text-sm text-stone-700 xl:col-span-10 xl:col-start-3">{products.note}</p>
+  </div>
+</section>

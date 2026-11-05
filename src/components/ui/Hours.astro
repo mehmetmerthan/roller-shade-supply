@@ -1,0 +1,29 @@
+---
+/**
+ * Business hours from site.ts on two lines (days, then times). Times only break at
+ * the dash, never inside "8:00 AM", so narrow columns stay readable.
+ */
+import { site } from '../../config/site';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const [opens, closes] = site.hours.time.split(' – ');
+---
+
+<p class={className}>
+  {site.hours.days}<br />
+  {
+    closes ? (
+      <>
+        <span class="whitespace-nowrap">{`${opens} –`}</span>
+        {' '}
+        <span class="whitespace-nowrap">{closes}</span>
+      </>
+    ) : (
+      site.hours.time
+    )
+  }
+</p>

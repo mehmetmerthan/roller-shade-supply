@@ -1,28 +1,55 @@
 ---
-/*
- * TEMPORARY foundation page (Phase 2). Replaced by the real Home page and
- * BaseLayout in Phase 4. Exists so the build pipeline, fonts, and tokens compile.
+/**
+ * Home (docs/site-spec.md §3). Flow: hero → who it's for → proof (projects,
+ * public sector) → products → company → process → quote → CTA.
  */
-// Package roots resolve to the variable `wght` axis CSS (see each package's exports map).
-import '@fontsource-variable/big-shoulders-display';
-import '@fontsource-variable/public-sans';
-import '../styles/global.css';
-import { site, isProduction } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeHero from '../components/sections/HomeHero.astro';
+import WhoWeServe from '../components/sections/WhoWeServe.astro';
+import SelectedProjects from '../components/sections/SelectedProjects.astro';
+import GovernmentExperience from '../components/sections/GovernmentExperience.astro';
+import ProductsOverview from '../components/sections/ProductsOverview.astro';
+import WhoWeAre from '../components/sections/WhoWeAre.astro';
+import HowItWorks from '../components/sections/HowItWorks.astro';
+import FastQuote from '../components/sections/FastQuote.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import { pageMeta } from '../copy/seo';
+import { homePhotos } from '../config/home';
+import { getCover, getPhotos, getProjects } from '../lib/projects';
+import { businessSchema, websiteSchema } from '../lib/seo';
+import { logo } from '../lib/brand';
+
+const projects = await getProjects();
+const byId = (id: string) => {
+  const project = projects.find((p) => p.id === id);
+  if (!project) throw new Error(`Home: project "${id}" not found (src/config/home.ts).`);
+  return project;
+};
+
+const heroProject = byId(homePhotos.heroProject);
+const heroPhoto = getCover(heroProject);
+const aboutProject = byId(homePhotos.about.project);
+const aboutPhoto = getPhotos(aboutProject).find((p) => p.file === homePhotos.about.file) ?? getCover(aboutProject);
+const featured = projects.filter((p) => p.data.featured);
+const publicSector = projects.filter((p) => p.data.sector === 'education' || p.data.sector === 'government' || p.data.industries.includes('government'));
+
+const meta = pageMeta['/'];
 ---
 
-<!doctype html>
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{site.name}</title>
-    {!isProduction && <meta name="robots" content="noindex, nofollow" />}
-  </head>
-  <body>
-    <main class="mx-auto max-w-content px-4 py-16">
-      <p class="text-sm text-stone-600">{site.name}</p>
-      <h1 class="mt-4 text-4xl">{site.tagline}</h1>
-      <p class="mt-8 max-w-prose">This site is in development.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout
+  title={meta.title}
+  description={meta.description}
+  fullTitle
+  ogImage={{ src: heroPhoto.src, alt: heroPhoto.alt, position: heroPhoto.position }}
+  jsonLd={[websiteSchema(), businessSchema(logo!.src)]}
+>
+  <HomeHero project={heroProject} />
+  <WhoWeServe class="mt-section lg:mt-section-lg" />
+  <SelectedProjects featured={featured} totalProjects={projects.length} class="mt-section lg:mt-section-lg" />
+  <GovernmentExperience projects={publicSector} class="mt-section lg:mt-section-lg" />
+  <ProductsOverview class="mt-section lg:mt-section-lg" />
+  <WhoWeAre project={aboutProject} photo={aboutPhoto} class="mt-section lg:mt-section-lg" />
+  <HowItWorks class="mt-section lg:mt-section-lg" />
+  <FastQuote class="mt-section lg:mt-section-lg" />
+  <CtaBand class="my-section lg:my-section-lg" />
+</BaseLayout>

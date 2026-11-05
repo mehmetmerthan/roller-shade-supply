@@ -1,0 +1,32 @@
+---
+/**
+ * The company logo, from src/assets/brand/ (copied there by `npm run images`).
+ * TODO(content): the current files are TEMPORARY PLACEHOLDERS. The final logo drops in
+ * by replacing `logo.(svg|png)` and `logo-light.(svg|png)`; any aspect ratio works
+ * because the image is sized by height and capped in width.
+ * `light` is for dark surfaces. Without a light file, the default logo sits on a paper plate.
+ */
+import { Image } from 'astro:assets';
+import { site } from '../../config/site';
+import { logo, logoLight } from '../../lib/brand';
+
+interface Props {
+  variant?: 'default' | 'light';
+  /** Rendered height in CSS px (the width follows the logo's aspect ratio). */
+  height?: number;
+  /** Classes for the <img>, e.g. responsive heights ("h-9 w-auto md:h-11"). */
+  imgClass?: string;
+  class?: string;
+}
+
+const { variant = 'default', height = 40, imgClass = 'h-auto', class: className } = Astro.props;
+
+if (!logo) throw new Error('No logo found in src/assets/brand/. Run `npm run images`.');
+
+const src = variant === 'light' ? (logoLight ?? logo) : logo;
+const needsPlate = variant === 'light' && !logoLight;
+---
+
+<span class:list={['inline-flex', needsPlate && 'bg-paper p-2', className]}>
+  <Image src={src} alt={site.name} height={height} loading="eager" class:list={['block max-w-56', imgClass]} />
+</span>
