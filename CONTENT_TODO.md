@@ -43,7 +43,7 @@ All 13 project write-ups are adapted from `docs/mock-projects.yaml`. **Every fac
 ### 3.1 For every project
 | ☐ | Item | What's needed |
 |---|---|---|
-| ☐ | Permission to publish | Written OK to publish each project name and its photos. **Especially:** UPS Center, Lexus Glenview, Stern Pinball, ERIK'S Bike Shop, the schools, and the mosque. Can visible brand signage stay in the photos? |
+| ☐ | Permission to publish | Written OK to publish each project name and its photos. **Especially:** UPS Center, Lexus Glenview, Stern Pinball, ERIK'S Bike Shop, the schools, and Community Club. Can visible brand signage stay in the photos? |
 | ☐ | Real facts | Location, year, products, fabrics, quantity, operating systems, union / non-union, client type (may we name the GC or owner?), and a one-paragraph story |
 | ☐ | Government projects | Approved copy says "successfully completed government and public-sector projects", but every public-sector folder is a school. Are there non-school government projects with photos? |
 | ☐ | Product proof | Every project shows **chain-operated roller shades**, except Stern Pinball, which appears motorized. **We have no photos of zebra shades, faux wood blinds, cordless, or solar-powered systems.** No project counts as proof for them until the client sends photos (CLAUDE.md → "Product proof and related projects") |
@@ -53,7 +53,7 @@ All 13 project write-ups are adapted from `docs/mock-projects.yaml`. **Every fac
 |---|---|---|---|
 | ☐ | Water Power Lofts Rockford | live, featured | Confirm the building type (loft conversion?), scope, and year (photo dates suggest 2024) |
 | ☐ | SRIS International School | live, featured | **Location unknown** (currently "Chicago area, IL") |
-| ☐ | **Mosque** | live, featured | **Real name needed.** The folder was "Mosq" and is now "Mosque"; the title follows the folder name. Sector is provisionally `commercial`; revisit once the name and permission are confirmed. Location unknown. Explicit permission to show a religious facility |
+| ☐ | **Community Club** | live, featured | Renamed at the client's request on 11/11/2026 (folder, title, and URL `/projects/community-club/`; the old URL redirects). Sector is provisionally `commercial`. Location unknown. Permission to publish the name and photos |
 | ☐ | 914 W Hubbard St | live, featured | Condos or apartments? Who was the client (property manager or association)? Year: photo dates suggest 2024 |
 | ☐ | UPS Center | live, featured | Which UPS facility, and where? Naming permission. No UPS branding is visible. The photos show an operating facility's interior (sort floor); confirm they may be published |
 | ☐ | 118 S Clinton | live, featured | Apartments over ground-floor retail (mixed-use)? The photos show a leasing/amenity space, not an apartment. Both interiors show another company's leasing boards; a cleaner interior shot would help |
@@ -97,7 +97,7 @@ Originals stay in `/assets` and are never committed. Web versions are generated 
 
 | ☐ | Original | Web version | Notes / what's needed |
 |---|---|---|---|
-| ☐ | `Mosque/2612d69f-….mp4` (78 s, 478×850, 17.3 MB) | `public/videos/mosque/2612d69f.mp4` (4.4 MB) + poster @ 52 s | Walkthrough of the prayer hall. Original-resolution file or a YouTube/Vimeo link would look much better |
+| ☐ | `Community Club/2612d69f-….mp4` (78 s, 478×850, 17.3 MB) | `public/videos/community-club/2612d69f.mp4` (4.4 MB) + poster @ 52 s | Walkthrough of the main hall. Original-resolution file or a YouTube/Vimeo link would look much better |
 | ☐ | `Stern Pinball/af3755da-….MP4` (75 s, 478×850, 13.7 MB) | `public/videos/stern-pinball/af3755da.mp4` (4.4 MB) + poster @ 26 s | Shades lowering and rising across a conference room glass wall. Stills at 3, 10, 26, and 43 s are used as gallery images. A person is visible far away in the open office (not identifiable) |
 | ☐ | `Stern Pinball/c97f5d90-….MP4` (50 s, 478×850, 9.3 MB) | `public/videos/stern-pinball/c97f5d90.mp4` (4.4 MB) + poster @ 22 s | Shades rising to reveal the open office. Stills at 22 and 49 s are used as gallery images |
 | ☑ | All three | **Audio removed** in the web versions (size, and possible voices) | Decided 11/05/2026: audio stays off (see Resolved). It can be restored by re-encoding |
@@ -121,7 +121,7 @@ Viewed 11/04/2026 (62 client photos) and 11/05/2026 (web images and video stills
 | ☐ | `118 S Clinton/8436235e….jpg`, `c64c4ae9….jpg` | Third-party leasing boards ("The Junction", "The Depot", "SL / South 118" logo) |
 | ☐ | `118 S Clinton/118-s-clinton.jpg` | Third-party storefront signage (Subway, Aligned Modern Health) |
 | ☐ | `811 West Evergreen/a78261ed….jpg` | A resident's grill on the balcony (occupied unit) |
-| ☐ | `Mosque/edf3b642….jpg` | A parked car is visible (no plate) |
+| ☐ | `Community Club/edf3b642….jpg` | A parked car is visible (no plate) |
 | ☐ | `UPS Center/1b213b7c….jpg` | View of the sort floor; a worker may be visible far away (not identifiable) |
 | ☐ | `Stern Pinball/video-af3755da-10s.jpg` and both videos | A person is visible far away in the open office (not identifiable) |
 
@@ -129,8 +129,8 @@ Viewed 11/04/2026 (62 client photos) and 11/05/2026 (web images and video stills
 To drop one, add it to `scripts/image-exclude.json` with the reason and run `npm run images`.
 | ☐ | Photo | Reason |
 |---|---|---|
-| ☐ | `Mosque/e42d144d….jpg` | Distorted, low resolution (1600×1200), near-duplicate of `c561fab4` |
-| ☐ | `Mosque/91f7fbbf….jpg` | Shades can't be made out |
+| ☐ | `Community Club/e42d144d….jpg` | Distorted, low resolution (1600×1200), near-duplicate of `c561fab4` |
+| ☐ | `Community Club/91f7fbbf….jpg` | Shades can't be made out |
 | ☐ | `Water Power Lofts Rockford/img-7723.jpg` | Shot through a car window, readable plates, no shades |
 | ☐ | `Water Power Lofts Rockford/img-5406.jpg` | Near-duplicate of `img-5410`; shade barely visible |
 | ☐ | `SRIS International School/8fa88533…`, `66a12158…`, `11a95098…`, `b460dfcc…` | Near-duplicates of other SRIS photos (two show reflections of people and ladder clutter) |
@@ -139,9 +139,9 @@ To drop one, add it to `scripts/image-exclude.json` with the reason and run `npm
 | ☐ | `118 S Clinton/c64c4ae9….jpg` | Shades fully raised; same angle as `8436235e` |
 | ☐ | Every `origin: web` image (section 3.3) | Rights unconfirmed; low resolution; mostly don't show the work |
 
-**Useful pairs (keep together in galleries):** Mosque before/after `97d4c537` → `ff62246c` and `d4404be4` → `edf3b642`; SRIS lowered/raised `033ef675` / `b87a8632`; 811 West Evergreen raised/lowered `a78261ed` / `c49de731`.
+**Useful pairs (keep together in galleries):** Community Club before/after `97d4c537` → `ff62246c` and `d4404be4` → `edf3b642`; SRIS lowered/raised `033ef675` / `b87a8632`; 811 West Evergreen raised/lowered `a78261ed` / `c49de731`.
 
-**Resolution:** the Mosque photos are only 2000 px wide (likely sent through a messaging app). Ask for the originals. The home hero must be a client photo at 2560 px: `Water Power Lofts Rockford/img-5335.jpg` (first choice), then `SRIS International School/033ef675….jpg`. Never a web image or a video still.
+**Resolution:** the Community Club photos are only 2000 px wide (likely sent through a messaging app). Ask for the originals. The home hero must be a client photo at 2560 px: `Water Power Lofts Rockford/img-5335.jpg` (first choice), then `SRIS International School/033ef675….jpg`. Never a web image or a video still.
 
 ## 4. Copy placeholders (`docs/additional-content.md`)
 
@@ -164,7 +164,7 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 | ☐ | §8 FAQ | Turnaround, minimum order, measurement verification, child-safety compliance, flame-resistant fabrics, building-controls integration, warranty, submittals, installation, phased delivery, extended service area, replacement orders |
 | ☐ | §9 SEO metadata | All titles and descriptions are drafts. Only the pages that exist use them: Home, Projects, Request a Quote, Privacy Policy, Accessibility, plus new entries for the thank-you page and the 404 page (`src/copy/seo.ts`) |
 | ☐ | §10 Microcopy | Upload helper now says **7 MB** (see §6); thank-you page H1 lightly edited to "Thanks, we’ve received your request." and its turnaround; the 404 links point to Projects, Our Products (Home), Request a Quote, and Home; project-page CTA "Planning a similar project?" |
-| ☐ | Quote form copy (new, 11/05/2026) | Group headings "About you / Your project / Sizes and plans / Project details"; hints (role, City or ZIP code, timeline, quantity, "Select all that apply", size rows, paste box); options for ✚ Union project? (Union / Non-union / Not sure), ✚ Expected Timeline (spec list), ✚ How did you hear about us? (Search engine / Referral from a colleague / Saw one of our projects / Returning customer / Other); errors beyond §10 ("Please enter your email address.", "Please choose the option that best describes you.", the file-type message); "We use your details only to respond to your request."; "Prefer to talk?"; aside headings "Please include / What happens next / Talk to our team". Approved fields keep their labels and options; Estimated Quantity sits with the measurements (approved order otherwise) (`src/copy/placeholder.ts` → `quoteFormCopy`) |
+| ☐ | Quote form copy (new, 11/05/2026; reordered 11/11/2026) | **Only "Tell Us About Your Project" is required** (client request, 11/11/2026); the upload sits right under it. New hint under About you: "All optional, but leave an email or phone number so we can reply." Without an email or phone, a request can't be answered, so confirm the client is fine with that. Group headings "About you / Your project / Project details / Sizes"; hints (role, City or ZIP code, timeline, quantity, "Select all that apply", size rows, paste box); options for ✚ Union project? (Union / Non-union / Not sure), ✚ Expected Timeline (spec list), ✚ How did you hear about us? (Search engine / Referral from a colleague / Saw one of our projects / Returning customer / Other); errors beyond §10 (the file-type message); "We use your details only to respond to your request."; "Prefer to talk?"; aside headings "Please include / What happens next / Talk to our team". Approved fields keep their labels and options; Estimated Quantity sits with the measurements (approved order otherwise) (`src/copy/placeholder.ts` → `quoteFormCopy`) |
 | ☐ | Projects pages microcopy (new, written for layout) | `/projects/` H1 "Commercial Window Covering Projects" (built on the §9 keyword; the intro is approved [PROJECTS]); filter-chip labels; project-page headings "Specifications", "Highlights", "Related pages", "Related projects", "Video(s)"; gallery labels "All photos" and "Full screen"; "Previous project" / "Next project". The Labor fact is hidden when a project's labor is "not specified" |
 | ☐ | How to Measure | "Approximate sizes are fine for budgeting; final sizes are verified before production" |
 | ☐ | §11 Legal | `/privacy-policy/` (written from the §11 outline) and `/accessibility/` (the §11 draft) are **built and need legal review** before launch. The policy mentions cookieless analytics, which isn't set up yet (§6) |
@@ -205,3 +205,6 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 | 11/05/2026 | Home hero photo | SRIS International School cover (`033ef675…`, 2560 × 1920 client photo): it shows the product most clearly. 16:9 crop from 768 px, the full 4:3 frame on phones (`src/config/home.ts`). The user delegated this decision |
 | 11/05/2026 | Video audio | Stays removed from the web videos (smaller files, no voices published). The user delegated this decision |
 | 11/05/2026 | One-page structure | At the user's request: Home carries the whole story (introduction → Who We Are → Who We Serve → Why Work With Us → public sector → Our Products → Selected Projects → Get a Fast Quote → Let’s Discuss Your Project), and the header links scroll to its sections. Removed: the "Pictured" hero sash (the photo now sits beside the introduction), the school and public-sector project list, the industry-page links, the trust strip, and How It Works on Home (moved to the quote page). Product, industry, About, FAQ, How to Measure, and Contact pages won't be built. `/request-a-quote/` (form + thank-you), `/privacy-policy/`, `/accessibility/`, and a 404 page were built |
+| 11/11/2026 | Home introduction | At the user's request the approved [HERO] paragraphs, both hero buttons, and the phone/hours block were removed from Home (the same content is in Who We Are, the header, and the contact band). The hero is now the standard card (`FeatureCard`): the kicker and H1 on the limestone sash, the whole SRIS photo beside it, sized so both are on the first screen at every width. Who We Are uses the same card |
+| 11/11/2026 | "Mosque" renamed "Community Club" | At the client's request: `/assets/projects/` folder (user-approved one-time rename, files untouched), optimized images, video folder, content entry, slug `/projects/community-club/` (301 from the old URL in `netlify.toml`), and the write-up and alt text reworded without the old name or religious terms |
+| 11/11/2026 | Quote form required fields | Only the project description is required; name, company, email, phone, "I am a", and location are optional. Email is still checked for format when entered |

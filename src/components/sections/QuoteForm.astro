@@ -1,8 +1,9 @@
 ---
 /**
  * Quote form (docs/site-spec.md §7; approved [CONTACT] fields plus the ✚ additions).
- * Four ruled groups: about you → your project → sizes and plans (quantity,
- * measurements, upload) → project details.
+ * Only the project description is required (client request, 11/11/2026); everything
+ * else is optional. Four ruled groups: about you → your project (the description and
+ * the file upload) → project details → sizes, then "How did you hear about us?".
  *
  * Backend: Netlify Forms through src/lib/forms.ts (a normal multipart POST; success
  * shows /request-a-quote/thank-you/). Works without JS: native validation, and the
@@ -87,28 +88,19 @@ const legendClass = 'float-left w-full font-display text-2xl font-extrabold';
   </div>
 
   <div class="space-y-12 lg:space-y-14">
-    <fieldset class={groupClass}>
+    <fieldset class={groupClass} aria-describedby="contact-hint">
       <legend class={legendClass}>{c.groups.contact}</legend>
-      <div class="clear-both grid gap-6 pt-6 sm:grid-cols-2">
-        <TextField id="name" label={f.name} required autocomplete="name" messages={{ required: c.errors.name }} />
-        <TextField id="company" label={f.company} required autocomplete="organization" messages={{ required: c.errors.company }} />
-        <TextField
-          id="email"
-          label={f.email}
-          type="email"
-          required
-          autocomplete="email"
-          inputmode="email"
-          messages={{ required: c.errors.email, format: c.errors.emailFormat }}
-        />
+      <p id="contact-hint" class="field-hint clear-both pt-2">{c.contactHint}</p>
+      <div class="grid gap-6 pt-6 sm:grid-cols-2">
+        <TextField id="name" label={f.name} autocomplete="name" />
+        <TextField id="company" label={f.company} autocomplete="organization" />
+        <TextField id="email" label={f.email} type="email" autocomplete="email" inputmode="email" messages={{ format: c.errors.emailFormat }} />
         <TextField id="phone" label={c.phone} type="tel" autocomplete="tel" inputmode="tel" />
         <SelectField
           id="role"
           label={f.role.label}
           options={toOptions(f.role.options)}
-          required
           hint={c.roleHint}
-          messages={{ required: c.errors.role }}
           class="sm:col-span-2 sm:w-1/2 sm:pr-3"
         />
       </div>
@@ -116,15 +108,31 @@ const legendClass = 'float-left w-full font-display text-2xl font-extrabold';
 
     <fieldset class={groupClass}>
       <legend class={legendClass}>{c.groups.project}</legend>
-      <div class="clear-both grid gap-6 pt-6 sm:grid-cols-2">
+      <div class="clear-both grid gap-6 pt-6">
         <TextField
-          id="location"
-          label={f.location}
+          id="details"
+          label={f.details.label}
+          type="textarea"
           required
-          hint={c.locationHint}
-          autocomplete="address-level2"
-          messages={{ required: c.errors.location }}
+          rows={6}
+          hint={f.details.hint}
+          messages={{ required: c.errors.details }}
         />
+        <FileField
+          id="upload"
+          label={f.upload}
+          accept={UPLOAD_ACCEPT}
+          maxBytes={UPLOAD_MAX_BYTES}
+          hint={c.uploadHint}
+          messages={{ size: c.errors.fileSize, type: c.errors.fileType }}
+        />
+      </div>
+    </fieldset>
+
+    <fieldset class={groupClass}>
+      <legend class={legendClass}>{c.groups.details}</legend>
+      <div class="clear-both grid gap-6 pt-6 sm:grid-cols-2">
+        <TextField id="location" label={f.location} hint={c.locationHint} autocomplete="address-level2" />
         <SelectField id="timeline" label={c.timeline.label} hint={c.timeline.hint} options={toOptions(c.timeline.options)} />
         <ChoiceGroup
           id="product"
@@ -233,33 +241,10 @@ const legendClass = 'float-left w-full font-display text-2xl font-extrabold';
             class="mt-6"
           />
         </fieldset>
-
-        <FileField
-          id="upload"
-          label={f.upload}
-          accept={UPLOAD_ACCEPT}
-          maxBytes={UPLOAD_MAX_BYTES}
-          hint={c.uploadHint}
-          messages={{ size: c.errors.fileSize, type: c.errors.fileType }}
-        />
       </div>
     </fieldset>
 
-    <fieldset class={groupClass}>
-      <legend class={legendClass}>{c.groups.details}</legend>
-      <div class="clear-both grid gap-6 pt-6">
-        <TextField
-          id="details"
-          label={f.details.label}
-          type="textarea"
-          required
-          rows={6}
-          hint={f.details.hint}
-          messages={{ required: c.errors.details }}
-        />
-        <SelectField id="referral" label={c.referral.label} options={toOptions(c.referral.options)} class="sm:w-1/2 sm:pr-3" />
-      </div>
-    </fieldset>
+    <SelectField id="referral" label={c.referral.label} options={toOptions(c.referral.options)} class="sm:w-1/2 sm:pr-3" />
 
     <div class="border-t-4 border-ink pt-6">
       <Button type="submit" size="lg" class="w-full sm:w-auto" data-submit>{contact.submitLabel}</Button>

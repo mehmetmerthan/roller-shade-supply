@@ -26,11 +26,11 @@ const bySlug = (id: string) => {
   if (!p) throw new Error(`Styleguide: project "${id}" not found.`);
   return p;
 };
-const sampleCards = ['water-power-lofts-rockford', 'sris-international-school', 'mosque'].map(bySlug);
+const sampleCards = ['water-power-lofts-rockford', 'sris-international-school', 'community-club'].map(bySlug);
 // Sample section: SRIS shows the product unmistakably at 16:9 (2560 px client photo).
 const heroProject = bySlug('sris-international-school');
 const heroPhoto = getCover(heroProject);
-const badgePhoto = getCover(bySlug('mosque'));
+const badgePhoto = getCover(bySlug('community-club'));
 
 const sections = [
   ['color', 'Color'],

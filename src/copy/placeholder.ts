@@ -84,9 +84,10 @@ export const quoteFormCopy = {
   groups: {
     contact: 'About you',
     project: 'Your project',
-    sizes: 'Sizes and plans',
     details: 'Project details',
+    sizes: 'Sizes',
   },
+  contactHint: 'All optional, but leave an email or phone number so we can reply.',
   phone: 'Phone',
   locationHint: 'City or ZIP code',
   quantityHint: 'Total number of shades or blinds, if you know it.',
@@ -120,13 +121,9 @@ export const quoteFormCopy = {
   privacyLink: 'Privacy Policy',
   sending: 'Sending your request…',
   callPrompt: 'Prefer to talk?',
+  // Only the project description is required (client request, 11/11/2026).
   errors: {
-    name: 'Please enter your name.',
-    company: 'Please enter your company name.',
-    email: 'Please enter your email address.',
     emailFormat: 'Please enter a valid email address, like name@company.com.',
-    location: 'Please tell us where the project is located.',
-    role: 'Please choose the option that best describes you.',
     details: 'Please tell us a little about your project.',
     fileSize: `This file is too large. Upload a file under ${UPLOAD_MAX_LABEL}, or email it to ${site.email.quotes}.`,
     fileType: `This file type can’t be uploaded. Use a PDF, Excel, CSV, Word, JPG, or PNG file, or email it to ${site.email.quotes}.`,

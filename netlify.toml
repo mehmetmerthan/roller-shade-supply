@@ -3,3 +3,9 @@
 [build]
   command = "npm run build"
   publish = "dist"
+
+# Renamed projects keep their old links working (project slugs follow folder names).
+[[redirects]]
+  from = "/projects/mosque/*"
+  to = "/projects/community-club/"
+  status = 301
