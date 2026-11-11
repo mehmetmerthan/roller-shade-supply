@@ -35,6 +35,8 @@
 npm run dev             # dev server → http://localhost:4321
 npm run build           # production build (runs check:projects first)
 npm run preview         # serve the production build
+npm run deploy:preview  # build with SITE_URL = the preview's netlify.app URL, then deploy dist/ to Netlify
+                        # (scripts/deploy-preview.mjs; see "Preview deploys" below)
 npm run check           # astro check (types + diagnostics)
 npm run images          # optimize /assets → src/assets (scripts/prepare-images.mjs)
 npm run check:projects  # every project folder has a content entry, and vice versa
@@ -42,6 +44,18 @@ npm run qa -- --base http://127.0.0.1:4321 --pages /styleguide/ --out .screensho
                         # full-page screenshots at 375/768/1280/1440 (installed Chrome), console errors,
                         # keyboard focus pass. In Git Bash prefix with MSYS_NO_PATHCONV=1 so "/path/" isn't rewritten.
 ```
+
+### Preview deploys (Netlify, no custom domain)
+- Preview site: **roller-shade-supply-preview** → https://roller-shade-supply-preview.netlify.app. This folder is linked to it through `.netlify/state.json` (gitignored); elsewhere, set `NETLIFY_SITE_ID` or run `npx netlify link`. Log in once with `npx netlify login`.
+- `npm run deploy:preview` reads the site's URL from Netlify. It then runs `npm run build` with `SITE_URL` set to that URL, so canonical, Open Graph, JSON-LD, and sitemap URLs point at the preview. Finally it runs `netlify deploy --no-build --dir=dist --prod --site=<id>`. `--no-build` matters, because netlify-cli otherwise rebuilds without `SITE_URL`.
+- The site URL comes from `SITE_URL` in `astro.config.mjs`, falling back to `PLACEHOLDER_URL` in `src/config/site.ts`. `site.url` follows it through `import.meta.env.SITE`. Never hard-code the domain.
+- The preview stays **noindex** and robots.txt stays `Disallow: /`, because `features.launched` is false. Don't flip it for a preview.
+- Netlify-side settings are not in the repo. They were set for the preview site on 11/06/2026:
+  - **team login protection off**, so the link is public (the team default still protects new sites);
+  - **form detection on**, so the `quote` form is detected at deploy;
+  - **"Built with Netlify" badge off**, because it covered the phone action bar.
+
+  A new site needs the same three settings: `npx netlify api updateSite` with `sso_login`, `processing_settings.ignore_html_forms`, and `built_with_badge_enabled`. Form detection takes effect from the next deploy.
 
 ## Repository layout (target)
 ```

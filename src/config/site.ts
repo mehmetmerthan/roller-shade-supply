@@ -6,6 +6,9 @@
  * docs/additional-content.md §1 until the client confirms it (see CONTENT_TODO.md).
  */
 
+/** The intended production domain. TODO(content): unconfirmed. */
+export const PLACEHOLDER_URL = 'https://www.rollershadesupply.com';
+
 export const site = {
   name: 'Roller Shade Supply',
   /** Approved H1 / tagline. */
@@ -13,8 +16,13 @@ export const site = {
   /** Approved short footer description. */
   description:
     'Roller Shade Supply is a Chicago-based window covering supplier serving builders, contractors, multifamily developers, commercial organizations, and public-sector projects.',
-  // TODO(content): production domain is unconfirmed.
-  url: 'https://www.rollershadesupply.com',
+  /**
+   * Origin for canonical, Open Graph, and JSON-LD URLs: Astro's `site`, which
+   * astro.config.mjs reads from the SITE_URL env variable (preview deploys) and
+   * otherwise sets to PLACEHOLDER_URL. `import.meta.env` doesn't exist when
+   * astro.config.mjs itself loads this file, hence the fallback.
+   */
+  url: (import.meta.env?.SITE ?? PLACEHOLDER_URL).replace(/\/+$/, ''),
   locale: 'en-US',
   timeZone: 'America/Chicago',
 

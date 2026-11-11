@@ -2,7 +2,14 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import { site } from './src/config/site.ts';
+import { PLACEHOLDER_URL } from './src/config/site.ts';
+
+/**
+ * Canonical origin. Preview deploys set SITE_URL to their netlify.app URL
+ * (npm run deploy:preview); everything else uses the placeholder domain.
+ * Pages stay noindex either way until `features.launched` (src/config/site.ts).
+ */
+const SITE_URL = (process.env.SITE_URL || PLACEHOLDER_URL).replace(/\/+$/, '');
 
 /** Paths that must never appear in the sitemap (all are noindex). */
 const SITEMAP_EXCLUDE = new Set([
@@ -12,8 +19,8 @@ const SITEMAP_EXCLUDE = new Set([
 ]);
 
 export default defineConfig({
-  // TODO(content): production domain is a placeholder (see src/config/site.ts).
-  site: site.url,
+  // TODO(content): the production domain is a placeholder (PLACEHOLDER_URL in src/config/site.ts).
+  site: SITE_URL,
   output: 'static',
   trailingSlash: 'always',
   // Astro 7 defaults to 'jsx' whitespace handling, which can drop spaces between

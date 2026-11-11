@@ -1,0 +1,5 @@
+# Netlify settings. Preview deploys are built locally and uploaded with
+# `npm run deploy:preview` (see CLAUDE.md); these apply if Netlify builds the site.
+[build]
+  command = "npm run build"
+  publish = "dist"

@@ -184,6 +184,7 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 |---|---|---|
 | ☐ | Quote-form recipients | Who receives quote requests by email? Set them in Netlify → Forms → `quote` → notifications after the first deploy. The form can't be tested end to end until it's deployed on Netlify (locally it goes straight to the thank-you page) |
 | ☐ | Upload size limit | Netlify Forms caps the whole request at **8 MB** (docs checked 11/05/2026), so the form allows one file under **7 MB** and points larger files to the quote email. Confirm that's acceptable, or plan a different upload service (`src/lib/forms.ts`) |
+| ☐ | Preview site | https://roller-shade-supply-preview.netlify.app (Netlify, public link, noindex, robots.txt `Disallow: /`). It shows placeholder copy and sample write-ups, so share it as a draft. The `quote` form is live there: submissions are stored in Netlify → Forms, and no emails go out until recipients are added. Redeploy with `npm run deploy:preview` |
 | ☐ | Analytics | Cloudflare Web Analytics or Plausible? Provide the site ID (`features.analytics`) |
 | ☐ | Google Business Profile | Does one exist? NAP must match the site exactly |
 | ☐ | Who adds projects after launch | Decides whether a CMS is needed |
