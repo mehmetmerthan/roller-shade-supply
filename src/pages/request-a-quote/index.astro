@@ -1,10 +1,10 @@
 ---
 /**
- * Request a Quote (docs/site-spec.md §3 and §7): the quote form beside an aside with
- * the approved [FAST-QUOTE] checklist and example, what happens next (§4, the steps
- * moved here from Home), and direct contact. Phones: the aside follows the form;
- * "Prefer to talk?" sits under the intro, because this page hides the bottom action bar
- * (it would cover the form, and its "Get a Quote" button would point here).
+ * Request a Quote: the short quote form beside an aside with the approved
+ * [FAST-QUOTE] checklist (what to put in the message or file) and direct contact.
+ * Phones: the aside follows the form; "Prefer to talk?" sits under the intro, because
+ * this page hides the bottom action bar (it would cover the form, and its
+ * "Get a Quote" button would point here).
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
@@ -12,7 +12,7 @@ import Hours from '../../components/ui/Hours.astro';
 import Icon from '../../components/ui/Icon.astro';
 import QuoteForm from '../../components/sections/QuoteForm.astro';
 import { contact, fastQuote, whoWeServe } from '../../copy/approved';
-import { processSteps, quoteAside, quoteFormCopy } from '../../copy/placeholder';
+import { quoteAside, quoteFormCopy } from '../../copy/placeholder';
 import { pageMeta } from '../../copy/seo';
 import { quoteCta } from '../../config/nav';
 import { site } from '../../config/site';
@@ -58,34 +58,6 @@ const panel = 'border-t-4 border-ink pt-4';
               ))
             }
           </ul>
-          <figure class="mt-5">
-            <figcaption class="label-spec text-stone-700">{fastQuote.exampleTitle}</figcaption>
-            <blockquote class="mt-2 text-sm">
-              <p>“{fastQuote.example}”</p>
-            </blockquote>
-          </figure>
-        </section>
-
-        <section aria-labelledby="aside-next" class={panel}>
-          <h2 id="aside-next" class="text-xl">{quoteAside.next}</h2>
-          <ol class="mt-3">
-            {
-              processSteps.map((step, i) => (
-                <li class="grid grid-cols-[2rem_1fr] gap-x-2 border-t border-line py-3 first:border-t-0 first:pt-0">
-                  <span class="font-display text-2xl leading-none font-extrabold" aria-hidden="true">
-                    {i + 1}
-                  </span>
-                  <div>
-                    <h3 class="font-sans text-base font-semibold tracking-normal">
-                      <span class="sr-only">Step {i + 1}: </span>
-                      {step.title}
-                    </h3>
-                    <p class="mt-0.5 text-sm text-stone-700">{step.text}</p>
-                  </div>
-                </li>
-              ))
-            }
-          </ol>
         </section>
 
         <section aria-labelledby="aside-contact" class={panel}>

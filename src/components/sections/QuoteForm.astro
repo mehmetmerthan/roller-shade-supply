@@ -1,30 +1,23 @@
 ---
 /**
- * Quote form (docs/site-spec.md §7; approved [CONTACT] fields plus the ✚ additions).
- * Only the project description is required (client request, 11/11/2026); everything
- * else is optional. Four ruled groups: about you → your project (the description and
- * the file upload) → project details → sizes, then "How did you hear about us?".
+ * Quote form, kept short at the client's request (11/11/2026): Name and Email
+ * (required), Phone, an optional message, and a file upload.
  *
  * Backend: Netlify Forms through src/lib/forms.ts (a normal multipart POST; success
- * shows /request-a-quote/thank-you/). Works without JS: native validation, and the
- * sizes go in the "Paste a list of sizes" box.
+ * shows /request-a-quote/thank-you/). Works without JS through native validation.
  *
  * With JS:
  *   - inline errors plus an error summary on submit (src/lib/form-validation.ts);
- *   - prefill from ?product=<product>&projectType=<type> (src/lib/quote.ts vocabulary);
- *   - repeatable size rows. The rows have no `name`: Netlify stores only fields that
- *     exist in the deployed HTML, so the rows are written into the hidden
- *     `measurements` field on submit (one line per size);
+ *   - links like /request-a-quote/?product=zebra-shades&projectType=school
+ *     (src/lib/quote.ts) fill two hidden fields, so the request still says which
+ *     product and project type the visitor came from;
  *   - one submit per page load ("Sending your request…").
  */
 import Button from '../ui/Button.astro';
-import Icon from '../ui/Icon.astro';
 import AlertIcon from '../ui/form/AlertIcon.astro';
-import ChoiceGroup from '../ui/form/ChoiceGroup.astro';
 import FileField from '../ui/form/FileField.astro';
-import SelectField from '../ui/form/SelectField.astro';
 import TextField from '../ui/form/TextField.astro';
-import { contact, fastQuote, quoteFields as f } from '../../copy/approved';
+import { contact, quoteFields as f } from '../../copy/approved';
 import { quoteFormCopy as c } from '../../copy/placeholder';
 import { legalLinks } from '../../config/nav';
 import { PRODUCTS } from '../../config/taxonomy';
@@ -44,34 +37,24 @@ interface Props {
 
 const { class: className } = Astro.props;
 
-const toOptions = (labels: readonly string[]) => labels.map((label) => ({ value: label, label }));
-
-// Prefill keys: the product slugs, then "not-sure" and "other" (approved order).
+// Query-string keys → the approved option labels, stored in the hidden fields.
 const productKeys = [...PRODUCTS, 'not-sure', 'other'];
-const productOptions = f.product.options.map((label, i) => ({ value: label, label, key: productKeys[i] }));
-
-// The quote-link vocabulary (QUOTE_PROJECT_TYPES) must match the approved options, in order.
-const projectTypeOptions = Object.entries(QUOTE_PROJECT_TYPES).map(([key, label], i) => {
-  if (label !== f.projectType.options[i]) {
-    throw new Error(`QuoteForm: QUOTE_PROJECT_TYPES["${key}"] does not match the approved option "${f.projectType.options[i]}".`);
-  }
-  return { value: label, label, key };
-});
+const productMap = Object.fromEntries(f.product.options.map((label, i) => [productKeys[i], label]));
+const projectTypeMap: Record<string, string> = { ...QUOTE_PROJECT_TYPES };
 
 const privacy = legalLinks.find((l) => l.href === '/privacy-policy/')!;
-const groupClass = 'min-w-0 border-t-4 border-ink pt-4 lg:pt-5';
-// Floated legends render below the group's top rule instead of inside it.
-const legendClass = 'float-left w-full font-display text-2xl font-extrabold';
 ---
 
 <form
   {...formAttributes(quoteForm)}
-  class:list={['quote-form', className]}
+  class:list={['quote-form border-t-4 border-ink pt-6', className]}
   aria-labelledby="quote-form-title"
   data-quote-form
 >
   <h2 id="quote-form-title" class="sr-only">Quote request form</h2>
   {hiddenFields(quoteForm).map((field) => <input type="hidden" name={field.name} value={field.value} />)}
+  <input type="hidden" name="product" data-prefill="product" data-map={JSON.stringify(productMap)} />
+  <input type="hidden" name="project_type" data-prefill="projectType" data-map={JSON.stringify(projectTypeMap)} />
   <p class="hidden">
     <label>
       Don’t fill this out if you’re human:
@@ -79,7 +62,7 @@ const legendClass = 'float-left w-full font-display text-2xl font-extrabold';
     </label>
   </p>
 
-  <div class="error-summary mb-10" tabindex="-1" role="alert" aria-labelledby="quote-errors-title" data-error-summary hidden>
+  <div class="error-summary mb-8" tabindex="-1" role="alert" aria-labelledby="quote-errors-title" data-error-summary hidden>
     <h2 id="quote-errors-title" class="flex items-center gap-2 font-sans text-base font-bold tracking-normal">
       <AlertIcon class="text-error" size={18} />
       Please fix the following before submitting:
@@ -87,190 +70,40 @@ const legendClass = 'float-left w-full font-display text-2xl font-extrabold';
     <ul class="mt-2 list-disc pl-10"></ul>
   </div>
 
-  <div class="space-y-12 lg:space-y-14">
-    <fieldset class={groupClass} aria-describedby="contact-hint">
-      <legend class={legendClass}>{c.groups.contact}</legend>
-      <p id="contact-hint" class="field-hint clear-both pt-2">{c.contactHint}</p>
-      <div class="grid gap-6 pt-6 sm:grid-cols-2">
-        <TextField id="name" label={f.name} autocomplete="name" />
-        <TextField id="company" label={f.company} autocomplete="organization" />
-        <TextField id="email" label={f.email} type="email" autocomplete="email" inputmode="email" messages={{ format: c.errors.emailFormat }} />
-        <TextField id="phone" label={c.phone} type="tel" autocomplete="tel" inputmode="tel" />
-        <SelectField
-          id="role"
-          label={f.role.label}
-          options={toOptions(f.role.options)}
-          hint={c.roleHint}
-          class="sm:col-span-2 sm:w-1/2 sm:pr-3"
-        />
-      </div>
-    </fieldset>
+  <div class="grid gap-6 sm:grid-cols-2">
+    <TextField id="name" label={f.name} required autocomplete="name" messages={{ required: c.errors.name }} />
+    <TextField
+      id="email"
+      label={f.email}
+      type="email"
+      required
+      autocomplete="email"
+      inputmode="email"
+      messages={{ required: c.errors.email, format: c.errors.emailFormat }}
+    />
+    <TextField id="phone" label={c.phone} type="tel" autocomplete="tel" inputmode="tel" />
+    <TextField id="details" label={f.details.label} type="textarea" rows={5} hint={f.details.hint} class="sm:col-span-2" />
+    <FileField
+      id="upload"
+      label={f.upload}
+      accept={UPLOAD_ACCEPT}
+      maxBytes={UPLOAD_MAX_BYTES}
+      hint={c.uploadHint}
+      messages={{ size: c.errors.fileSize, type: c.errors.fileType }}
+      class="sm:col-span-2"
+    />
+  </div>
 
-    <fieldset class={groupClass}>
-      <legend class={legendClass}>{c.groups.project}</legend>
-      <div class="clear-both grid gap-6 pt-6">
-        <TextField
-          id="details"
-          label={f.details.label}
-          type="textarea"
-          required
-          rows={6}
-          hint={f.details.hint}
-          messages={{ required: c.errors.details }}
-        />
-        <FileField
-          id="upload"
-          label={f.upload}
-          accept={UPLOAD_ACCEPT}
-          maxBytes={UPLOAD_MAX_BYTES}
-          hint={c.uploadHint}
-          messages={{ size: c.errors.fileSize, type: c.errors.fileType }}
-        />
-      </div>
-    </fieldset>
-
-    <fieldset class={groupClass}>
-      <legend class={legendClass}>{c.groups.details}</legend>
-      <div class="clear-both grid gap-6 pt-6 sm:grid-cols-2">
-        <TextField id="location" label={f.location} hint={c.locationHint} autocomplete="address-level2" />
-        <SelectField id="timeline" label={c.timeline.label} hint={c.timeline.hint} options={toOptions(c.timeline.options)} />
-        <ChoiceGroup
-          id="product"
-          name="product[]"
-          legend={f.product.label}
-          hint={c.checkboxHint}
-          options={productOptions}
-          class="sm:col-span-2"
-          columns={3}
-        />
-        <ChoiceGroup
-          id="project-type"
-          name="project_type[]"
-          legend={f.projectType.label}
-          hint={c.checkboxHint}
-          options={projectTypeOptions}
-          class="sm:col-span-2"
-          columns={2}
-        />
-        <ChoiceGroup
-          id="operating-system"
-          name="operating_system[]"
-          legend={f.operatingSystem.label}
-          hint={c.checkboxHint}
-          options={toOptions(f.operatingSystem.options)}
-          class="sm:col-span-2"
-          columns={3}
-        />
-        <ChoiceGroup
-          id="union"
-          name="union"
-          type="radio"
-          legend={c.union.legend}
-          options={toOptions(c.union.options)}
-          class="sm:col-span-2"
-          columns="inline"
-        />
-      </div>
-    </fieldset>
-
-    <fieldset class={groupClass}>
-      <legend class={legendClass}>{c.groups.sizes}</legend>
-      <div class="clear-both space-y-6 pt-6">
-        <TextField
-          id="quantity"
-          label={f.quantity}
-          type="number"
-          min={1}
-          inputmode="numeric"
-          hint={c.quantityHint}
-          class="sm:w-1/2 sm:pr-3"
-        />
-        <fieldset aria-describedby="sizes-hint">
-          <legend class="field-label">{f.measurements}</legend>
-          <p id="sizes-hint" class="field-hint max-w-prose">{fastQuote.measurementNote}</p>
-
-          {/* Size rows: shown only with JS (see the script). */}
-          <div class="mt-4" data-sizes hidden>
-            <ol class="space-y-3" data-size-list></ol>
-            <template data-size-template>
-              <li class="size-row" data-size-row>
-                <fieldset class="grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-12 sm:items-end">
-                  <legend class="sr-only" data-size-legend>{c.sizes.row}</legend>
-                  <div class="col-span-2 sm:col-span-5">
-                    <label class="size-label" data-for="label">{c.sizes.label}</label>
-                    <input class="field-control mt-1" type="text" data-size="label" autocomplete="off" />
-                  </div>
-                  <div class="sm:col-span-2">
-                    <label class="size-label" data-for="width">{c.sizes.width}</label>
-                    <input class="field-control mt-1" type="text" data-size="width" autocomplete="off" />
-                  </div>
-                  <div class="sm:col-span-2">
-                    <label class="size-label" data-for="height">{c.sizes.height}</label>
-                    <input class="field-control mt-1" type="text" data-size="height" autocomplete="off" />
-                  </div>
-                  <div class="sm:col-span-2">
-                    <label class="size-label" data-for="qty">{c.sizes.qty}</label>
-                    <input class="field-control mt-1" type="number" min="1" inputmode="numeric" data-size="qty" autocomplete="off" />
-                  </div>
-                  <div class="flex items-end sm:col-span-1">
-                    <button type="button" class="btn btn-ghost btn-icon" data-size-remove>
-                      <Icon name="close" />
-                    </button>
-                  </div>
-                </fieldset>
-              </li>
-            </template>
-            <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-              <button type="button" class="btn btn-secondary btn-sm" data-size-add>
-                <Icon name="plus" size={16} />
-                {c.sizes.add}
-              </button>
-              <p class="text-sm text-stone-600">{c.sizes.hint}</p>
-            </div>
-            <p class="sr-only" aria-live="polite" data-size-live></p>
-          </div>
-          <input type="hidden" name="measurements" data-measurements />
-
-          <TextField
-            id="measurement-list"
-            name="measurement_list"
-            label={c.sizes.listLabel}
-            type="textarea"
-            rows={4}
-            hint={c.sizes.listHint}
-            class="mt-6"
-          />
-        </fieldset>
-      </div>
-    </fieldset>
-
-    <SelectField id="referral" label={c.referral.label} options={toOptions(c.referral.options)} class="sm:w-1/2 sm:pr-3" />
-
-    <div class="border-t-4 border-ink pt-6">
-      <Button type="submit" size="lg" class="w-full sm:w-auto" data-submit>{contact.submitLabel}</Button>
-      <p class="mt-3 text-sm font-semibold" role="status" data-form-status></p>
-      <p class="mt-3 max-w-prose text-sm text-stone-700">
-        {contact.responseNote}
-        {' '}{c.privacy}{' '}
-        <a href={privacy.href} class="link-quiet inline-block py-0.5">{c.privacyLink}</a>
-      </p>
-    </div>
+  <div class="mt-10 border-t border-ink pt-6">
+    <Button type="submit" size="lg" class="w-full sm:w-auto" data-submit>{contact.submitLabel}</Button>
+    <p class="mt-3 text-sm font-semibold" role="status" data-form-status></p>
+    <p class="mt-3 max-w-prose text-sm text-stone-700">
+      {contact.responseNote}
+      {' '}{c.privacy}{' '}
+      <a href={privacy.href} class="link-quiet inline-block py-0.5">{c.privacyLink}</a>
+    </p>
   </div>
 </form>
-
-<style>
-  /* Small labels inside the size rows (they repeat on every row). */
-  .size-label {
-    display: block;
-    font-size: var(--text-sm);
-    font-weight: 600;
-    line-height: 1.3;
-  }
-  .size-row + .size-row {
-    border-top: 1px solid var(--color-line);
-    padding-top: 0.75rem;
-  }
-</style>
 
 <script>
   import { setError, showSummary, validateControl, validateForm } from '../../lib/form-validation';
@@ -279,89 +112,26 @@ const legendClass = 'float-left w-full font-display text-2xl font-extrabold';
 
   const form = document.querySelector<HTMLFormElement>('form[data-quote-form]');
   if (form) {
-    const copy = quoteFormCopy.sizes;
     const summary = form.querySelector<HTMLElement>('[data-error-summary]')!;
     const status = form.querySelector<HTMLElement>('[data-form-status]')!;
     const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
     form.noValidate = true;
 
-    // ---- Prefill from the quote-link vocabulary (src/lib/quote.ts) ----
+    // ---- Context from the link that brought the visitor here (src/lib/quote.ts) ----
     const params = new URLSearchParams(location.search);
-    const prefill = (name: string, key: string | null) => {
-      if (!key) return;
-      const input = form.querySelector<HTMLInputElement>(`input[name="${name}"][data-key="${CSS.escape(key)}"]`);
-      if (input) input.checked = true;
-    };
-    prefill('product[]', params.get('product'));
-    prefill('project_type[]', params.get('projectType'));
-
-    // ---- Size rows ----
-    const sizes = form.querySelector<HTMLElement>('[data-sizes]')!;
-    const list = sizes.querySelector<HTMLOListElement>('[data-size-list]')!;
-    const template = sizes.querySelector<HTMLTemplateElement>('[data-size-template]')!;
-    const addButton = sizes.querySelector<HTMLButtonElement>('[data-size-add]')!;
-    const live = sizes.querySelector<HTMLElement>('[data-size-live]')!;
-    const hidden = form.querySelector<HTMLInputElement>('[data-measurements]')!;
-    let serial = 0;
-
-    const rows = () => [...list.querySelectorAll<HTMLElement>('[data-size-row]')];
-    const renumber = () => {
-      const all = rows();
-      all.forEach((row, i) => {
-        row.querySelector('[data-size-legend]')!.textContent = `${copy.row} ${i + 1}`;
-        const remove = row.querySelector<HTMLButtonElement>('[data-size-remove]')!;
-        remove.setAttribute('aria-label', `${copy.remove} ${i + 1}`);
-        remove.hidden = all.length === 1;
-      });
-    };
-    const addRow = (focus: boolean) => {
-      const fragment = template.content.cloneNode(true) as DocumentFragment;
-      const row = fragment.querySelector<HTMLElement>('[data-size-row]')!;
-      serial += 1;
-      for (const label of row.querySelectorAll<HTMLLabelElement>('label[data-for]')) {
-        const id = `size-${serial}-${label.dataset.for}`;
-        label.htmlFor = id;
-        row.querySelector<HTMLInputElement>(`[data-size="${label.dataset.for}"]`)!.id = id;
-      }
-      list.append(fragment);
-      renumber();
-      if (focus) row.querySelector<HTMLInputElement>('input')!.focus();
-    };
-    list.addEventListener('click', (e) => {
-      const remove = (e.target as Element).closest<HTMLButtonElement>('[data-size-remove]');
-      if (!remove) return;
-      const row = remove.closest<HTMLElement>('[data-size-row]')!;
-      const all = rows();
-      const index = all.indexOf(row);
-      row.remove();
-      renumber();
-      live.textContent = `${copy.row} ${index + 1} ${copy.removed}`;
-      const target = rows()[Math.max(0, index - 1)];
-      (target?.querySelector<HTMLInputElement>('input') ?? addButton).focus();
-    });
-    addButton.addEventListener('click', () => addRow(true));
-    addRow(false);
-    sizes.hidden = false;
-
-    // One line per size, e.g. 'Unit 2A: 50" W × 50" H, qty 2'.
-    const serializeSizes = () => {
-      const lines = rows().flatMap((row, i) => {
-        const value = (name: string) => row.querySelector<HTMLInputElement>(`[data-size="${name}"]`)!.value.trim();
-        const [label, width, height, qty] = ['label', 'width', 'height', 'qty'].map(value);
-        if (!label && !width && !height && !qty) return [];
-        const size = `${width || '?'}" W × ${height || '?'}" H`;
-        return [`${i + 1}. ${label ? `${label}: ` : ''}${size}${qty ? `, qty ${qty}` : ''}`];
-      });
-      hidden.value = lines.join('\n');
-    };
+    for (const input of form.querySelectorAll<HTMLInputElement>('input[data-prefill]')) {
+      const key = params.get(input.dataset.prefill!);
+      const map = JSON.parse(input.dataset.map ?? '{}') as Record<string, string>;
+      if (key && map[key]) input.value = map[key];
+    }
 
     // ---- Validation and submit ----
     let attempted = false;
     let submitting = false;
-    for (const control of form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('[data-validate]')) {
+    for (const control of form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[data-validate]')) {
       const isFile = control instanceof HTMLInputElement && control.type === 'file';
       // Files are checked as soon as they're chosen; other fields after the first submit.
-      control.addEventListener(isFile || control instanceof HTMLSelectElement ? 'change' : 'input', () => {
+      control.addEventListener(isFile ? 'change' : 'input', () => {
         if (isFile || attempted) setError(control, validateControl(control));
       });
     }
@@ -371,7 +141,6 @@ const legendClass = 'float-left w-full font-display text-2xl font-extrabold';
         e.preventDefault();
         return;
       }
-      serializeSizes();
       const errors = validateForm(form);
       if (errors.length > 0) {
         e.preventDefault();

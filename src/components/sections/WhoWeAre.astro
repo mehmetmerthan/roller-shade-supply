@@ -1,10 +1,9 @@
 ---
 /**
- * [WHO-WE-ARE] on the standard card (FeatureCard): the approved heading, paragraphs,
- * and union statement on the limestone sash; a portrait project photo in the pane.
- * A caption under the frame links to the project the photo comes from.
+ * [WHO-WE-ARE]: the approved paragraphs beside a portrait project photo. The photo
+ * sits on the left so the section mirrors the introduction above it (text | photo).
  */
-import FeatureCard from '../ui/FeatureCard.astro';
+import { Picture } from 'astro:assets';
 import { whoWeAre } from '../../copy/approved';
 import { homeSections } from '../../config/nav';
 import { projectHref, type Project, type ProjectPhoto } from '../../lib/projects';
@@ -23,22 +22,32 @@ const body = rest.slice(0, -1);
 ---
 
 <section id={id} data-home-section aria-labelledby={`${id}-title`} class:list={['page-gutter mx-auto max-w-content', className]}>
-  <FeatureCard photo={photo} sashSpan={7}>
-    <h2 id={`${id}-title`} class="text-3xl">{whoWeAre.title}</h2>
-    <div class="mt-4 max-w-prose space-y-4 lg:mt-6">
-      <p class="text-lg">{lead}</p>
-      {body.map((p) => <p class="text-stone-700">{p}</p>)}
+  <div class="grid gap-8 border-t-4 border-ink pt-4 md:grid-cols-12 lg:gap-8 lg:pt-6">
+    <div class="md:order-2 md:col-span-7 lg:col-span-6 lg:col-start-6">
+      <h2 id={`${id}-title`} class="text-3xl">{whoWeAre.title}</h2>
+      <div class="mt-4 max-w-prose space-y-4">
+        <p class="text-lg">{lead}</p>
+        {body.map((p) => <p class="text-stone-700">{p}</p>)}
+      </div>
+      {union && <p class="mt-6 max-w-prose border-l-4 border-ink pl-4 font-semibold">{union}</p>}
     </div>
-    {/* From 1024 px the union statement sits on the sash's base, like the hero's title block. */}
-    {
-      union && (
-        <div class="mt-6 lg:mt-auto lg:pt-8">
-          <p class="max-w-prose border-l-4 border-ink pl-4 font-semibold">{union}</p>
-        </div>
-      )
-    }
-  </FeatureCard>
-  <p class="mt-2 text-sm text-stone-700 lg:text-right">
-    <a href={projectHref(project)} class="link-quiet inline-flex min-h-6 items-center">{project.data.title}</a>
-  </p>
+    <figure class="md:order-1 md:col-span-5 md:pt-2 lg:col-span-4">
+      <Picture
+        src={photo.src}
+        alt={photo.alt}
+        width={960}
+        height={1200}
+        layout="constrained"
+        fit="cover"
+        position={photo.position}
+        widths={[400, 640, 800, 960]}
+        sizes="(min-width: 1280px) 384px, (min-width: 1024px) 31vw, (min-width: 768px) 40vw, 100vw"
+        formats={['avif', 'webp']}
+        class="block aspect-4/5 h-auto w-full"
+      />
+      <figcaption class="mt-2 text-sm text-stone-700">
+        <a href={projectHref(project)} class="link-quiet inline-flex min-h-6 items-center">{project.data.title}</a>
+      </figcaption>
+    </figure>
+  </div>
 </section>
