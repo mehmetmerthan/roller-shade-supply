@@ -29,7 +29,7 @@ highlights:
   - One-touch privacy for glass-walled rooms
   - Installed outside production hours
 featured: false
-order: 13
+order: 14
 placeholder: true
 cover: video-af3755da-26s.jpg
 photos:

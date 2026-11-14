@@ -28,7 +28,7 @@ highlights:
   - Phased delivery matched to turnover
   - One solar screen fabric throughout
 featured: true
-order: 1
+order: 3
 placeholder: true
 cover: img-5335.jpg
 photos:

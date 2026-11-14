@@ -143,7 +143,11 @@ videos?: { src: string, poster?: string, title: string, width?: number, height?:
 Body (Markdown): `## Overview` · `## The Challenge` · `## Our Solution` · `## The Result`. Every project needs a complete write-up: summary, all four sections, 3 highlights, and every spec field.
 
 ### Product proof and related projects
-- `products` and `operatingSystems` list **only what the project's photos or videos show**, so a project never counts as proof for something we have no photos of. Today every project shows roller shades. Only Stern Pinball shows (apparently) motorized operation. **No project shows zebra shades, faux wood blinds, cordless, or solar-powered systems.**
+- `products` and `operatingSystems` list **only what the project's photos or videos show**, so a project never counts as proof for something we have no photos of. The one exception is a fact the client states directly.
+  - Today every project shows roller shades.
+  - Stern Pinball shows (apparently) motorized operation.
+  - **The Henry** lists motorized and solar-powered motorized operation because the client said so (11/14/2026); its photos don't show a motor or panel.
+  - **No project shows zebra shades, faux wood blinds, or cordless systems.**
 - Related-projects sections (project pages) are built from those fields and **hide entirely when empty**. Never fill them with a project that doesn't show the product.
 
 ### Held-back projects

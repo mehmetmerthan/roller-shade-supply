@@ -28,8 +28,8 @@ highlights:
   - Oversized shades for a tall storefront
   - Glare control on the sales floor
   - Merchandise stays on display
-featured: false
-order: 7
+featured: true
+order: 4
 placeholder: true
 cover: img-4737.jpg
 photos:

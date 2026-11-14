@@ -30,7 +30,7 @@ highlights:
   - Glare control with vehicles still on display
   - Delivered for a fixed reopening date
 featured: false
-order: 12
+order: 13
 placeholder: true
 cover: unnamed.jpg
 photos:

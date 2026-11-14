@@ -28,7 +28,7 @@ highlights:
   - Chain systems with safety tension devices
   - Standardized sizes for easy replacement
 featured: false
-order: 11
+order: 12
 placeholder: true
 cover: salt-creek-elementary-school-elmhurst-il-primaryphoto.jpg
 photos:

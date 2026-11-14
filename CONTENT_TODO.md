@@ -51,13 +51,14 @@ All 13 project write-ups are adapted from `docs/mock-projects.yaml`. **Every fac
 ### 3.2 Project-by-project (all 13 live)
 | ☐ | Project (folder) | Status | Open items |
 |---|---|---|---|
-| ☐ | Water Power Lofts Rockford | live, featured | Confirm the building type (loft conversion?), scope, and year (photo dates suggest 2024) |
-| ☐ | SRIS International School | live, featured | **Location unknown** (currently "Chicago area, IL") |
-| ☐ | **Community Club** | live, featured | Renamed at the client's request on 11/11/2026 (folder, title, and URL `/projects/community-club/`; the old URL redirects). Sector is provisionally `commercial`. Location unknown. Permission to publish the name and photos |
-| ☐ | 914 W Hubbard St | live, featured | Condos or apartments? Who was the client (property manager or association)? Year: photo dates suggest 2024 |
-| ☐ | UPS Center | live, featured | Which UPS facility, and where? Naming permission. No UPS branding is visible. The photos show an operating facility's interior (sort floor); confirm they may be published |
-| ☐ | 118 S Clinton | live, featured | Apartments over ground-floor retail (mixed-use)? The photos show a leasing/amenity space, not an apartment. Both interiors show another company's leasing boards; a cleaner interior shot would help |
-| ☐ | ERIK'S Bike Shop | live, not featured | **No photo clearly shows a window shade.** 3 of 5 are storefront exteriors dominated by the ERIK'S logo. Need interior photos of the installed shades, the store location, and permission to name the client and show its branding. Year: photo dates suggest 2023. The folder was renamed from "ERIK_S Bike Shop" |
+| ☐ | **The Henry** | live, featured (#1) | Added 11/14/2026. **Client facts:** 245 luxury residential units and 49 townhouses; many shades motorized with solar charging (the Overview is the client's sentence verbatim; the summary is shortened to fit 160 characters). **Placeholders to confirm:** location (now "Chicago area, IL"), year (now 2025), client type, timeline, and the Challenge / Solution / Result text. Motorized and solar are listed on the client's word; no photo shows a motor or panel. Three photos are 1600 × 1200 (sent compressed), so the originals would be sharper. The folder `the-henry` is shown as "The Henry" (rule 1 Title Case) |
+| ☐ | Water Power Lofts Rockford | live, featured (#3) | Confirm the building type (loft conversion?), scope, and year (photo dates suggest 2024) |
+| ☐ | SRIS International School | live, featured (#5) | **Location unknown** (currently "Chicago area, IL") |
+| ☐ | **Community Club** | live (no longer featured, 11/14/2026) | Renamed at the client's request on 11/11/2026 (folder, title, and URL `/projects/community-club/`; the old URL redirects). Sector is provisionally `commercial`. Location unknown. Permission to publish the name and photos |
+| ☐ | 914 W Hubbard St | live (no longer featured, 11/14/2026) | Condos or apartments? Who was the client (property manager or association)? Year: photo dates suggest 2024 |
+| ☐ | UPS Center | live, featured (#6) | Which UPS facility, and where? Naming permission. No UPS branding is visible. The photos show an operating facility's interior (sort floor); confirm they may be published |
+| ☐ | 118 S Clinton | live, featured (#2) | Apartments over ground-floor retail (mixed-use)? The photos show a leasing/amenity space, not an apartment. Both interiors show another company's leasing boards; a cleaner interior shot would help |
+| ☐ | ERIK'S Bike Shop | live, featured (#4, client's choice 11/14/2026) | **No photo clearly shows a window shade.** 3 of 5 are storefront exteriors dominated by the ERIK'S logo. Need interior photos of the installed shades, the store location, and permission to name the client and show its branding. Year: photo dates suggest 2023. The folder was renamed from "ERIK_S Bike Shop" |
 | ☐ | Friendship Junior High School | live | One client photo plus one web image. More photos, ideally landscape. Location assumed to be Des Plaines, IL |
 | ☐ | 811 West Evergreen | live | Apartments or condos? New construction or gut rehab? |
 | ☐ | Grove Junior High School | live (**web photos only**) | Photos of the completed work. Both images are web-sourced exteriors. The folder was renamed from "Grove Junior HighSchool" |
@@ -83,6 +84,7 @@ Marked `origin: web` in frontmatter. Shown in galleries; never the home hero, an
 | ☐ | `Lexus Glenview/images.jpg` | Web thumbnail | 387×516 | no |
 | ☐ | `Salt Creek Elementary School/salt-creek-elementary-school-elmhurst-il-primaryphoto.jpg` | School-directory image; shows no installed shades | 650×433 | **yes** (only photo) |
 | ☐ | `SRIS International School/unnamed-2.jpg` | Google Maps–style grab | 680×453 | no |
+| ☐ | `the-henry/henry-aerial-59-20231121-temp-rendering-scaled.jpg` | **Developer's aerial rendering** (not a photo; the file name says "temp rendering"). Shown last in the gallery and captioned as a rendering; confirm the rights or replace it with a real exterior photo | 2560×1707 | no |
 | ☐ | `118 S Clinton/118-s-clinton.jpg` | **Source unknown** (no camera data; looks like a professional or listing photo). Treated as a client photo for now | 1200×900 | no |
 
 **Low-res covers** (`check:projects` warns): Lexus Glenview (680 px), Salt Creek Elementary School (650 px), and Stern Pinball (478×850 video still). Replace before launch.
@@ -208,3 +210,4 @@ Everything outside `docs/approved-copy.md` is a placeholder. Items marked [CONFI
 | 11/11/2026 | Home introduction | The kicker "Roller Shade Supply", both hero buttons, and the phone/hours block are gone. The H1 runs across the top of the hero frame with the two approved [HERO] paragraphs under it (left) and the whole SRIS photo (right), sized so the H1 and the complete photo are on the first screen at every width. Who We Are is back to its plain layout (no card), because more cards felt overwhelming |
 | 11/11/2026 | "Mosque" renamed "Community Club" | At the client's request: `/assets/projects/` folder (user-approved one-time rename, files untouched), optimized images, video folder, content entry, slug `/projects/community-club/` (301 from the old URL in `netlify.toml`), and the write-up and alt text reworded without the old name or religious terms |
 | 11/11/2026 | Quote form | Short form at the client's request: Name and Email required; Phone, message, and file upload optional. All other fields removed |
+| 11/14/2026 | The Henry and the featured order | The client added `the-henry` and approved its page and the home "Selected Projects" order: The Henry, 118 S Clinton, Water Power Lofts Rockford, ERIK'S Bike Shop, SRIS International School, UPS Center ("UPS Center" keeps its name). Community Club and 914 W Hubbard St are no longer featured. The developer's rendering stays in The Henry's gallery |

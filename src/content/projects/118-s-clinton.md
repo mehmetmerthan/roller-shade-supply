@@ -28,7 +28,7 @@ highlights:
   - Clean headboxes under exposed ductwork
   - One fabric across every street-facing window
 featured: true
-order: 6
+order: 2
 placeholder: true
 cover: 8436235e-ef8f-4ade-8499-68d375347fe6.jpg
 photos:

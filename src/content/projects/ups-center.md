@@ -30,7 +30,7 @@ highlights:
   - Fascia-finished interior windows
   - Delivered area by area
 featured: true
-order: 5
+order: 6
 placeholder: true
 cover: 1b213b7c-7c71-4438-b627-2f63d5b6ea44.jpg
 photos:

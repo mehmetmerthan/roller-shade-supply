@@ -29,7 +29,7 @@ highlights:
   - Solar screens for the library and gym
   - Each phase closed out before school resumed
 featured: false
-order: 10
+order: 11
 placeholder: true
 cover: grove-junion-high.jpg
 photos:

@@ -29,7 +29,7 @@ highlights:
   - Union project with full submittals
   - Continuous fascia across ribbon windows
 featured: false
-order: 8
+order: 9
 placeholder: true
 cover: 112edd83-9760-46e6-bfd8-cf7a0949f2e0.jpg
 photos:

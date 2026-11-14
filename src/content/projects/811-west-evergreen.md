@@ -29,7 +29,7 @@ highlights:
   - Fascia-finished inside mounts
   - One fabric across every unit
 featured: false
-order: 9
+order: 10
 placeholder: true
 cover: c49de731-b297-41c8-9619-c71cfd8483ec.jpg
 photos:

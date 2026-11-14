@@ -30,8 +30,8 @@ highlights:
   - Glare control that keeps the view
   - One consistent look in every room
   - Installed while the club stayed open
-featured: true
-order: 3
+featured: false
+order: 7
 placeholder: true
 cover: 8bc96a92-d373-4499-9917-474deaca1828.jpg
 photos:

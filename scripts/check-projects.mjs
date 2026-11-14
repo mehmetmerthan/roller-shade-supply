@@ -88,7 +88,15 @@ async function main() {
       if (slug !== expectedSlug) {
         errors.push(`${file}: file name should be "${isHeld ? '_' : ''}${expectedSlug}.md" for folder "${data.folder}".`);
       }
-      if (data.title !== data.folder) {
+      // Rule 1: the title is the folder name as written, except that an all-lowercase
+      // or "-"/"_"-separated name is shown in Title Case ("the-henry" → "The Henry").
+      const titleCased = data.folder
+        .split(/[-_\s]+/)
+        .filter(Boolean)
+        .map((word) => word[0].toUpperCase() + word.slice(1))
+        .join(' ');
+      const mayTitleCase = data.folder === data.folder.toLowerCase() || /[-_]/.test(data.folder);
+      if (data.title !== data.folder && !(mayTitleCase && data.title === titleCased)) {
         warnings.push(`${file}: title "${data.title}" differs from folder "${data.folder}" (rule 1: display the folder name as written).`);
       }
     }

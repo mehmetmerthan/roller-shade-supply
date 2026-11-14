@@ -28,7 +28,7 @@ highlights:
   - Room-darkening for presentations
   - Ready before the school year began
 featured: true
-order: 2
+order: 5
 placeholder: true
 cover: 033ef675-72f7-4e9f-bcfc-bc6d1fb8be37.jpg
 photos:

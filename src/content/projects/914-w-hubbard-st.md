@@ -30,8 +30,8 @@ highlights:
   - One standard shade for every unit
   - Installed unit by unit at turnover
   - Size records for fast reorders
-featured: true
-order: 4
+featured: false
+order: 8
 placeholder: true
 cover: img-7113.jpg
 photos:
