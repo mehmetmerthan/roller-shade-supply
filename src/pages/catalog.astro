@@ -1,0 +1,43 @@
+---
+/**
+ * Fabric catalogs (client request, 11/14/2026): the roller and zebra shade fabric
+ * PDFs from /assets/catalogs/, each with a cover, details, an in-page viewer, and a
+ * download link (CatalogList), then the quote CTA. Linked from the header ("Catalog"),
+ * the Our Products section on Home, and the footer.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+import CatalogList from '../components/sections/CatalogList.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import { catalogPageCopy as copy } from '../copy/placeholder';
+import { pageMeta } from '../copy/seo';
+import { catalogPage } from '../config/nav';
+import { getCatalogs } from '../lib/catalogs';
+import { breadcrumbSchema, type Crumb } from '../lib/seo';
+
+const meta = pageMeta['/catalog/'];
+const catalogs = getCatalogs();
+const crumbs: Crumb[] = [
+  { name: 'Home', href: '/' },
+  { name: copy.title, href: catalogPage.href },
+];
+const cover = catalogs.find((c) => c.cover)?.cover;
+---
+
+<BaseLayout
+  title={meta.title}
+  description={meta.description}
+  fullTitle
+  ogImage={cover ? { src: cover, alt: `Cover of the ${catalogs[0].title}` } : undefined}
+  jsonLd={[breadcrumbSchema(crumbs)]}
+>
+  <div class="page-gutter mx-auto max-w-content pt-8 md:pt-12">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="mt-6 lg:w-5/6">
+      <h1 class="text-4xl">{copy.title}</h1>
+      <p class="mt-4 max-w-prose text-lg">{copy.intro}</p>
+    </header>
+    <CatalogList catalogs={catalogs} class="mt-10 lg:mt-14" />
+  </div>
+  <CtaBand title={copy.ctaTitle} intro={copy.ctaIntro} class="my-section lg:my-section-lg" />
+</BaseLayout>

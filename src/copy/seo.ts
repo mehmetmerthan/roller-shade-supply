@@ -23,6 +23,11 @@ export const pageMeta = {
     description:
       'Browse completed multifamily, commercial, school, and public-sector window covering projects by Roller Shade Supply across Chicago and the suburbs.',
   },
+  '/catalog/': {
+    title: 'Fabric Catalogs | Roller Shade Supply',
+    description:
+      'Browse our roller shade and zebra shade fabric catalogs. View each PDF in your browser, or download it to share with your team and choose fabrics.',
+  },
   '/request-a-quote/': {
     title: 'Request a Quote for Commercial Shades | Roller Shade Supply',
     description:

@@ -15,6 +15,10 @@ export const EXCLUDE_FILE = path.join(ROOT, 'scripts', 'image-exclude.json');
 export const VIDEO_CONFIG_FILE = path.join(ROOT, 'scripts', 'video-config.json');
 /** Web videos and posters. Fully managed by `npm run images`; don't put other files here. */
 export const PUBLIC_VIDEOS_DIR = path.join(ROOT, 'public', 'videos');
+/** PDF catalogs: originals in /assets/catalogs/, served copies in public/catalogs/, covers in src/assets/catalogs/. */
+export const CATALOGS_SRC_DIR = path.join(ROOT, 'assets', 'catalogs');
+export const PUBLIC_CATALOGS_DIR = path.join(ROOT, 'public', 'catalogs');
+export const SRC_CATALOGS_DIR = path.join(ROOT, 'src', 'assets', 'catalogs');
 
 /** Source image formats we accept in /assets (detected by content, not only by extension). */
 export const SOURCE_IMAGE_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.heic', '.heif', '.tif', '.tiff']);
@@ -46,14 +50,14 @@ export const extOf = (name) => path.extname(name).toLowerCase();
 
 /**
  * Lists candidate project folders in /assets: every subfolder of /assets/projects/,
- * plus subfolders of /assets/ itself except "brand" and "projects".
+ * plus subfolders of /assets/ itself except the reserved "brand", "catalogs", and "projects".
  * Returns [] when /assets doesn't exist (e.g., on CI, where it's gitignored).
  */
 export async function findSourceFolders() {
   if (!existsSync(ASSETS_DIR)) return [];
   const roots = [
     { dir: path.join(ASSETS_DIR, 'projects'), skip: new Set() },
-    { dir: ASSETS_DIR, skip: new Set(['brand', 'projects']) },
+    { dir: ASSETS_DIR, skip: new Set(['brand', 'catalogs', 'projects']) },
   ];
   const found = new Map();
   for (const { dir, skip } of roots) {

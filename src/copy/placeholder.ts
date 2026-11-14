@@ -91,3 +91,13 @@ export const notFound = {
   title: 'This page isn’t here.',
   body: 'It may have moved or been removed. Try one of these instead:',
 } as const;
+
+/** Fabric catalogs page (/catalog/, 11/14/2026). TODO(content): new microcopy. */
+export const catalogPageCopy = {
+  title: 'Fabric Catalogs',
+  intro:
+    'Every fabric and color we offer for roller and zebra shades. View a catalog in your browser, or download the PDF to share with your team.',
+  ctaTitle: 'Found the right fabric?',
+  ctaIntro:
+    'Send us the series and color code (for example, MS1-002) with your sizes and quantities, and we’ll prepare a quote.',
+} as const;

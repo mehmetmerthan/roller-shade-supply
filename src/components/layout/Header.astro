@@ -31,7 +31,12 @@ const isHome = path === '/';
         {
           mainNav.map((item) => (
             <li>
-              <a href={item.href} class="nav-link" data-section-link={item.id}>
+              <a
+                href={item.href}
+                class="nav-link"
+                data-section-link={item.id}
+                aria-current={!item.id && path === item.href ? 'page' : undefined}
+              >
                 {item.label}
               </a>
             </li>

@@ -535,6 +535,8 @@
     gap: 0.375rem;
     min-height: 2.75rem;
     padding-inline: 0.625rem;
+    /* Labels never wrap: six links share the bar with the phone number from 1280 px. */
+    white-space: nowrap;
     color: var(--color-ink);
     font-size: var(--text-sm);
     font-weight: 600;
@@ -542,10 +544,11 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
   }
+  /* Same size at every width: six links, the phone number, and the button share the bar
+     from 1280 px; the extra room goes to spacing instead. */
   @media (width >= 80rem) {
     .nav-link {
       padding-inline: 0.875rem;
-      font-size: var(--text-base);
     }
   }
   .nav-link:hover {

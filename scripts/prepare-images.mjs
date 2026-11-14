@@ -20,18 +20,29 @@
  *     (the sharpest frame within ±0.5 s of each time).
  *   - Originals are never copied or committed.
  *
+ * Catalogs (PDFs in /assets/catalogs/; see prepareCatalogs below):
+ *   - Each PDF is copied unchanged to public/catalogs/<slug>.pdf (fabric colors matter, so
+ *     no recompression) and its first page becomes the cover, src/assets/catalogs/<slug>.jpg.
+ *     A JPG/PNG with the PDF's base name in /assets/catalogs/ overrides the cover.
+ *   - src/assets/catalogs/catalogs.json records each file's slug, size, and page count.
+ *
  * Housekeeping:
  *   - Idempotent: skips outputs newer than their source (and the config). `--force` redoes all.
- *   - Prunes stale outputs in src/assets/projects/ and public/videos/. Never touches /assets.
+ *   - Prunes stale outputs in src/assets/projects/, public/videos/, public/catalogs/, and
+ *     src/assets/catalogs/. Never touches /assets.
  *   - Copies brand files from /assets/brand/ (or a logo file in /assets/) to src/assets/brand/.
  */
 import { existsSync } from 'node:fs';
-import { copyFile, mkdir, readdir, readFile, rm, stat } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import heicConvert from 'heic-convert';
+import { PDFDict, PDFDocument, PDFName, PDFRawStream } from 'pdf-lib';
 import sharp from 'sharp';
 import {
   ASSETS_DIR,
+  CATALOGS_SRC_DIR,
+  PUBLIC_CATALOGS_DIR,
+  SRC_CATALOGS_DIR,
   EXCLUDE_FILE,
   PUBLIC_VIDEOS_DIR,
   SRC_BRAND_DIR,
@@ -139,6 +150,98 @@ async function prepareBrand(report) {
   }
 }
 
+/**
+ * The first page's image as a cover. Catalog pages are usually one full-page JPEG
+ * (DCTDecode), which can be taken out as is; anything else gets no automatic cover.
+ */
+async function firstPageJpeg(doc) {
+  const resources = doc.getPage(0).node.Resources();
+  const xobjects = resources?.lookup(PDFName.of('XObject'), PDFDict);
+  if (!xobjects) return null;
+  let best = null;
+  for (const [, ref] of xobjects.entries()) {
+    const obj = doc.context.lookup(ref);
+    if (!(obj instanceof PDFRawStream)) continue;
+    const dict = obj.dict;
+    if (String(dict.get(PDFName.of('Subtype'))) !== '/Image' || String(dict.get(PDFName.of('Filter'))) !== '/DCTDecode') continue;
+    if (!best || obj.contents.length > best.length) best = obj.contents;
+  }
+  return best ? Buffer.from(best) : null;
+}
+
+async function prepareCatalogs(report) {
+  if (!existsSync(CATALOGS_SRC_DIR)) return;
+  const manifestPath = path.join(SRC_CATALOGS_DIR, 'catalogs.json');
+  const previous = new Map();
+  if (existsSync(manifestPath)) {
+    for (const entry of JSON.parse(await readFile(manifestPath, 'utf8'))) previous.set(entry.source, entry);
+  }
+  const names = (await readdir(CATALOGS_SRC_DIR)).filter((n) => !isIgnored(n));
+  const pdfs = names.filter((n) => extOf(n) === '.pdf');
+  const coverOverrides = new Map(
+    names.filter((n) => ['.jpg', '.jpeg', '.png'].includes(extOf(n))).map((n) => [path.basename(n, path.extname(n)), n]),
+  );
+  for (const n of names) {
+    if (extOf(n) !== '.pdf' && !coverOverrides.has(path.basename(n, path.extname(n)))) report.unknown.push(`catalogs/${n}`);
+  }
+
+  await mkdir(PUBLIC_CATALOGS_DIR, { recursive: true });
+  await mkdir(SRC_CATALOGS_DIR, { recursive: true });
+  const manifest = [];
+  const keepPublic = new Set();
+  const keepSrc = new Set(['catalogs.json']);
+  for (const source of pdfs.sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))) {
+    const sourcePath = path.join(CATALOGS_SRC_DIR, source);
+    const base = path.basename(source, path.extname(source));
+    const slug = slugify(base);
+    const pdfOut = path.join(PUBLIC_CATALOGS_DIR, `${slug}.pdf`);
+    const coverOut = path.join(SRC_CATALOGS_DIR, `${slug}.jpg`);
+    const override = coverOverrides.get(base);
+    const overridePath = override ? path.join(CATALOGS_SRC_DIR, override) : null;
+    keepPublic.add(`${slug}.pdf`);
+
+    const pdfFresh = await isFresh(pdfOut, sourcePath);
+    if (!pdfFresh) await copyFile(sourcePath, pdfOut);
+
+    let entry = previous.get(source);
+    const coverFresh = existsSync(coverOut) && (await isFresh(coverOut, sourcePath, overridePath));
+    if (!pdfFresh || !coverFresh || !entry) {
+      const doc = await PDFDocument.load(await readFile(sourcePath), { updateMetadata: false });
+      let cover = overridePath ? await readFile(overridePath) : await firstPageJpeg(doc);
+      if (cover) {
+        await sharp(cover, { failOn: 'none' })
+          .rotate()
+          .resize({ width: 2000, height: 2000, fit: 'inside', withoutEnlargement: true })
+          .jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
+          .toFile(coverOut);
+      } else {
+        report.warnings.push(
+          `catalogs/${source}: no cover (page 1 isn't a single JPEG). Add "${base}.jpg" to /assets/catalogs/ to set one.`,
+        );
+      }
+      const { width, height } = doc.getPage(0).getSize();
+      entry = {
+        source,
+        slug,
+        file: `/catalogs/${slug}.pdf`,
+        bytes: (await stat(sourcePath)).size,
+        pages: doc.getPageCount(),
+        pageAspect: +(width / height).toFixed(4),
+        cover: cover ? `${slug}.jpg` : null,
+      };
+      report.catalogs.push(
+        `${source} → public/catalogs/${slug}.pdf (${entry.pages} pages, ${formatBytes(entry.bytes)})` +
+          (cover ? ` + cover src/assets/catalogs/${slug}.jpg${override ? ` (from ${override})` : ' (page 1)'}` : ''),
+      );
+    }
+    if (entry.cover) keepSrc.add(entry.cover);
+    manifest.push(entry);
+  }
+  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+  await pruneDir(PUBLIC_CATALOGS_DIR, keepPublic, 'public/catalogs', report);
+  await pruneDir(SRC_CATALOGS_DIR, keepSrc, 'src/assets/catalogs', report);
+}
+
 /** Removes files in `dir` that aren't in `expected`. */
 async function pruneDir(dir, expected, label, report) {
   if (!existsSync(dir)) return;
@@ -174,6 +277,7 @@ async function main() {
     warnings: [],
     errors: [],
     brand: [],
+    catalogs: [],
   };
   let totalBefore = 0;
   let totalAfter = 0;
@@ -338,6 +442,7 @@ async function main() {
   }
 
   await prepareBrand(report);
+  await prepareCatalogs(report);
 
   // ---- Report ----
   console.log('\n\nImage preparation report');
@@ -368,6 +473,7 @@ async function main() {
   section('Unrecognized files (ignored)', report.unknown);
   section('Pruned stale outputs', report.pruned);
   section('Brand files copied', report.brand);
+  section('Catalogs (PDFs copied unchanged; covers from page 1)', report.catalogs);
   section('Warnings', report.warnings);
   section('ERRORS', report.errors);
 

@@ -8,7 +8,7 @@
 import ProductCard from '../ui/ProductCard.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 import { products } from '../../copy/approved';
-import { homeSections } from '../../config/nav';
+import { catalogPage, homeSections } from '../../config/nav';
 import { quoteHref } from '../../lib/quote';
 
 interface Props {
@@ -47,5 +47,9 @@ const { id } = homeSections.products;
       {products.operatingOptions.map((option) => <li class="flex min-h-16 items-center bg-paper px-4 py-3 font-semibold lg:px-5">{option}</li>)}
     </ul>
     <p class="text-sm text-stone-700 xl:col-span-10 xl:col-start-3">{products.note}</p>
+    {/* TODO(content): "Browse Fabric Catalogs" is new microcopy. */}
+    <p class="mt-2 xl:col-span-10 xl:col-start-3">
+      <a href={catalogPage.href} class="btn btn-secondary">Browse Fabric Catalogs</a>
+    </p>
   </div>
 </section>

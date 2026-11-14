@@ -17,6 +17,9 @@ export interface SectionLink extends NavLink {
   id: string;
 }
 
+/** A header item: a Home section (scroll-spy marks it) or a page of its own. */
+export type MainNavItem = SectionLink | (NavLink & { id?: undefined });
+
 export interface FooterColumn {
   heading: string;
   links: NavLink[];
@@ -37,11 +40,18 @@ export const homeSections = {
   contact: section('contact', 'Contact'),
 } as const;
 
-/** Header and mobile menu, in page order. "Projects" is the short label for Selected Projects. */
-export const mainNav: SectionLink[] = [
+/** The fabric catalogs page (client request, 11/14/2026). */
+export const catalogPage: NavLink = { label: 'Catalog', href: '/catalog/' };
+
+/**
+ * Header and mobile menu. Home sections in page order, with Catalog (its own page)
+ * after Our Products. "Projects" is the short label for Selected Projects.
+ */
+export const mainNav: MainNavItem[] = [
   homeSections.whoWeAre,
   homeSections.whoWeServe,
   homeSections.products,
+  catalogPage,
   { ...homeSections.projects, label: 'Projects' },
   homeSections.contact,
 ];
@@ -67,7 +77,8 @@ export const footerColumns: FooterColumn[] = [
   },
   {
     heading: 'Our Work',
-    links: [homeSections.products, homeSections.projects, projectsPage],
+    // TODO(content): "Fabric Catalogs" is new microcopy.
+    links: [homeSections.products, { label: 'Fabric Catalogs', href: catalogPage.href }, homeSections.projects, projectsPage],
   },
   {
     heading: 'Get a Quote',
