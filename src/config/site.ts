@@ -1,6 +1,7 @@
 /**
  * Single source of truth for company details, feature flags, and the build
- * environment. Never hard-code the phone, email, or address in components.
+ * environment. Never hard-code the email in components. The site shows no phone
+ * number, street address, or business hours (client decision, 11/17/2026).
  *
  * Every value marked TODO(content) is a placeholder from
  * docs/additional-content.md §1 until the client confirms it (see CONTENT_TODO.md).
@@ -26,46 +27,21 @@ export const site = {
   locale: 'en-US',
   timeZone: 'America/Chicago',
 
-  phone: {
-    // TODO(content): fictional 555 number.
-    display: '(312) 555-0148',
-    href: 'tel:+13125550148',
-    e164: '+13125550148',
-  },
-
-  email: {
-    // TODO(content): quote and general inboxes are unconfirmed.
-    quotes: 'quotes@rollershadesupply.com',
-    general: 'info@rollershadesupply.com',
-  },
-
-  address: {
-    // TODO(content): show a street address, or the service area only?
-    street: null as string | null,
-    city: 'Chicago',
-    region: 'IL',
-    postalCode: null as string | null,
-    country: 'US',
-  },
-
-  hours: {
-    // TODO(content): business hours are unconfirmed.
-    display: 'Monday–Friday, 8:00 AM – 5:00 PM CT',
-    /** The same hours split for narrow columns (keep in sync with `display`). */
-    days: 'Monday–Friday',
-    time: '8:00 AM – 5:00 PM CT',
-    schema: [
-      {
-        days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '08:00',
-        closes: '17:00',
-      },
-    ],
-  },
+  /**
+   * The only contact detail on the site (client decision, 11/17/2026: no phone number,
+   * street address, or business hours anywhere). Quote requests from the form are also
+   * emailed here (a Netlify form notification; see CLAUDE.md "Preview deploys").
+   * TODO(content): the domain has no mail server (MX records) yet, so this inbox
+   * can't receive mail until the client sets one up (CONTENT_TODO.md §1).
+   */
+  email: 'info@rollershadesupply.com',
 
   serviceArea: {
     /** Approved wording. */
     summary: 'Chicago and the surrounding area',
+    /** For structured data (areaServed). Not an address. */
+    city: 'Chicago',
+    region: 'IL',
     // TODO(content): county list is unconfirmed.
     counties: ['Cook', 'DuPage', 'Lake', 'Will', 'Kane', 'McHenry'],
     // TODO(content): extended service area is unconfirmed (Water Power Lofts is in Rockford).

@@ -294,7 +294,7 @@ const unionOptions = ['Union', 'Non-union', 'Not sure'].map((label) => ({ value:
             <Button href={quoteCta.href}>{quoteCta.label}</Button>
             <Button variant="secondary" href="/projects/">View Our Projects</Button>
             <Button variant="secondary" demo="focus" href="/projects/">Focused</Button>
-            <Button variant="ghost" href={site.phone.href}>Call {site.phone.display}</Button>
+            <Button variant="ghost" href={`mailto:${site.email}`}>Email Us</Button>
           </div>
         </div>
       </div>
@@ -322,7 +322,7 @@ const unionOptions = ['Union', 'Non-union', 'Not sure'].map((label) => ({ value:
         <div data-surface="dark" class="self-start p-6 lg:col-span-5">
           <p class="max-w-prose">
             Roller Shade Supply is a Chicago-based window covering supplier. <a class="link" href="/#contact">Contact us</a>
-            or call <a class="link" href={site.phone.href}>{site.phone.display}</a>.
+            or email <a class="link" href={`mailto:${site.email}`}>{site.email}</a>.
           </p>
         </div>
       </div>
@@ -574,7 +574,7 @@ const unionOptions = ['Union', 'Non-union', 'Not sure'].map((label) => ({ value:
           <div data-rail="bottom" class="flex flex-col gap-3">
             <Button href={quoteCta.href} class="w-full">{quoteCta.label}</Button>
             <Button variant="secondary" href={projectHref(heroProject)} class="w-full">View Project</Button>
-            <a class="link-quiet inline-block py-1 text-sm font-semibold" href={site.phone.href}>Call {site.phone.display}</a>
+            <a class="link-quiet inline-block py-1 text-sm font-semibold break-all" href={`mailto:${site.email}`}>{site.email}</a>
           </div>
         </Fragment>
       </ChicagoWindow>

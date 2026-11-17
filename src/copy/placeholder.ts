@@ -61,27 +61,27 @@ export const quoteFormCopy = {
   privacy: 'We use your details only to respond to your request.',
   privacyLink: 'Privacy Policy',
   sending: 'Sending your request…',
-  callPrompt: 'Prefer to talk?',
+  emailPrompt: 'Prefer email?',
   errors: {
     name: 'Please enter your name.',
     email: 'Please enter your email address.',
     emailFormat: 'Please enter a valid email address, like name@company.com.',
-    fileSize: `This file is too large. Upload a file under ${UPLOAD_MAX_LABEL}, or email it to ${site.email.quotes}.`,
-    fileType: `This file type can’t be uploaded. Use a PDF, Excel, CSV, Word, JPG, or PNG file, or email it to ${site.email.quotes}.`,
+    fileSize: `This file is too large. Upload a file under ${UPLOAD_MAX_LABEL}, or email it to ${site.email}.`,
+    fileType: `This file type can’t be uploaded. Use a PDF, Excel, CSV, Word, JPG, or PNG file, or email it to ${site.email}.`,
   },
 } as const;
 
 /** Quote page aside headings (new microcopy). */
 export const quoteAside = {
   include: 'Please include',
-  contact: 'Talk to our team',
+  contact: 'Email us',
 } as const;
 
 /** §10 Thank-you page (/request-a-quote/thank-you/). */
 export const thankYou = {
   title: 'Thanks, we’ve received your request.',
   body: `Our team will review your project details and reply by email ${site.quoteResponseTime}.`,
-  urgent: 'If your timeline is urgent, call us at',
+  urgent: 'If your timeline is urgent, email us at',
   projectsCta: 'View Our Projects',
   homeCta: 'Back to Home',
 } as const;

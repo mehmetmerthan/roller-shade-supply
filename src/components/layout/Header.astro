@@ -2,19 +2,18 @@
 /**
  * Site header, sticky at every width: the main links scroll to Home sections
  * (anchor navigation), so the header has to stay in reach.
- *   < 768 px   logo + Menu (the bottom action bar carries Call / Get a Quote)
- *   768–1023   logo + phone + Request a Quote + Menu
- *   1024–1279  logo + section links + Request a Quote (no room for the phone)
- *   ≥ 1280     logo + section links + phone + Request a Quote
+ *   < 768 px   logo + Menu (the bottom action bar carries Request a Quote)
+ *   768–1023   logo + Request a Quote + Menu
+ *   ≥ 1024     logo + main links + Request a Quote
+ * No phone number (client decision, 11/17/2026): the site's only contact detail
+ * is the email address, in the menu, the contact band, and the footer.
  * On Home, the link for the section in view is marked (scroll-spy below).
  * `html { scroll-padding-top }` in global.css keeps anchors and focused elements
  * clear of the header.
  */
 import Logo from '../ui/Logo.astro';
-import Icon from '../ui/Icon.astro';
 import MobileMenu from './MobileMenu.astro';
 import { mainNav, quoteCta } from '../../config/nav';
-import { site } from '../../config/site';
 
 const path = Astro.url.pathname;
 const isHome = path === '/';
@@ -45,14 +44,6 @@ const isHome = path === '/';
       </ul>
     </nav>
 
-    <a
-      href={site.phone.href}
-      class="hidden min-h-11 items-center gap-2 px-1 text-sm font-semibold whitespace-nowrap md:inline-flex lg:hidden xl:inline-flex xl:text-base"
-      data-event="click_to_call"
-    >
-      <Icon name="phone" size={20} />
-      <span><span class="sr-only">Call </span>{site.phone.display}</span>
-    </a>
     <a
       href={quoteCta.href}
       class="btn btn-primary btn-sm hidden md:inline-flex xl:min-h-12 xl:px-5 xl:text-base"

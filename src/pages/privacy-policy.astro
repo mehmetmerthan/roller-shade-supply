@@ -14,8 +14,8 @@ const meta = pageMeta[path];
 <ProseLayout title="Privacy Policy" documentTitle={meta.title} description={meta.description} path={path} updated="11/05/2026">
   <h2>Who we are</h2>
   <p>
-    {site.name} is a window covering supplier based in {site.address.city}, {site.address.region}. If you have questions about this
-    policy, email us at <a class="link" href={`mailto:${site.email.general}`}>{site.email.general}</a>.
+    {site.name} is a Chicago-based window covering supplier. If you have questions about this policy, email us at
+    <a class="link" href={`mailto:${site.email}`}>{site.email}</a>.
   </p>
 
   <h2>Information we collect</h2>
@@ -44,7 +44,7 @@ const meta = pageMeta[path];
 
   <h2>Your choices</h2>
   <p>
-    To access, correct, or delete your information, email us at <a class="link" href={`mailto:${site.email.general}`}>{site.email.general}</a>.
+    To access, correct, or delete your information, email us at <a class="link" href={`mailto:${site.email}`}>{site.email}</a>.
   </p>
 
   <h2>Changes</h2>

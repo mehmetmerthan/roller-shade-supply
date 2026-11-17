@@ -1,12 +1,11 @@
 ---
 /**
  * Closing CTA ([CONTACT] title and intro): a Chicago window that bookends the hero.
- * Pane: the heading, intro, buttons, and email. Right sash: hours and service area.
+ * Pane: the heading, intro, Request a Quote, and the email address. Right sash: the
+ * service area. (No phone or hours since 11/17/2026.)
  */
 import Button from '../ui/Button.astro';
 import ChicagoWindow from '../ui/ChicagoWindow.astro';
-import Hours from '../ui/Hours.astro';
-import Icon from '../ui/Icon.astro';
 import { contact } from '../../copy/approved';
 import { quoteCta } from '../../config/nav';
 import { site } from '../../config/site';
@@ -40,24 +39,16 @@ const {
     <div class="h-full bg-limestone px-4 py-10 md:px-6 lg:px-10 lg:py-14">
       <h2 id={`${id}-title`} class="text-3xl">{title}</h2>
       <p class="mt-4 max-w-prose text-lg">{intro}</p>
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <div class="mt-8">
         <Button href={href} size="lg">{ctaLabel}</Button>
-        <Button href={site.phone.href} variant="secondary" size="lg" data-event="click_to_call">
-          <Icon name="phone" />
-          Call {site.phone.display}
-        </Button>
       </div>
       <p class="mt-6 text-sm">
         {contact.responseNote}
-        <a class="link-quiet ml-1 inline-block py-0.5 font-semibold" href={`mailto:${site.email.quotes}`} data-event="email_click">{site.email.quotes}</a>
+        <a class="link-quiet ml-1 inline-block py-0.5 font-semibold break-all" href={`mailto:${site.email}`} data-event="email_click">{site.email}</a>
       </p>
     </div>
     <Fragment slot="right">
       <div>
-        <p class="label-spec">Hours</p>
-        <Hours class="mt-1 text-sm" />
-      </div>
-      <div data-rail="bottom">
         <p class="label-spec">Service area</p>
         <p class="mt-1 text-sm">{site.serviceArea.summary}</p>
       </div>

@@ -4,7 +4,8 @@
 - **Client:** Roller Shade Supply, a Chicago-based supplier of commercial window coverings (roller shades, zebra shades, faux wood blinds) for builders, general contractors, multifamily developers, property managers, commercial businesses, schools, and government agencies.
 - **Audience:** trade, wholesale, and project-based buyers. **Not homeowners.**
 - **Site goals:** (1) turn visits into qualified quote requests, (2) prove capability with the completed projects in `/assets`, (3) rank for commercial window-covering searches in Chicagoland.
-- **Primary conversion:** the quote form at `/request-a-quote/`. Secondary: phone call, email.
+- **Primary conversion:** the quote form at `/request-a-quote/`; each request is emailed to `site.email`. Secondary: email.
+- **Contact details (client decision, 11/17/2026):** the site shows **only the email address** (`site.email`, one address everywhere). No phone number, street address/office, or business hours anywhere, including structured data. Don't add them back without the client asking.
 - **Site structure (client decision, 11/05/2026):** one long Home page whose header links scroll to its sections (`homeSections` in `src/config/nav.ts`), plus `/projects/`, `/projects/[slug]/`, `/catalog/` (fabric catalog PDFs, added 11/14/2026), `/request-a-quote/` (+ `/thank-you/`), `/privacy-policy/`, `/accessibility/`, and 404. The header has six links: five Home sections plus Catalog. They stay on one line at 15 px from 1024 px up; check the fit at 1024–1440 before adding another. **Don't build** About, product, industry, FAQ, How to Measure, or Contact pages (the `docs/site-spec.md` sitemap is superseded). Home order: introduction → Who We Are → Who We Serve → Why Work With Us → public sector → Our Products → Selected Projects → Get a Fast Quote → Let’s Discuss Your Project (`#contact`).
 
 ## Language & locale
@@ -54,9 +55,10 @@ npm run qa -- --base http://127.0.0.1:4321 --pages /styleguide/ --out .screensho
 - Netlify-side settings are not in the repo. They were set for the preview site on 11/06/2026:
   - **team login protection off**, so the link is public (the team default still protects new sites);
   - **form detection on**, so the `quote` form is detected at deploy;
-  - **"Built with Netlify" badge off**, because it covered the phone action bar.
+  - **"Built with Netlify" badge off**, because it covered the phone action bar;
+  - **form email notification** (11/17/2026): every `submission_created` is emailed to info@rollershadesupply.com, the same address as `site.email`. Change it with `npx netlify api` (`listHooksBySiteId` / `updateHook`) whenever `site.email` changes.
 
-  A new site needs the same three settings: `npx netlify api updateSite` with `sso_login`, `processing_settings.ignore_html_forms`, and `built_with_badge_enabled`. Form detection takes effect from the next deploy.
+  A new site needs the same settings: `npx netlify api updateSite` with `sso_login`, `processing_settings.ignore_html_forms`, and `built_with_badge_enabled`. Form detection takes effect from the next deploy.
 
 ## Repository layout (target)
 ```
@@ -192,7 +194,7 @@ To publish a held-back project: add photos to its folder in `/assets/projects/` 
 - **Signature motifs** (pick, refine, don't overuse): light and shadow · the alternating bands of a zebra shade · the roll-down reveal of a roller shade · fabric texture.
 - **Avoid:** generic SaaS look, purple/blue gradients, gradient blobs, glassmorphism, emoji or clip-art icons, stock photos of people, auto-playing sliders, scroll-jacking, parallax overload, everything-centered layouts, Inter/Roboto/Open Sans/Arial as the display face, lorem ipsum, fake client logos.
 - Motion is subtle and purposeful, and everything respects `prefers-reduced-motion`.
-- **Mobile-first.** Contractors browse on phones on job sites: large tap targets, click-to-call, sticky "Request a Quote" on mobile.
+- **Mobile-first.** Contractors browse on phones on job sites: large tap targets and a sticky "Request a Quote" button on mobile.
 
 ## Visual QA loop (mandatory after every page or major component)
 1. Run the dev server.
@@ -206,7 +208,7 @@ Save screenshots to `/.screenshots/`. Never call a page done without having look
 - **SEO:** unique `<title>` (≤ 60 chars) and meta description (140–160 chars) per page from `docs/additional-content.md` §9; one `<h1>`; canonical; Open Graph and Twitter tags; JSON-LD per `docs/site-spec.md` §6; all indexable content rendered as static HTML.
 - **Accessibility:** WCAG 2.2 AA (public-sector buyers check this). Landmarks, skip link, visible focus, labeled fields, contrast, keyboard-operable menus, carousels, and lightbox.
 - **Performance:** Lighthouse mobile ≥ 95 Performance, 100 Accessibility/Best Practices/SEO. LCP ≤ 2.0 s, CLS ≤ 0.05. Zero JS on pages that don't need it. Hero image `loading="eager" fetchpriority="high"`, everything else lazy. Reserved dimensions or aspect ratio on all media.
-- **Single sources of truth:** company details and feature flags in `src/config/site.ts`, navigation in `src/config/nav.ts`. Never hard-code the phone, email, or address in components.
+- **Single sources of truth:** company details and feature flags in `src/config/site.ts`, navigation in `src/config/nav.ts`. Never hard-code the email in components.
 
 ## Placeholder policy
 - Anything not in `docs/approved-copy.md` is a placeholder until the client confirms it. Track every placeholder in `CONTENT_TODO.md` (file · item · what's needed) and mark code with `// TODO(content):`.

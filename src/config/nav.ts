@@ -62,10 +62,9 @@ export const quoteCta: NavLink = { label: 'Request a Quote', href: '/request-a-q
 /** The full project gallery (approved CTA label "View Project Gallery"). */
 export const projectsPage: NavLink = { label: 'Project Gallery', href: '/projects/' };
 
-/** Sticky bottom bar on mobile. The call link's href comes from site.phone. */
+/** Sticky bottom bar on phones: one full-width Request a Quote button. */
 export const mobileActions = {
-  callLabel: 'Call',
-  quoteLabel: 'Get a Quote',
+  quoteLabel: quoteCta.label,
   quoteHref: quoteCta.href,
 } as const;
 

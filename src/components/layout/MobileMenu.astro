@@ -61,16 +61,13 @@ const id = 'mobile-menu';
     </ul>
   </nav>
 
-  <div class="page-gutter grid gap-3 py-6 sm:grid-cols-2">
+  <div class="page-gutter grid gap-4 py-6">
     <a href={quoteCta.href} class="btn btn-primary w-full" aria-current={path === quoteCta.href ? 'page' : undefined}>{quoteCta.label}</a>
-    <a href={site.phone.href} class="btn btn-secondary w-full" data-event="click_to_call">
-      <Icon name="phone" />
-      Call {site.phone.display}
-    </a>
-    <p class="text-sm text-stone-700 sm:col-span-2">
-      <a class="link" href={`mailto:${site.email.quotes}`} data-event="email_click">{site.email.quotes}</a>
-      <br />
-      {site.hours.display}
+    <p>
+      <a class="link inline-flex min-h-6 items-center gap-2 break-all" href={`mailto:${site.email}`} data-event="email_click">
+        <Icon name="mail" size={16} />
+        {site.email}
+      </a>
     </p>
   </div>
 </dialog>

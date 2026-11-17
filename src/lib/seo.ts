@@ -21,57 +21,38 @@ export function websiteSchema(): JsonLd {
   };
 }
 
-function postalAddress(): JsonLd {
-  const { street, city, region, postalCode, country } = site.address;
-  return {
-    '@type': 'PostalAddress',
-    ...(street && { streetAddress: street }),
-    addressLocality: city,
-    addressRegion: region,
-    ...(postalCode && { postalCode }),
-    addressCountry: country,
-  };
-}
-
 function areaServed(): JsonLd[] {
+  const { city, region, counties } = site.serviceArea;
   return [
-    { '@type': 'City', name: `${site.address.city}, ${site.address.region}` },
-    ...site.serviceArea.counties.map((county) => ({
+    { '@type': 'City', name: `${city}, ${region}` },
+    ...counties.map((county) => ({
       '@type': 'AdministrativeArea',
-      name: `${county} County, ${site.address.region}`,
+      name: `${county} County, ${region}`,
     })),
   ];
 }
 
 /**
- * The company as one entity: an Organization (logo, contact point, profiles) that is
- * also a LocalBusiness (address, hours, service area). Used on Home and Contact.
+ * The company as one entity: an Organization with its logo, email, service area, and
+ * profiles. No address, phone, or opening hours: the site shows only the email
+ * (client decision, 11/17/2026), and structured data must match the page.
  */
 export function businessSchema(logoUrl: string): JsonLd {
   const sameAs = [site.social.linkedin].filter(Boolean);
   return {
-    '@type': ['Organization', 'LocalBusiness'],
+    '@type': 'Organization',
     '@id': orgId,
     name: site.name,
     description: site.description,
     url: abs('/'),
     logo: abs(logoUrl),
     image: abs(logoUrl),
-    telephone: site.phone.e164,
-    email: site.email.general,
-    address: postalAddress(),
+    email: site.email,
     areaServed: areaServed(),
-    openingHoursSpecification: site.hours.schema.map((h) => ({
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: h.days,
-      opens: h.opens,
-      closes: h.closes,
-    })),
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'sales',
-      telephone: site.phone.e164,
-      email: site.email.quotes,
+      email: site.email,
       areaServed: 'US',
       availableLanguage: 'English',
     },
